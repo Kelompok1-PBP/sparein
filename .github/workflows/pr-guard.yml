@@ -1,0 +1,56 @@
+name: PR Guard
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  guard:
+    name: Branch name, PR title, merge direction
+    runs-on: ubuntu-latest
+    env:
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+      PR_TITLE: ${{ github.event.pull_request.title }}
+    steps:
+      - name: Merge direction
+        run: |
+          if [ "$BASE_REF" = "main" ] && [ "$HEAD_REF" != "dev" ]; then
+            echo "::error::Pull requests into main are accepted only from dev. This one comes from '$HEAD_REF'. Retarget it to dev."
+            exit 1
+          fi
+          if [ "$BASE_REF" != "main" ] && [ "$BASE_REF" != "dev" ]; then
+            echo "::error::Base branch must be dev or main, got '$BASE_REF'."
+            exit 1
+          fi
+          echo "Merge direction OK: $HEAD_REF -> $BASE_REF"
+
+      - name: Branch name
+        run: |
+          if [ "$HEAD_REF" = "dev" ]; then
+            echo "Release pull request from dev; branch naming not applicable."
+            exit 0
+          fi
+          pattern='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)/[a-z0-9]+(-[a-z0-9]+)*$'
+          if ! echo "$HEAD_REF" | grep -Eq "$pattern"; then
+            echo "::error::Branch '$HEAD_REF' does not match <type>/<module>-<slug>, all lowercase. Example: feat/guides-safety-warning"
+            exit 1
+          fi
+          echo "Branch name OK: $HEAD_REF"
+
+      - name: PR title
+        run: |
+          pattern='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9-]+\))?!?: [a-z].{0,60}[^.]$'
+          if ! echo "$PR_TITLE" | grep -Eq "$pattern"; then
+            echo "::error::PR title must follow Conventional Commits: '<type>(<scope>): <lowercase description>', no trailing period, at most 72 characters. Got: $PR_TITLE"
+            exit 1
+          fi
+          if [ "${#PR_TITLE}" -gt 72 ]; then
+            echo "::error::PR title is ${#PR_TITLE} characters; the limit is 72."
+            exit 1
+          fi
+          echo "PR title OK: $PR_TITLE"
