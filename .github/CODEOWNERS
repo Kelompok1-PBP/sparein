@@ -1,0 +1,24 @@
+# Ownership follows the module split in docs/MODULES.md.
+#
+# Shared paths list several handles on purpose: a review request goes to all of
+# them, which is how the two-approval rule for shared code is applied rather
+# than merely written down.
+#
+# A CODEOWNERS entry only counts when that account has write access to this
+# repository. Adding a member to the organisation is not enough.
+#
+# Two handles are still missing: the owners of diagnostics (M2) and parts (M4).
+# Add them on the line below their module as soon as the accounts are confirmed.
+
+*                @zidanristek
+
+/core/           @zidanristek @hannazerlina @msystemctrl
+/.github/        @zidanristek @hannazerlina @msystemctrl
+/docs/           @zidanristek @hannazerlina @msystemctrl
+
+/devices/        @zidanristek
+/guides/         @hannazerlina
+/journal/        @msystemctrl
+
+# /diagnostics/  @<handle-kevin>
+# /parts/        @<handle-ayrazhan>

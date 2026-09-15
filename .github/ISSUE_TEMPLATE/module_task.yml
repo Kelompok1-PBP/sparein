@@ -1,0 +1,56 @@
+name: Module task
+description: A unit of work inside one module
+title: "feat(<module>): <short description>"
+labels: ["task"]
+body:
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - core (shared)
+        - devices (M1)
+        - diagnostics (M2)
+        - guides (M3)
+        - parts (M4)
+        - journal (M5)
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What should be true once this is done.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Model and migration
+        - [ ] Create, Read, Update, Delete views
+        - [ ] Form wired to the views
+        - [ ] Template extends `base.html`
+        - [ ] AJAX interaction
+        - [ ] Auth filter on restricted fields
+        - [ ] Tests for all four operations and the auth filter
+    validations:
+      required: true
+
+  - type: input
+    id: blocked_by
+    attributes:
+      label: Blocked by
+      description: Issue numbers this depends on, e.g. "#4, #7". Leave empty if independent.
+
+  - type: input
+    id: contract
+    attributes:
+      label: Contract impact
+      description: Which entry in docs/MODULES.md this changes. Write "none" if it changes nothing.
+      placeholder: none
+    validations:
+      required: true

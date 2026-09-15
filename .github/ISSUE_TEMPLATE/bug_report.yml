@@ -1,0 +1,51 @@
+name: Bug report
+description: Something behaves differently from what it should
+title: "fix(<module>): <short description>"
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - core (shared)
+        - devices (M1)
+        - diagnostics (M2)
+        - guides (M3)
+        - parts (M4)
+        - journal (M5)
+        - unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Paste the exact error or traceback, not a paraphrase.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Where
+      placeholder: local / PWS deployment, branch name, commit SHA
