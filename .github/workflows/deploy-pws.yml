@@ -1,0 +1,43 @@
+name: Deploy to PWS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-pws
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Push main to PWS
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Push to PWS
+        env:
+          PWS_URL: ${{ secrets.PWS_URL }}
+        run: |
+          if [ -z "$PWS_URL" ]; then
+            echo "::error::Repository secret PWS_URL is not set. Add it under Settings > Secrets and variables > Actions before merging to main."
+            exit 1
+          fi
+          current_branch=$(git branch --show-current)
+          echo "Deploying branch: $current_branch"
+          if ! push_output=$(git push "$PWS_URL" "$current_branch:master" 2>&1); then
+            echo "Push failed with output: ${push_output//$PWS_URL/***}"
+            echo "::error::Unable to push to PWS. Resolve the conflict manually, then re-run this workflow."
+            exit 1
+          fi
+          echo "Push successful."
