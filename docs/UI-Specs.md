@@ -1,6 +1,6 @@
 # UI Specifications
 
-Dokumen ini jadi pegangan kita waktu mendesain Sparein di Figma.Isinya membahas semuwa komponen apa aja yang perlu dibikin, halaman apa aja yang harus digambar, isi tiap halaman dari atas sampai bawah, dan alur perpindahan antarhalaman :D.
+Dokumen ini jadi pegangan kita waktu mendesain Sparein di Figma. Isinya membahas semuwa komponen apa aja yang perlu dibikin, halaman apa aja yang harus digambar, isi tiap halaman dari atas sampai bawah, dan alur perpindahan antarhalaman :D.
 
 Dokumen ini mengikuti tiga file lain, biar ngga tumpang tindih hirearki dokumen kita dibuat kayak ini aja:
 
@@ -25,8 +25,8 @@ Kalau nemu hal yang beda antara dokumen ini dan dua file di atas, jangan dibener
 9. [State yang wajib digambar](#9-state-yang-wajib-digambar)
 10. [Checklist aksesibilitas di Figma](#10-checklist-aksesibilitas-di-figma)
 11. [Urutan kerja dan pembagian](#11-urutan-kerja-dan-pembagian)
-12. [Hal yang masih perlu kita sepakati](#12-hal-yang-masih-perlu-kita-sepakati)
-13. [Checklist sebelum handoff ke kode](#13-checklist-sebelum-handoff-ke-kode)
+12. [Hal yang masih perlu kita sepakati](#12-Hal-yang-masih-perlu-dibahas-next)
+13. [Checklist sebelum handoff ke kode](#13-checklist-sebelum-handoff-ke-code)
 
 ---
 
