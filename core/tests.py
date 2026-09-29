@@ -2,7 +2,7 @@ from django.contrib.auth.models import AnonymousUser, User
 from django.test import TestCase
 
 from core.models import UserProfile
-from core.permissions import is_member
+from core.permissions import is_contributor, is_member
 
 
 class ProfileTests(TestCase):
@@ -23,3 +23,9 @@ class PermissionTests(TestCase):
 
     def test_logged_in_is_member(self):
         self.assertTrue(is_member(self.make(UserProfile.Role.MEMBER)))
+
+    def test_member_is_not_contributor(self):
+        self.assertFalse(is_contributor(self.make(UserProfile.Role.MEMBER)))
+
+    def test_contributor_passes(self):
+        self.assertTrue(is_contributor(self.make(UserProfile.Role.CONTRIBUTOR)))
