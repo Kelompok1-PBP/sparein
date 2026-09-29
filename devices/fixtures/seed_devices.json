@@ -1,0 +1,5636 @@
+[
+{
+  "model": "devices.devicecategory",
+  "pk": 1,
+  "fields": {
+    "name": "Phone",
+    "slug": "phone",
+    "parent": null
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 2,
+  "fields": {
+    "name": "Apple iPhone",
+    "slug": "apple-iphone",
+    "parent": 1
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 3,
+  "fields": {
+    "name": "Samsung Phone",
+    "slug": "samsung-phone",
+    "parent": null
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 4,
+  "fields": {
+    "name": "Samsung Galaxy A",
+    "slug": "samsung-galaxy-a",
+    "parent": 3
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 5,
+  "fields": {
+    "name": "Xiaomi Phone",
+    "slug": "xiaomi-phone",
+    "parent": null
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 6,
+  "fields": {
+    "name": "Xiaomi Redmi",
+    "slug": "xiaomi-redmi",
+    "parent": 5
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 7,
+  "fields": {
+    "name": "Android Phone",
+    "slug": "android-phone",
+    "parent": null
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 8,
+  "fields": {
+    "name": "Oppo Phone",
+    "slug": "oppo-phone",
+    "parent": 7
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 9,
+  "fields": {
+    "name": "Samsung Tablet",
+    "slug": "samsung-tablet",
+    "parent": null
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 10,
+  "fields": {
+    "name": "Samsung Galaxy Tab",
+    "slug": "samsung-galaxy-tab",
+    "parent": 9
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 11,
+  "fields": {
+    "name": "Mac Laptop",
+    "slug": "mac-laptop",
+    "parent": null
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 12,
+  "fields": {
+    "name": "MacBook Air",
+    "slug": "macbook-air",
+    "parent": 11
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 13,
+  "fields": {
+    "name": "Nintendo Game Console",
+    "slug": "nintendo-game-console",
+    "parent": null
+  }
+},
+{
+  "model": "devices.devicecategory",
+  "pk": 14,
+  "fields": {
+    "name": "Nintendo Switch Family",
+    "slug": "nintendo-switch-family",
+    "parent": 13
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 1,
+  "fields": {
+    "name": "iPhone Duo",
+    "slug": "iphone-duo",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ZjIWoc2jHWbUNK5j.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for Apple's first foldable smartphone, the iPhone Duo, announced September 9th 2026.",
+    "ifixit_wikiid": 654214,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.508Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 2,
+  "fields": {
+    "name": "iPhone 18 Pro Max",
+    "slug": "iphone-18-pro-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/RkWBmmkL3dQTUWKx.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 18 Pro Max, released in September 2026.",
+    "ifixit_wikiid": 654212,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.508Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 3,
+  "fields": {
+    "name": "iPhone 18 Pro",
+    "slug": "iphone-18-pro",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/JhXBGKclb4A24iST.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 18 Pro, released in September 2026.",
+    "ifixit_wikiid": 654211,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.508Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 4,
+  "fields": {
+    "name": "iPhone 17e",
+    "slug": "iphone-17e",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/vhkoAOjuP3mHIs3P.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 17e, Apple's fifth entry into their line of affordable smartphones. The iPhone 17e features the iPhone 17's A19 SoC, the iPhone Air's C1X modem, MagSafe, and USB-C.",
+    "ifixit_wikiid": 642418,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.510Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 5,
+  "fields": {
+    "name": "iPhone Air",
+    "slug": "iphone-air",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Wf5rELsuTPFYibSK.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone Air, announced September 9th, 2025.",
+    "ifixit_wikiid": 632109,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.510Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 6,
+  "fields": {
+    "name": "iPhone 17 Pro Max",
+    "slug": "iphone-17-pro-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/tHpG5VklpbKHnVFt.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 17 Pro Max, announced September 9th, 2025.",
+    "ifixit_wikiid": 632086,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.510Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 7,
+  "fields": {
+    "name": "iPhone 17 Pro",
+    "slug": "iphone-17-pro",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/NAGAl1TMk3f4sqOV.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 17 Pro, released September 19th, 2025.",
+    "ifixit_wikiid": 626764,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.510Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 8,
+  "fields": {
+    "name": "iPhone 17",
+    "slug": "iphone-17",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AxomTUVHQiqUZIAv.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 17, announced September 9th, 2025.",
+    "ifixit_wikiid": 632084,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.512Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 9,
+  "fields": {
+    "name": "iPhone 16e",
+    "slug": "iphone-16e",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Anm4m23SRwuRbQRL.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 16e, Apple's fourth entry into their iPhone SE line of affordable smartphones. Renamed for 2025, the iPhone 16e marks the debut of the C1, the first Apple-designed modem chip, and features a single camera, an A18 SoC, an Action button, USB-C, and Apple Intelligence. Identified by model number A3212.",
+    "ifixit_wikiid": 624686,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.513Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 10,
+  "fields": {
+    "name": "iPhone 16 Pro Max",
+    "slug": "iphone-16-pro-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/5uhh2Qp5dYqSBm2d.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 16 Pro Max, released September 20th, 2024. The flagship smartphone features a 6.9\" ProMotion OLED display, Apple's A18 Pro SoC, a triple-lens rear camera system, and the new Camera Control button. Successor to the iPhone 15 Pro Max.",
+    "ifixit_wikiid": 570433,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.513Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 11,
+  "fields": {
+    "name": "iPhone 16 Pro",
+    "slug": "iphone-16-pro",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/3rLXoQgLO25fHH5P.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the iPhone 16 Pro, released September 20th, 2024. It features a 6.3\" ProMotion OLED display, Apple's A18 Pro SoC, a triple-lens rear camera system, and the new Camera Control button. Successor to the iPhone 15 Pro.",
+    "ifixit_wikiid": 570431,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.515Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 12,
+  "fields": {
+    "name": "iPhone 16 Plus",
+    "slug": "iphone-16-plus",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/iILgmnpsB3gBB2Hv.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the iPhone 16 Plus, released September 20th, 2024. It features a 6.7\" OLED display, a 48 MP dual-camera system, and USB-C port. Model numbers A3082, A3289, A3290, and A3291. Successor to the iPhone 15 Plus.",
+    "ifixit_wikiid": 570440,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.515Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 13,
+  "fields": {
+    "name": "iPhone 16",
+    "slug": "iphone-16",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/uTJRLlTegRbyYti3.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the iPhone 16, released September 20th, 2024. It features a 6.1\" OLED display, a 48 MP dual-camera system, and USB-C port. Successor to the iPhone 15.",
+    "ifixit_wikiid": 570439,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.515Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 14,
+  "fields": {
+    "name": "iPhone 15 Pro Max",
+    "slug": "iphone-15-pro-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/lnwHCfxQCCxVHGqx.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the iPhone 15 Pro Max, Apple's top-of-the-line flagship smartphone, released September 22nd, 2023. It features a 6.7\" ProMotion OLED display, a triple-lens rear camera system with a new 5x optical zoom periscope, and 5G. Successor to the iPhone 14 Pro Max.",
+    "ifixit_wikiid": 483266,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.515Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 15,
+  "fields": {
+    "name": "iPhone 15 Pro",
+    "slug": "iphone-15-pro",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/s6aaFyNT36IJf4Ab.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for Apple's \"smaller\" 2023 flagship smartphone, released September 22nd. It features a 6.1\" ProMotion OLED display, a triple-lens rear camera system, and 5G. Successor to the iPhone 14 Pro.",
+    "ifixit_wikiid": 521226,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.518Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 16,
+  "fields": {
+    "name": "iPhone 15 Plus",
+    "slug": "iphone-15-plus",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/lMFcWXo1ppqkIHYV.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the iPhone 15 Plus, released September 22nd, 2023. It features a 6.7\" OLED display, a 48 MP dual-camera system, and USB-C. Successor to the iPhone 14 Plus.",
+    "ifixit_wikiid": 521192,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.518Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 17,
+  "fields": {
+    "name": "iPhone 15",
+    "slug": "iphone-15",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AP3Ky1i5YOOSuoTp.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the iPhone 15, released September 22nd, 2023. It features a 6.1\" OLED display, a 48 MP dual-camera system, and USB-C.",
+    "ifixit_wikiid": 521168,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.519Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 18,
+  "fields": {
+    "name": "iPhone 14 Pro Max",
+    "slug": "iphone-14-pro-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/stsGu3TIrGqg5ocy.standard",
+    "summary": "Apple's top-of-the-line flagship for 2022. Released September 16th, the iPhone 14 Pro Max sports a 6.7\" ProMotion OLED, the new Bionic A16 chip, a triple rear camera system, and 5G connectivity. Successor to the iPhone 13 Pro Max.",
+    "ifixit_wikiid": 480532,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.519Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 19,
+  "fields": {
+    "name": "iPhone 14 Pro",
+    "slug": "iphone-14-pro",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/BNBpmDXHiiZIDKYY.standard",
+    "summary": "Released September 16th, Apple's \"smaller\" flagship smartphone features a 6.1\" ProMotion OLED, a triple-lens rear camera system, 5G, and a newly designed \"Dynamic Island\" around the front-facing camera and top sensors. Successor to the iPhone 13 Pro.",
+    "ifixit_wikiid": 480531,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.520Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 20,
+  "fields": {
+    "name": "iPhone 14 Plus",
+    "slug": "iphone-14-plus",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/tHoGXqWZJW1iXgnC.standard",
+    "summary": "Apple’s new format for the 14 lineup features a 6.7-inch OLED—like the Pro Max—but the same features as the iPhone 14 with a dual camera setup and the Bionic A15 chip with a 5-core GPU.",
+    "ifixit_wikiid": 480530,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.521Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 21,
+  "fields": {
+    "name": "iPhone 14",
+    "slug": "iphone-14",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/vHLAXd1OyVEBVZ5Q.standard",
+    "summary": "Apple's smallest iPhone 14 was released on September 9th and comes with a 6.1\" OLED display, an advanced dual 12 MP camera system, and a front camera with autofocus. Successor to the iPhone 13.",
+    "ifixit_wikiid": 480529,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.522Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 22,
+  "fields": {
+    "name": "iPhone SE 2022",
+    "slug": "iphone-se-2022",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/WLqQMVYJOPbgaBKa.standard",
+    "summary": "The 3rd generation iPhone SE was announced on March 8th during the Peek Performance Apple event. It features an A15 chip and a 4.7-inch LCD display, similar to its predecessor, the iPhone SE 2020.",
+    "ifixit_wikiid": 477502,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.522Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 23,
+  "fields": {
+    "name": "iPhone 13 Pro Max",
+    "slug": "iphone-13-pro-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/s3IjPYJuZYchJDnv.standard",
+    "summary": "Apple's top-of-the-line smartphone for 2021. Released September 24th, the iPhone 13 Pro Max sports a 6.7\" ProMotion OLED display, a new triple rear camera system, and 5G connectivity. Successor to the iPhone 12 Pro Max.",
+    "ifixit_wikiid": 458238,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.523Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 24,
+  "fields": {
+    "name": "iPhone 13 Pro",
+    "slug": "iphone-13-pro",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/3Vl3h5GWMOvmKiln.standard",
+    "summary": "Released September 24th, Apple's 2021 flagship smartphone features a 6.1\" ProMotion OLED display, a new triple-lens rear camera system, and 5G. Successor to the iPhone 12 Pro.",
+    "ifixit_wikiid": 458237,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.524Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 25,
+  "fields": {
+    "name": "iPhone 13 Mini",
+    "slug": "iphone-13-mini",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/uCIPQMgRYaxFZDl2.standard",
+    "summary": "Released on September 24th 2021, the iPhone 13 mini is a smaller version of Apple's iPhone 13 and is the second mini iPhone. It features a 5.4-inch OLED, an A15 Bionic processor, and dual rear cameras.",
+    "ifixit_wikiid": 458239,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.524Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 26,
+  "fields": {
+    "name": "iPhone 13",
+    "slug": "iphone-13",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nGcRgAKBpmABSW5N.standard",
+    "summary": "Apple's mainstream 2021 iPhone was released on September 24th and comes with a 6.1\" OLED display, a dual 12 MP camera system, and in five available colors. Successor to the iPhone 12.",
+    "ifixit_wikiid": 457896,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.525Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 27,
+  "fields": {
+    "name": "iPhone 12 Pro Max",
+    "slug": "iphone-12-pro-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ouen3ykssWaW1IRE.standard",
+    "summary": "Apple's top-of-the-line smartphone for 2020. Announced on October 13th and released November 13th, the iPhone 12 Pro Max sports a 6.7\" OLED display, a triple rear camera system with LiDAR, and 5G connectivity. Successor to the iPhone 11 Pro Max.",
+    "ifixit_wikiid": 426048,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.525Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 28,
+  "fields": {
+    "name": "iPhone 12 Pro",
+    "slug": "iphone-12-pro",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/5lOJPJGSrK3AXbOR.standard",
+    "summary": "Announced on October 13 and released October 23, Apple's flagship smartphone for 2020 features a 6.1\" OLED display, a triple-lens rear camera system with LiDAR, and 5G. Successor to the iPhone 11 Pro.",
+    "ifixit_wikiid": 426047,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.526Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 29,
+  "fields": {
+    "name": "iPhone 12 mini",
+    "slug": "iphone-12-mini",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/mVx5ZEYjBiuVhB1b.standard",
+    "summary": "Announced on October 13th, 2020, the iPhone 12 mini is a smaller version of Apple's iPhone 12. It features a 5.4-inch OLED display, an A14 Bionic processor, and dual rear cameras.",
+    "ifixit_wikiid": 423639,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.526Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 30,
+  "fields": {
+    "name": "iPhone 12",
+    "slug": "iphone-12",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/cBtIm1imcyyypWCI.standard",
+    "summary": "Apple's mainstream 2020 iPhone was released October 23rd and comes with a 6.1\" OLED display, a dual 12 MP camera system, and in five available colors. Successor to the iPhone 11.",
+    "ifixit_wikiid": 418024,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.527Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 31,
+  "fields": {
+    "name": "iPhone SE 2020",
+    "slug": "iphone-se-2020",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/3IsUrHofPZUAKfXR.standard",
+    "summary": "Repair and disassembly information for the second-generation iPhone SE that was announced and released in April of 2020.",
+    "ifixit_wikiid": 417235,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.528Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 32,
+  "fields": {
+    "name": "iPhone 11 Pro Max",
+    "slug": "iphone-11-pro-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/PXjOTLakIPPKEC3E.standard",
+    "summary": "Released September 20, Apple's largest and most expensive 2019 smartphone features a 6.5\" OLED display, a triple-lens camera system, and greatly improved battery life. Successor to the iPhone XS Max.",
+    "ifixit_wikiid": 257052,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.528Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 33,
+  "fields": {
+    "name": "iPhone 11 Pro",
+    "slug": "iphone-11-pro",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/XIWFAbZrjd4Vgdry.standard",
+    "summary": "Released September 20, Apple's flagship 2019 smartphone features a 5.8\" OLED display, a triple-lens rear camera, and greatly improved battery life. Successor to the iPhone XS.",
+    "ifixit_wikiid": 257025,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.529Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 34,
+  "fields": {
+    "name": "iPhone 11",
+    "slug": "iphone-11",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/DloUgLs2IpDAbDFF.standard",
+    "summary": "Released September 20, Apple's mainstream 2019 iPhone comes with a 6.1\" LCD touchscreen, dual cameras, and six available colors. Successor to the iPhone XR.",
+    "ifixit_wikiid": 257024,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.529Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 35,
+  "fields": {
+    "name": "iPhone XR",
+    "slug": "iphone-xr",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/yiiosKwJCvSrNS12.standard",
+    "summary": "Released October 26, 2018. Models A1984, A2105, A2106, A2108. Available as GSM or CDMA / eSIM, nano-SIM or dual-SIM / 64, 128, or 256 GB / Black, White, Blue, Yellow, Coral, or Red. (Pronounced \"iPhone 10 R.\")",
+    "ifixit_wikiid": 144015,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.530Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 36,
+  "fields": {
+    "name": "iPhone XS Max",
+    "slug": "iphone-xs-max",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/BBjFFN1lmmWhH3gR.standard",
+    "summary": "Released September 21, 2018. Models: A1921, A2101, A2102, and A2104 / Available as GSM or CDMA / eSIM or nano-SIM / 64, 256, or 512 GB / Silver, Gold, or Space Gray (Pronounced \"iPhone 10 S Max.\")",
+    "ifixit_wikiid": 143561,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.530Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 37,
+  "fields": {
+    "name": "iPhone XS",
+    "slug": "iphone-xs",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/vQTvYLrOfMBrWxTy.standard",
+    "summary": "Released September 21, 2018. Models A1920, A2097, A2098, A2100. Available as GSM or CDMA / eSIM or nano-SIM / 64, 256, or 512 GB / Silver, Gold, or Space Gray. (Pronounced \"iPhone 10 S.\")",
+    "ifixit_wikiid": 143214,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.530Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 38,
+  "fields": {
+    "name": "iPhone X",
+    "slug": "iphone-x",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/fUXPemE2GpmGSuGA.standard",
+    "summary": "Released November 4, 2017. Model A1865, A1901. Available as GSM or CDMA / 64 or 256 GB / Silver or Space Gray. (Pronounced the same as \"iPhone 10.\")",
+    "ifixit_wikiid": 100178,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.531Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 39,
+  "fields": {
+    "name": "iPhone 8 Plus",
+    "slug": "iphone-8-plus",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/G4eiVK2oul2cpZUD.standard",
+    "summary": "Released September 22, 2017. Model A1864, A1897. Available as GSM or CDMA, 64 or 256 GB Storage Options, and the color options are gold, silver, and space gray.",
+    "ifixit_wikiid": 100177,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.532Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 40,
+  "fields": {
+    "name": "iPhone 8",
+    "slug": "iphone-8",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/KtHYxkftBl1Ktu1E.standard",
+    "summary": "Repair information and guides for the iPhone 8 that was released on September 22, 2017. Model: A1863, A1905",
+    "ifixit_wikiid": 87516,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.532Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 41,
+  "fields": {
+    "name": "iPhone 7 Plus",
+    "slug": "iphone-7-plus",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/RaW5CBghXHFNYe1s.standard",
+    "summary": "Released September 16, 2016. Models A1661, A1784, and A1785.\nAvailable in 32, 128, or 256 GB configurations in Rose gold, gold, silver, black, jet black, and (Product)Red.",
+    "ifixit_wikiid": 72192,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.533Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 42,
+  "fields": {
+    "name": "iPhone 7",
+    "slug": "iphone-7",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/NFvyDsAOXAjqdfTF.standard",
+    "summary": "Released September 16, 2016. Model 1660, 1778 Available as GSM or CDMA / 32, 128 or 256 GB / Rose Gold, Gold, Silver, Black, and Jet Black.",
+    "ifixit_wikiid": 69111,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.533Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 43,
+  "fields": {
+    "name": "iPhone SE (1st Generation)",
+    "slug": "iphone-se-1st-generation",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/MqGZWCWTTRYMR5a5.standard",
+    "summary": "4-inch iPhone released in March 2016 with similar hardware specifications to the 6S. Available in Silver, Space Grey, Gold, or Rose Gold with 16/32/64/128 GB storage options. Model: A1662 and A1723",
+    "ifixit_wikiid": 55447,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.539Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 44,
+  "fields": {
+    "name": "iPhone 6s Plus",
+    "slug": "iphone-6s-plus",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/cMVbyIbIrTEbi2j5.standard",
+    "summary": "Repair information and guides for the iPhone 6S Plus that was released on September 25, 2015. Model A1687, A1634",
+    "ifixit_wikiid": 49265,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.541Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 45,
+  "fields": {
+    "name": "iPhone 6s",
+    "slug": "iphone-6s",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ipv5OG2NckM3DfE2.standard",
+    "summary": "Repair information and guides for the iPhone 6S released by Apple on September 25, 2015. Models: A1688, A1633",
+    "ifixit_wikiid": 34315,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.544Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 46,
+  "fields": {
+    "name": "iPhone 6 Plus",
+    "slug": "iphone-6-plus",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/DINYKyig41MvxEHi.standard",
+    "summary": "Repair information and guides for the iPhone 6 Plus that was released on September 19, 2014. Model: A1522, A1524",
+    "ifixit_wikiid": 26248,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.545Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 47,
+  "fields": {
+    "name": "iPhone 6",
+    "slug": "iphone-6",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/H4M1JEQiZabe4Vo2.standard",
+    "summary": "Repair information and guides for the iPhone 6 that was released on September 19, 2014. Model Numbers: A1549, A1586, and A1589",
+    "ifixit_wikiid": 26247,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.549Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 48,
+  "fields": {
+    "name": "iPhone 5s",
+    "slug": "iphone-5s",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/sX5iMoIvYMbCvHoF.standard",
+    "summary": "Repair information and guides for the Apple iPhone 5s that was announced on September 10, 2013. Model: A1533, A1453, A1457, A1528, A1530, A1518",
+    "ifixit_wikiid": 16564,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.549Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 49,
+  "fields": {
+    "name": "iPhone 5c",
+    "slug": "iphone-5c",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/1QluZIfJXBuQIVZn.standard",
+    "summary": "Repair information and guides for the Apple iPhone 5c that was announced on September 10, 2013. Model: A1532, A1456",
+    "ifixit_wikiid": 16563,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.550Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 50,
+  "fields": {
+    "name": "iPhone 5",
+    "slug": "iphone-5",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/KVbXAtic2yB1htOd.standard",
+    "summary": "Repair information, troubleshooting tips, and guides for the sixth iteration of Apple iPhone, announced on September 12, 2012. Model: A1428, A1429",
+    "ifixit_wikiid": 12012,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.554Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 51,
+  "fields": {
+    "name": "iPhone 4s",
+    "slug": "iphone-4s",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/pLYg4Mbqni2LYlN3.standard",
+    "summary": "Repair information and guides for the fifth generation of iPhone. Model: A1387",
+    "ifixit_wikiid": 10395,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.554Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 52,
+  "fields": {
+    "name": "iPhone 4 CDMA",
+    "slug": "iphone-4-cdma",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/dF6DITZNDVYNEGRh.standard",
+    "summary": "Repair information and guides for the CDMA version of the fourth generation iPhone. Model: A1349 / 8, 16, or 32 GB storage capacity",
+    "ifixit_wikiid": 6757,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.554Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 53,
+  "fields": {
+    "name": "iPhone 4",
+    "slug": "iphone-4",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/qV2UinVhSchxgPGo.standard",
+    "summary": "Fourth generation iPhone. Repair is straightforward, but the front glass and LCD must be replaced as a unit. GSM / 8, 16, or 32 GB capacity / Model A1332 / Black and White. This page aims to help users troubleshoot, fix, and seek help for the iPhone 4.",
+    "ifixit_wikiid": 1198,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.557Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 54,
+  "fields": {
+    "name": "iPhone 3GS",
+    "slug": "iphone-3gs",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/kBkXWHW5ImOiKqgM.standard",
+    "summary": "Revamped version of the iPhone 3G with faster processing speeds. Repair of this device is similar to the 3G, and requires simple screwdrivers and prying tools. Model A1303 / 8, 16 or 32 GB capacity / black or white plastic back.",
+    "ifixit_wikiid": 272,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.557Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 55,
+  "fields": {
+    "name": "iPhone 3G",
+    "slug": "iphone-3g",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/HrZAcS3cCISuPAt4.standard",
+    "summary": "Second generation of iPhone. Model A1241 / 8 or 16 GB capacity / black or white plastic back. Repair is more straightforward than the first iPhone. requires screwdrivers, prying, and suction tools.",
+    "ifixit_wikiid": 72,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.557Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 56,
+  "fields": {
+    "name": "iPhone (1st Generation)",
+    "slug": "iphone-1st-generation",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/CtpcI4pqikGonOye.standard",
+    "summary": "The first model of iPhone, Model A1203 with 4, 8, or 16 GB capacity and an aluminum back. Repair requires a significant amount of prying, and may require some soldering. This page aims to help users troubleshoot, fix, and seek help for the iPhone 2G.",
+    "ifixit_wikiid": 154,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.557Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 57,
+  "fields": {
+    "name": "iPhone Accessories",
+    "slug": "iphone-accessories",
+    "category": 2,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/BCxhD63p12TdNFgV.standard",
+    "summary": "Repair and disassembly guides for iPhone accessories.",
+    "ifixit_wikiid": 52250,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:52.557Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 58,
+  "fields": {
+    "name": "Samsung Galaxy A series 2019",
+    "slug": "samsung-galaxy-a-series-2019",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "A rich improvement of Samsung Galaxy smartphones\nContains high end specifications and features.",
+    "ifixit_wikiid": 256582,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.511Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 59,
+  "fields": {
+    "name": "Samsung Galaxy A01",
+    "slug": "samsung-galaxy-a01",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/FIXK3PBbwAXvYWZ6.standard",
+    "summary": "Released January 2020, identified by model numbers SM-A015F, SM-A015F/DS, SM-A015G, SM-A015G/DS, SM-A015M, SM-A015M/DS, SM-A015T1, SM-S111DL, SM-A015V, SM-A015A",
+    "ifixit_wikiid": 448646,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.512Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 60,
+  "fields": {
+    "name": "Samsung Galaxy A01 Core",
+    "slug": "samsung-galaxy-a01-core",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/MA6eeE4O62TNyVFr.standard",
+    "summary": "Models:  A013F / A013F/DS / A013G / A013G/DS / A013M",
+    "ifixit_wikiid": 475873,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.513Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 61,
+  "fields": {
+    "name": "Samsung Galaxy A02",
+    "slug": "samsung-galaxy-a02",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/MRmMoDsEWNFeCHLC.standard",
+    "summary": "",
+    "ifixit_wikiid": 475878,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.514Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 62,
+  "fields": {
+    "name": "Samsung Galaxy A02s",
+    "slug": "samsung-galaxy-a02s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/IylJiDnZwmnKZMcS.standard",
+    "summary": "Samsung Galaxy A02s, released in January of 2021",
+    "ifixit_wikiid": 475877,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.515Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 63,
+  "fields": {
+    "name": "Samsung Galaxy A03",
+    "slug": "samsung-galaxy-a03",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A03 Android smartphone, including models SM-A035F and SM-A035M.",
+    "ifixit_wikiid": 646028,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.516Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 64,
+  "fields": {
+    "name": "Samsung Galaxy A03 Core",
+    "slug": "samsung-galaxy-a03-core",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/mXoD2ODYiTPhIBeE.standard",
+    "summary": "",
+    "ifixit_wikiid": 475888,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.519Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 65,
+  "fields": {
+    "name": "Samsung Galaxy A03s",
+    "slug": "samsung-galaxy-a03s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/kvGjAJmXCFWwUp6K.standard",
+    "summary": "Released Late August of 2021\nMade By Samsung MSRP: 160$ CAN",
+    "ifixit_wikiid": 475883,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.521Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 66,
+  "fields": {
+    "name": "Samsung Galaxy A04",
+    "slug": "samsung-galaxy-a04",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ncIvZraCS4Xy2i4M.standard",
+    "summary": "The Samsung Galaxy A04 is a series of Android smartphones manufactured by Samsung Electronics.\nReleased on 2022, October 10",
+    "ifixit_wikiid": 506942,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.523Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 67,
+  "fields": {
+    "name": "Samsung Galaxy A04e",
+    "slug": "samsung-galaxy-a04e",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/dy53lWVNqxBW3hEq.standard",
+    "summary": "The Samsung Galaxy A04e is a budget-friendly smartphone that offers a large display, decent camera capabilities, and reliable performance for everyday use.",
+    "ifixit_wikiid": 518702,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.526Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 68,
+  "fields": {
+    "name": "Samsung Galaxy A04s",
+    "slug": "samsung-galaxy-a04s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/PJXEG3sgtdsdFqVX.standard",
+    "summary": "The Samsung galaxy A04s is an affordable smartphone with a large display and decent battery life. It offers basic features and functionality for everyday use.",
+    "ifixit_wikiid": 518703,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.528Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 69,
+  "fields": {
+    "name": "Samsung Galaxy A05",
+    "slug": "samsung-galaxy-a05",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/xFwWVLjWXGsUnVVZ.standard",
+    "summary": "Announced on 15 October 2023, identified by model number SM-A055M",
+    "ifixit_wikiid": 532696,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.530Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 70,
+  "fields": {
+    "name": "Samsung Galaxy A05s",
+    "slug": "samsung-galaxy-a05s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/jOp1EGGcbZ3GhtaI.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A05s LTE smartphone, including models SM-A057F, SM-A057M, and SM-A057G.",
+    "ifixit_wikiid": 645956,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.532Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 71,
+  "fields": {
+    "name": "Samsung Galaxy A06",
+    "slug": "samsung-galaxy-a06",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/SpmDED3uYwRWuYuZ.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A06 LTE smartphone, including models SM-A065F and SM-A065M.",
+    "ifixit_wikiid": 642387,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.533Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 72,
+  "fields": {
+    "name": "Samsung Galaxy A07",
+    "slug": "samsung-galaxy-a07",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/2XUCtktVPZDKGdlQ.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A07 LTE smartphone, including models SM-A075F and SM-A075M.",
+    "ifixit_wikiid": 645955,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.535Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 73,
+  "fields": {
+    "name": "Samsung Galaxy A10",
+    "slug": "samsung-galaxy-a10",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/YtRruwBqEDQfUTs3.standard",
+    "summary": "The Samsung Galaxy A10 is an android smartphone developed by Samsung Electronics. It was released in March 2019.",
+    "ifixit_wikiid": 417770,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.537Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 74,
+  "fields": {
+    "name": "Samsung Galaxy A10e",
+    "slug": "samsung-galaxy-a10e",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/dytbuRHxUiCVtpKq.standard",
+    "summary": "The Samsung Galaxy A10e is a lower-mid range Android device released by Samsung in February 2019. Identifiable by model numbers SM-A102(U, U1, W, or DL).",
+    "ifixit_wikiid": 429417,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.538Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 75,
+  "fields": {
+    "name": "Samsung Galaxy A10s",
+    "slug": "samsung-galaxy-a10s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/YIQXoFroIfNsnYwc.standard",
+    "summary": "The Samsung Galaxy A10s is an Android smartphone developed by Samsung Electronics, and was released in March of 2019.",
+    "ifixit_wikiid": 448640,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.539Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 76,
+  "fields": {
+    "name": "Samsung Galaxy A11",
+    "slug": "samsung-galaxy-a11",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/24GNgZBb5KSTVrti.standard",
+    "summary": "The Galaxy A11 is a lower-midrange slate Android smartphone released by Samsung in May 2020. Identifiable by model number SM-A115 (followed by variant or carrier-specific character).",
+    "ifixit_wikiid": 430738,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.540Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 77,
+  "fields": {
+    "name": "Samsung Galaxy A12",
+    "slug": "samsung-galaxy-a12",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/5AYyx2Q6RyHxXYUH.standard",
+    "summary": "The Galaxy A12 is a low-end slate Android smartphone released by Samsung in November 2020 as a successor to the Samsung Galaxy A11. Identifiable by model number SM-A125 (followed by version/carrier-specific character.",
+    "ifixit_wikiid": 475876,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.540Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 78,
+  "fields": {
+    "name": "Samsung Galaxy A12 Nacho (SM-A127M)",
+    "slug": "samsung-galaxy-a12-nacho-sm-a127m",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/cPFuwpSUFWUoWE5m.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A12 Nacho SM-A127M Android smartphone. This Galaxy A12-family variant uses the SM-A127 model range rather than the original SM-A125 range.",
+    "ifixit_wikiid": 646052,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.542Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 79,
+  "fields": {
+    "name": "Samsung Galaxy A13",
+    "slug": "samsung-galaxy-a13",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Z1lnQ3qbSULqPmN6.standard",
+    "summary": "Repair and disassembly information for Samsung's Galaxy A13 Android smartphone, released in March of 2022.",
+    "ifixit_wikiid": 475887,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.543Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 80,
+  "fields": {
+    "name": "Samsung Galaxy A13 5G",
+    "slug": "samsung-galaxy-a13-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A13 5G Android smartphone, model SM-A136U. It features a 6.5-inch 90 Hz display, 5G connectivity, triple rear cameras, and a 5000 mAh battery.",
+    "ifixit_wikiid": 646087,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.543Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 81,
+  "fields": {
+    "name": "Samsung Galaxy A14",
+    "slug": "samsung-galaxy-a14",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ZLLTFs4EjvYSIOYt.standard",
+    "summary": "The Galaxy A14 is a low-end slate Android smartphone released by Samsung in January 2023 as a successor to the Samsung Galaxy A13. Identifiable by model number SM-A145 (followed by version/carrier-specific character.",
+    "ifixit_wikiid": 510289,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.544Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 82,
+  "fields": {
+    "name": "Samsung Galaxy A14 5G",
+    "slug": "samsung-galaxy-a14-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/kZSNFGyJhNuIqdRc.standard",
+    "summary": "The Samsung Galaxy A14 5G is an android smartphone developed by Samsung Electronics. It was released in January 2023.",
+    "ifixit_wikiid": 518701,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.545Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 83,
+  "fields": {
+    "name": "Samsung Galaxy A15",
+    "slug": "samsung-galaxy-a15",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/egmEguvBMjUfrGIU.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A15 and Galaxy A15 5G smartphones, including LTE and 5G variants such as SM-S156V, SM-A156E, and SM-A156B.",
+    "ifixit_wikiid": 560724,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.546Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 84,
+  "fields": {
+    "name": "Samsung Galaxy A15 5G",
+    "slug": "samsung-galaxy-a15-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 647698,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.547Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 85,
+  "fields": {
+    "name": "Samsung Galaxy A16",
+    "slug": "samsung-galaxy-a16",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/DB1Fe2fpnnbHvJVn.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A16 LTE smartphone, including models SM-A165F and SM-A165M.",
+    "ifixit_wikiid": 645181,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.548Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 86,
+  "fields": {
+    "name": "Samsung Galaxy A16 5G",
+    "slug": "samsung-galaxy-a16-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/vSSMSqi5SPEhflDX.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A16 5G Android smartphone, including models SM-A166U, SM-A166M, SM-A166B, SM-A166P, SM-S166V.",
+    "ifixit_wikiid": 646017,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.548Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 87,
+  "fields": {
+    "name": "Samsung Galaxy A17",
+    "slug": "samsung-galaxy-a17",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/TGXU2UJ6WiDxRI44.standard",
+    "summary": "The Samsung Galaxy A17, also known as the Galaxy A17 5G is an entry-level smartphone released in 2025. It aims to be the bare essentials with 90Hz display, IP54 rating and a tri-camera setup.",
+    "ifixit_wikiid": 645577,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.549Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 88,
+  "fields": {
+    "name": "Samsung Galaxy A17 5G",
+    "slug": "samsung-galaxy-a17-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A17 5G Android smartphone, including model SM-A176B.",
+    "ifixit_wikiid": 646006,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.550Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 89,
+  "fields": {
+    "name": "Samsung Galaxy A18 4G",
+    "slug": "samsung-galaxy-a18-4g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/kZ3RiL6KQGtQxlAg.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A18 4G, released in 2026. The Samsung Galaxy A18 4G is a budget smartphone.",
+    "ifixit_wikiid": 654710,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.553Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 90,
+  "fields": {
+    "name": "Samsung Galaxy A2 Core",
+    "slug": "samsung-galaxy-a2-core",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/QYSh6mXGgsAHGp2c.standard",
+    "summary": "",
+    "ifixit_wikiid": 448630,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.554Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 91,
+  "fields": {
+    "name": "Samsung Galaxy A20",
+    "slug": "samsung-galaxy-a20",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/kfUTJ4X1VoJEdLpv.standard",
+    "summary": "The Samsung Galaxy A20 was released in April 2019. It has a screen display of 6.4 inches, with a dual camera on the back.",
+    "ifixit_wikiid": 448629,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.554Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 92,
+  "fields": {
+    "name": "Samsung Galaxy A20e",
+    "slug": "samsung-galaxy-a20e",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/WcoqguZrpyDxZPGy.standard",
+    "summary": "The Galaxy A20e is a midrange slate Android smartphone released by Samsung in May 2019. Identifiable by model numbers SM-A202F/K.",
+    "ifixit_wikiid": 414147,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.555Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 93,
+  "fields": {
+    "name": "Samsung Galaxy A20s",
+    "slug": "samsung-galaxy-a20s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/OqMRuKMhZd2kbaIB.standard",
+    "summary": "The Galaxy A20s is a midrange Android smartphone released by Samsung in September 2019.  Identifiable by model numbers SM-A2070, SM-A207F/DS, and SM-A207M/DS.",
+    "ifixit_wikiid": 448644,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.557Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 94,
+  "fields": {
+    "name": "Samsung Galaxy A21",
+    "slug": "samsung-galaxy-a21",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/SWDPYfFD1SmKYd6w.standard",
+    "summary": "Released June 2020, identified by model number SM-A215U",
+    "ifixit_wikiid": 448652,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.558Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 95,
+  "fields": {
+    "name": "Samsung Galaxy A21s",
+    "slug": "samsung-galaxy-a21s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/QxtEkqtsxa3n1Lj6.standard",
+    "summary": "Released in May of 2020, Model Numbers: SM-A217F/DS (Global), SM-A217F/DSN (Russia), Processor: Exynos 850, 3GB/4GB/6GB RAM,ROM: 32GB/64GB/128GB, 6.5\" inches display, 5000 mAh battery with 15W fast charging and USB type C.",
+    "ifixit_wikiid": 448651,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.559Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 96,
+  "fields": {
+    "name": "Samsung Galaxy A22",
+    "slug": "samsung-galaxy-a22",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/dUbxj2uRHJCLUxtm.standard",
+    "summary": "Repair and disassembly information for Samsung's Galaxy A22 Android smartphone, released in July 2021.",
+    "ifixit_wikiid": 475806,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.559Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 97,
+  "fields": {
+    "name": "Samsung Galaxy A22 5G",
+    "slug": "samsung-galaxy-a22-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/cMDBYdWbStqTeLLB.standard",
+    "summary": "The Samsung Galaxy A22 5G is a mid-range Android-based smartphone developed and manufactured by Samsung Electronics as a part of Galaxy A series. The phone was first released on 24 June 2021. The phone comes with a triple rear camera setup and a 90 Hz display. The battery has 5000 mAh, which is 62% bigger than the battery of the iPhone 13 Pro.",
+    "ifixit_wikiid": 475807,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.560Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 98,
+  "fields": {
+    "name": "Samsung Galaxy A23",
+    "slug": "samsung-galaxy-a23",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/YBf4VWaKFOrqsBib.standard",
+    "summary": "The Samsung Galaxy A23 was released on March 6, 2022. It is identified by the model number SM-A235F.",
+    "ifixit_wikiid": 626121,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.561Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 99,
+  "fields": {
+    "name": "Samsung Galaxy A23 5G",
+    "slug": "samsung-galaxy-a23-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/iLFAAifS2THyTcAF.standard",
+    "summary": "Samsung phone from 2022.",
+    "ifixit_wikiid": 518587,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.562Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 100,
+  "fields": {
+    "name": "Samsung Galaxy A24",
+    "slug": "samsung-galaxy-a24",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Z2MLdBWZPxSkSOBI.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A24 smartphone, released in May 2023.",
+    "ifixit_wikiid": 518696,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.566Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 101,
+  "fields": {
+    "name": "Samsung Galaxy A24 5G",
+    "slug": "samsung-galaxy-a24-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 647700,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.566Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 102,
+  "fields": {
+    "name": "Samsung Galaxy A25",
+    "slug": "samsung-galaxy-a25",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/DEgvqgrZNdMPWWIf.standard",
+    "summary": "",
+    "ifixit_wikiid": 560879,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.567Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 103,
+  "fields": {
+    "name": "Samsung Galaxy A26 5G",
+    "slug": "samsung-galaxy-a26-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/RKwEwOnQGkZAKYlo.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A26 5G Android smartphone, including models SM-A266B and SM-A266M.",
+    "ifixit_wikiid": 645961,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.569Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 104,
+  "fields": {
+    "name": "Samsung Galaxy A27",
+    "slug": "samsung-galaxy-a27",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/4eZZHcBCnecexYgK.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A27 5G, released in 2026.",
+    "ifixit_wikiid": 652648,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.570Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 105,
+  "fields": {
+    "name": "Samsung Galaxy A3 (2015)",
+    "slug": "samsung-galaxy-a3-2015",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/3e5vtpcWUPL63uD1.standard",
+    "summary": "The 2015 version of the Samsung Galaxy A3 budget smartphone.",
+    "ifixit_wikiid": 67613,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.571Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 106,
+  "fields": {
+    "name": "Samsung Galaxy A3 (2016)",
+    "slug": "samsung-galaxy-a3-2016",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/GTKYxftOG4ue5SnO.standard",
+    "summary": "The 2016 version of the Samsung Galaxy A3 budget smartphone (model number: A310F).",
+    "ifixit_wikiid": 79340,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.572Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 107,
+  "fields": {
+    "name": "Samsung Galaxy A3 (2017)",
+    "slug": "samsung-galaxy-a3-2017",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/TAAXxNWmPwyuAEVa.standard",
+    "summary": "The Samsung Galaxy A3 (2017) is a mid-range smartphone from the Galaxy A series. It was introduced by Samsung in February 2017 alongside the Samsung Galaxy A5 (2017) and A7 (2017).",
+    "ifixit_wikiid": 102693,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.572Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 108,
+  "fields": {
+    "name": "Samsung Galaxy A3 2017 A320F",
+    "slug": "samsung-galaxy-a3-2017-a320f",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "Information and repair guides for the Samsung Galaxy A3 2017 A320F.",
+    "ifixit_wikiid": 563861,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.574Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 109,
+  "fields": {
+    "name": "Samsung Galaxy A3 Core",
+    "slug": "samsung-galaxy-a3-core",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/hnMdjp1qyYIT5Uhv.standard",
+    "summary": "",
+    "ifixit_wikiid": 475863,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.576Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 110,
+  "fields": {
+    "name": "Samsung Galaxy A30",
+    "slug": "samsung-galaxy-a30",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/1mlbHYj2gWInHdEr.standard",
+    "summary": "Released March 2019, identified by model number SM-A305FZRFINS",
+    "ifixit_wikiid": 448626,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.577Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 111,
+  "fields": {
+    "name": "Samsung Galaxy A30s",
+    "slug": "samsung-galaxy-a30s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/XrEYGRKNgnf2GuBV.standard",
+    "summary": "The Samsung Galaxy A30S is a phone released by Samsung in August of 2019. It came with Android 9.0",
+    "ifixit_wikiid": 448643,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.578Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 112,
+  "fields": {
+    "name": "Samsung Galaxy A31",
+    "slug": "samsung-galaxy-a31",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/UaiKyPErUpBYaCGN.standard",
+    "summary": "The Samsung Galaxy A31 is a mid-range Android device released by Samsung in April 2020. Identifiable by model numbers SM-A315(F, F/DS, G/DS, and G/DSL).",
+    "ifixit_wikiid": 448649,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.579Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 113,
+  "fields": {
+    "name": "Samsung Galaxy A32",
+    "slug": "samsung-galaxy-a32",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/2tgZAywpoFi51tgf.standard",
+    "summary": "Samsung Galaxy A32 (SM-A325F) aka Samsung Galaxy A32 4G\nReleased in 2021, it uses a Gorilla Glass 5 front glass and a Super AMOLED 1080 x 2400 pixel display.",
+    "ifixit_wikiid": 575777,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.580Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 114,
+  "fields": {
+    "name": "Samsung Galaxy A32 5G",
+    "slug": "samsung-galaxy-a32-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/psmQREpqnjhCO51w.standard",
+    "summary": "Repair and disassembly information for Samsung's Galaxy A32 5G Android smartphone, released in February of 2021.",
+    "ifixit_wikiid": 453072,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.581Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 115,
+  "fields": {
+    "name": "Samsung Galaxy A33 5G",
+    "slug": "samsung-galaxy-a33-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/oPQZtQUifyddNImZ.standard",
+    "summary": "The Samsung Galaxy A33 5G Is a Mid-Tier phone released by Samsung on April 20th, 2022.",
+    "ifixit_wikiid": 477875,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.582Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 116,
+  "fields": {
+    "name": "Samsung Galaxy A34",
+    "slug": "samsung-galaxy-a34",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/4fK2bwQSBhAOStNl.standard",
+    "summary": "Released in March 2023\nModel Number A346",
+    "ifixit_wikiid": 518697,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.583Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 117,
+  "fields": {
+    "name": "Samsung Galaxy A35",
+    "slug": "samsung-galaxy-a35",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/LEYSfmsaLf6Cq3HO.standard",
+    "summary": "The Samsung Galaxy A35 (SM-A356E, SM-A356E/DS, SM-A356B, SM-A356B/DS, SM-A356U, SM-A356U1) Is a mid-range Samsung smartphone announced March 11th 2024.",
+    "ifixit_wikiid": 639188,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.584Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 118,
+  "fields": {
+    "name": "Samsung Galaxy A35 5G",
+    "slug": "samsung-galaxy-a35-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "Released on March 2024, identified by model SM-A356.",
+    "ifixit_wikiid": 639390,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.585Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 119,
+  "fields": {
+    "name": "Samsung Galaxy A36",
+    "slug": "samsung-galaxy-a36",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 652236,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.586Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 120,
+  "fields": {
+    "name": "Samsung Galaxy A36 5G",
+    "slug": "samsung-galaxy-a36-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Samsung Galaxy A36 5G Android smartphone, including models SM-A366B and SM-A366E.",
+    "ifixit_wikiid": 646003,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.587Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 121,
+  "fields": {
+    "name": "Samsung Galaxy A37",
+    "slug": "samsung-galaxy-a37",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/RkPwDWXPRqqghRTC.standard",
+    "summary": "The Samsung Galaxy A37, also known as the Galaxy A37 5G is a mid-tier smartphone released in 2026. The phone focuses on AI features, upgraded cameras, all with a modern design.",
+    "ifixit_wikiid": 645575,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.589Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 122,
+  "fields": {
+    "name": "Samsung Galaxy A40",
+    "slug": "samsung-galaxy-a40",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/IjjYBcxNQ5qKXXcb.standard",
+    "summary": "The Samsung Galaxy A40 was released in April 2019.",
+    "ifixit_wikiid": 413777,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.589Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 123,
+  "fields": {
+    "name": "Samsung Galaxy A40s",
+    "slug": "samsung-galaxy-a40s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/RKFoH6ZvKG2tFfLy.standard",
+    "summary": "",
+    "ifixit_wikiid": 448628,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.590Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 124,
+  "fields": {
+    "name": "Samsung Galaxy A41",
+    "slug": "samsung-galaxy-a41",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/asKJiX5aDnR2cqGo.standard",
+    "summary": "Released in May 22nd 2020. It's has a 3,500 mAh capacity and bears the EB-BA415ABY identification number which falls in line with the A41's own SM-A415 model number.",
+    "ifixit_wikiid": 477923,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.591Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 125,
+  "fields": {
+    "name": "Samsung Galaxy A42",
+    "slug": "samsung-galaxy-a42",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/mqfQqwoxnapXQX21.standard",
+    "summary": "",
+    "ifixit_wikiid": 453070,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.592Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 126,
+  "fields": {
+    "name": "Samsung Galaxy A5 (2015)",
+    "slug": "samsung-galaxy-a5-2015",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/QBOtEeGQyAtT6jEg.standard",
+    "summary": "An Android smartphone by Samsung for the Asian market, known by many model numbers, released December 2014. Includes models SM-A5000, SM-A5009, SM-A500F, SM-A500F1, SM-A500FQ, SM-A500FU, SM-A500G, SM-A500H, SM-A500HQ, SM-A500K, SM-A500L, SM-A500S, SM-A500YZ, SM-A500Y, SM-A500W.",
+    "ifixit_wikiid": 37757,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.593Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 127,
+  "fields": {
+    "name": "Samsung Galaxy A5 (2016)",
+    "slug": "samsung-galaxy-a5-2016",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/SV5cFDArEJP5ZavP.standard",
+    "summary": "The Samsung Galaxy A5 (2016), an Android Smartphones released by Samsung Electronics in 2016.",
+    "ifixit_wikiid": 83460,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.594Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 128,
+  "fields": {
+    "name": "Samsung Galaxy A5 (2017)",
+    "slug": "samsung-galaxy-a5-2017",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/YGu4jwp5YSbxUueN.standard",
+    "summary": "An Android smartphone produced by Samsung released in January 2017.",
+    "ifixit_wikiid": 89621,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.595Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 129,
+  "fields": {
+    "name": "Samsung Galaxy A50",
+    "slug": "samsung-galaxy-a50",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/X2OlTWkDROyESIx3.standard",
+    "summary": "A mid-range smartphone from Samsung released in 2019.",
+    "ifixit_wikiid": 408340,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.596Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 130,
+  "fields": {
+    "name": "Samsung Galaxy A50s",
+    "slug": "samsung-galaxy-a50s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/WlkLe4KdWtUFonrC.standard",
+    "summary": "A mid-range smartphone from Samsung released in 2019 with an improved camera over the A50 model.",
+    "ifixit_wikiid": 448642,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.597Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 131,
+  "fields": {
+    "name": "Samsung Galaxy A51",
+    "slug": "samsung-galaxy-a51",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/rRRtB3kIHXtXQ1uZ.standard",
+    "summary": "Repair guides and disassembly information for the Samsung Galaxy A51 Android smartphone. Released in January of 2020.",
+    "ifixit_wikiid": 408970,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.598Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 132,
+  "fields": {
+    "name": "Samsung Galaxy A51 5G",
+    "slug": "samsung-galaxy-a51-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 647701,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.599Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 133,
+  "fields": {
+    "name": "Samsung Galaxy A52",
+    "slug": "samsung-galaxy-a52",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ZH6tksriQ6kVaGDS.standard",
+    "summary": "The Samsung Galaxy A52 Is a Mid-Tier phone released by Samsung on March 17, 2021.",
+    "ifixit_wikiid": 453075,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.600Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 134,
+  "fields": {
+    "name": "Samsung Galaxy A52 5G",
+    "slug": "samsung-galaxy-a52-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/FqKsOAGMgxxhDjLq.standard",
+    "summary": "The Samsung Galaxy A52 5G Is a mid-tier phone released by Samsung on March 19, 2021.",
+    "ifixit_wikiid": 475804,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.601Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 135,
+  "fields": {
+    "name": "Samsung Galaxy A52s",
+    "slug": "samsung-galaxy-a52s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/kBJWJGuyY2eF46Mw.standard",
+    "summary": "The Samsung Galaxy A52s is Samsung's upgraded variation of the Galaxy A52.",
+    "ifixit_wikiid": 475805,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.603Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 136,
+  "fields": {
+    "name": "Samsung Galaxy A53 5G",
+    "slug": "samsung-galaxy-a53-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/PNw1sDQwiscMjpMn.standard",
+    "summary": "The Samsung Galaxy A53 5G Is a Mid-Tier phone released by Samsung on March 17, 2021",
+    "ifixit_wikiid": 477874,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.603Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 137,
+  "fields": {
+    "name": "Samsung Galaxy A54",
+    "slug": "samsung-galaxy-a54",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r4Vvg26WFnxVMkQf.standard",
+    "summary": "The Samsung Galaxy A54 is a mid-range smartphone that was announced on March 15, 2023 and was released and available on March 24, 2023.",
+    "ifixit_wikiid": 518698,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.604Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 138,
+  "fields": {
+    "name": "Samsung Galaxy A54 5G",
+    "slug": "samsung-galaxy-a54-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/T3YcMETmLEbYxHrr.standard",
+    "summary": "The Samsung Galaxy A54 5G is a mid-range smartphone from Samsung's Galaxy A series. It was announced on March 15, 2023 and released on March 24, 2023.",
+    "ifixit_wikiid": 634068,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.606Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 139,
+  "fields": {
+    "name": "Samsung Galaxy A55 5G",
+    "slug": "samsung-galaxy-a55-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/pcYfwNjS4TmELbHK.standard",
+    "summary": "The Samsung Galaxy A55 5G is a mid-range Android-based smartphone developed and manufactured by Samsung Electronics as a part of its Galaxy A series. It was announced on March 11, 2024 alongside the Samsung Galaxy A35 5G. It is identified by model number, SM-A556B.",
+    "ifixit_wikiid": 630614,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.606Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 140,
+  "fields": {
+    "name": "Samsung Galaxy A56 5G",
+    "slug": "samsung-galaxy-a56-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/P2ZNQKhEHWhQKoLX.standard",
+    "summary": "Repair and troubleshooting information for the Samsung Galaxy A56 5G smartphone. Released on March 10, 2025. It has several model codes depending on the region and features, including SM-A566B, SM-A566B/DS, SM-A566E, SM-A566E/DS, and SM-A566V. The \"/DS\" suffix typically indicates a dual-SIM version.",
+    "ifixit_wikiid": 630598,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.607Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 141,
+  "fields": {
+    "name": "Samsung Galaxy A57",
+    "slug": "samsung-galaxy-a57",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/swOiH2I4ZlsAKhk5.standard",
+    "summary": "The Samsung Galaxy A57, also known as the Galaxy A57 5G is a mid-range smartphone released in 2026. The phone focuses on AI features, high durability and its fancy triple camera setup.",
+    "ifixit_wikiid": 645576,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.608Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 142,
+  "fields": {
+    "name": "Samsung Galaxy A6",
+    "slug": "samsung-galaxy-a6",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Bjgm22scpfENLCHK.standard",
+    "summary": "Released in May 2018,  this is a  mid-range phone with a 5.6\" screen and a  3000mAh battery.",
+    "ifixit_wikiid": 448661,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.609Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 143,
+  "fields": {
+    "name": "Samsung Galaxy A6 (2017)",
+    "slug": "samsung-galaxy-a6-2017",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 475688,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.610Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 144,
+  "fields": {
+    "name": "Samsung Galaxy A6 Plus",
+    "slug": "samsung-galaxy-a6-plus",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Jd1ZlVdhQciQByiG.standard",
+    "summary": "Released in May 2018, this is a plus version of the Samsung Galaxy A6, upgrading the screen from 5.6\" to   6.0\" and the 16 megapixel camera to a 24 megapixel camera.",
+    "ifixit_wikiid": 448662,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.611Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 145,
+  "fields": {
+    "name": "Samsung Galaxy A60",
+    "slug": "samsung-galaxy-a60",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/PrkNE1vTDgDgAfIb.standard",
+    "summary": "",
+    "ifixit_wikiid": 448639,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.612Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 146,
+  "fields": {
+    "name": "Samsung Galaxy A7 (2015)",
+    "slug": "samsung-galaxy-a7-2015",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/LyuQWCVSgadWOfOb.standard",
+    "summary": "Released February 2015, the Samsung Galaxy A7 operates on Android OS, features a Super AMOLED screen and an octa-core processor.",
+    "ifixit_wikiid": 70846,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.613Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 147,
+  "fields": {
+    "name": "Samsung Galaxy A7 (2016)",
+    "slug": "samsung-galaxy-a7-2016",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/1cJfQpeXXGsbQvZM.standard",
+    "summary": "Repair information for the Samsung Galaxy A7 (2016), a mid-range smartphone in the Galaxy A series that was unveiled by Samsung in December 2015.",
+    "ifixit_wikiid": 163259,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.613Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 148,
+  "fields": {
+    "name": "Samsung Galaxy A7 (2017)",
+    "slug": "samsung-galaxy-a7-2017",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/223lr1pKHE2APRYA.standard",
+    "summary": "The Samsung Galaxy A7 (2017) is a mid-range smartphone in the Galaxy A series. It was unveiled by Samsung in January 2017 together with the Samsung Galaxy A3 (2017) and A5 (2017).",
+    "ifixit_wikiid": 109182,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.614Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 149,
+  "fields": {
+    "name": "Samsung Galaxy A7 2018",
+    "slug": "samsung-galaxy-a7-2018",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/MS5a4FpMQmMLtvUg.standard",
+    "summary": "The 2018 version of the Samsung Galaxy A7 smartphone released in October 2018.",
+    "ifixit_wikiid": 213791,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.615Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 150,
+  "fields": {
+    "name": "Samsung Galaxy A70",
+    "slug": "samsung-galaxy-a70",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/evP3FhcPpKJqRXmZ.standard",
+    "summary": "Released in April 2019. Model Number: A705FN/DS",
+    "ifixit_wikiid": 405137,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.616Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 151,
+  "fields": {
+    "name": "Samsung Galaxy A70",
+    "slug": "samsung-galaxy-a70-2",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 432682,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.617Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 152,
+  "fields": {
+    "name": "Samsung Galaxy A70s",
+    "slug": "samsung-galaxy-a70s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/6RjEqS2Jb21lD2IF.standard",
+    "summary": "",
+    "ifixit_wikiid": 475861,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.619Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 153,
+  "fields": {
+    "name": "Samsung Galaxy A71",
+    "slug": "samsung-galaxy-a71",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/WAxkNJp4cmOhJ2Ag.standard",
+    "summary": "The Samsung Galaxy A71 is an Android smartphone manufactured by Samsung Electronics as part of the Galaxy A series. It was released in January 2020. \nVersions: SM-A715F/DS, SM-A715F/DSN (Global), SM-A715F/DSM (Russia).",
+    "ifixit_wikiid": 429174,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.620Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 154,
+  "fields": {
+    "name": "Samsung Galaxy A71 5G",
+    "slug": "samsung-galaxy-a71-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 647702,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.622Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 155,
+  "fields": {
+    "name": "Samsung Galaxy A71 5G UW",
+    "slug": "samsung-galaxy-a71-5g-uw",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "The Samsung Galaxy A71 5G UW is one of Samsung's Galaxy A offerings from 2020. Don't make the mistake of trying to use plain A71 parts to fix these.",
+    "ifixit_wikiid": 552830,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.622Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 156,
+  "fields": {
+    "name": "Samsung Galaxy A72",
+    "slug": "samsung-galaxy-a72",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ZcyHGUOiaPvpCyZM.standard",
+    "summary": "The Samsung Galaxy A72 is a midrange USB-C smartphone released in March 2021. It offers a 90Hz Super AMOLED screen, a Snapdragon 720G chipset, and 6-8 GB RAM.",
+    "ifixit_wikiid": 453074,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.623Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 157,
+  "fields": {
+    "name": "Samsung Galaxy A73",
+    "slug": "samsung-galaxy-a73",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/6DnQHRwnaddmRieb.standard",
+    "summary": "The Samsung Galaxy A73 is a feature-packed smartphone that offers a stunning display and a powerful camera system, providing users with a premium mobile experience for both work and play.",
+    "ifixit_wikiid": 518704,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.624Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 158,
+  "fields": {
+    "name": "Samsung Galaxy A8 (2015)",
+    "slug": "samsung-galaxy-a8-2015",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/IPNAHsyfs21NndJ4.standard",
+    "summary": "Repair guides and disassembly information for the Samsung Galaxy A8. Android smartphone. Released in  July of 2015.",
+    "ifixit_wikiid": 504719,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.625Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 159,
+  "fields": {
+    "name": "Samsung Galaxy A8 (2018)",
+    "slug": "samsung-galaxy-a8-2018",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/UxCyeAMPuPHWyH3P.standard",
+    "summary": "Repair guides for the 2018 version of the Samsung Galaxy A8 Android smartphone released in January 2018. Good features at a good price.\nModel Number SM-A530F",
+    "ifixit_wikiid": 116194,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.626Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 160,
+  "fields": {
+    "name": "Samsung Galaxy A8 2016",
+    "slug": "samsung-galaxy-a8-2016",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 647703,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.627Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 161,
+  "fields": {
+    "name": "Samsung Galaxy A8+ (2018)",
+    "slug": "samsung-galaxy-a8-2018-2",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/4T2e3UvNyCheQOQq.standard",
+    "summary": "The 2018 version of the Samsung Galaxy A8+ smartphone released in January 2018.",
+    "ifixit_wikiid": 213808,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.628Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 162,
+  "fields": {
+    "name": "Samsung Galaxy A80",
+    "slug": "samsung-galaxy-a80",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/C2wDPjZY6Z2oagrF.standard",
+    "summary": "",
+    "ifixit_wikiid": 448632,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.628Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 163,
+  "fields": {
+    "name": "Samsung Galaxy A82 5G",
+    "slug": "samsung-galaxy-a82-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/EFFxM6oAVPKVWmBS.standard",
+    "summary": "The Samsung Galaxy A82 5G is a high-performance smartphone that offers advanced features and connectivity capabilities, enabling users to experience lightning-fast speeds and seamless multitasking. With its stunning display and impressive camera system, this device is designed to deliver a premium mobile experience for both productivity and entertainment purposes.",
+    "ifixit_wikiid": 520905,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.629Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 164,
+  "fields": {
+    "name": "Samsung Galaxy A8s",
+    "slug": "samsung-galaxy-a8s",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/F4xcCZwEuyVilltG.standard",
+    "summary": "",
+    "ifixit_wikiid": 448621,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.630Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 165,
+  "fields": {
+    "name": "Samsung Galaxy A9 (2016)",
+    "slug": "samsung-galaxy-a9-2016",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/KPwIEk1J6VQaIi5k.standard",
+    "summary": "The Samsung Galaxy A9 (2016) is a smartphone from Samsung.",
+    "ifixit_wikiid": 62108,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.631Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 166,
+  "fields": {
+    "name": "Samsung Galaxy A9 (2018)",
+    "slug": "samsung-galaxy-a9-2018",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/qF2B46ALvUhJQite.standard",
+    "summary": "The Galaxy A9 (2018) offers four, count 'em, four rear-facing cameras. Zow. Model number: A920F/DS.",
+    "ifixit_wikiid": 237177,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.632Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 167,
+  "fields": {
+    "name": "Samsung Galaxy A9 Pro",
+    "slug": "samsung-galaxy-a9-pro",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/SXeZiR1fRjhxkGmf.standard",
+    "summary": "",
+    "ifixit_wikiid": 448622,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.633Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 168,
+  "fields": {
+    "name": "Samsung Galaxy A90",
+    "slug": "samsung-galaxy-a90",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AtsEFHWrrba2ZLFT.standard",
+    "summary": "",
+    "ifixit_wikiid": 647704,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 169,
+  "fields": {
+    "name": "Samsung Galaxy A90 5G",
+    "slug": "samsung-galaxy-a90-5g",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/yH2QNdOtgUjlPR2W.standard",
+    "summary": "Repair guides and support for the Samsung Galaxy A90 5G, the Android smartphone introduced in September 2019.\nModels: SM-A908B (Global), SM-A908N (South Korea), and SM-A9080 (China).",
+    "ifixit_wikiid": 426042,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.637Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 170,
+  "fields": {
+    "name": "Samsung Galaxy Avant",
+    "slug": "samsung-galaxy-avant",
+    "category": 4,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/aNUUuBJUE41wKJym.standard",
+    "summary": "First released in July 2014, This is a T-Mobile exclusive smartphone made by Samsung.",
+    "ifixit_wikiid": 430075,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:53.638Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 171,
+  "fields": {
+    "name": "Xiaomi Redmi Note Series",
+    "slug": "xiaomi-redmi-note-series",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/jOW24ChCURfFQ3ZQ.standard",
+    "summary": "The Xiaomi Redmi Note series is Xiaomi's popular line of mid-range smartphones.",
+    "ifixit_wikiid": 430745,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.147Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 172,
+  "fields": {
+    "name": "Xiaomi Redmi 2",
+    "slug": "xiaomi-redmi-2",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/dMNmAGSWRBgcvcli.standard",
+    "summary": "Released January 2015. Android smartphone.",
+    "ifixit_wikiid": 51076,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.147Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 173,
+  "fields": {
+    "name": "Redmi A3",
+    "slug": "redmi-a3",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/FsIeHsHaAtKVuMQR.standard",
+    "summary": "Released February 23rd, 2024, model numbers 23129RN51X, 23129RN51H.",
+    "ifixit_wikiid": 638335,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.148Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 174,
+  "fields": {
+    "name": "Xiaomi Redmi 4X",
+    "slug": "xiaomi-redmi-4x",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/WVLDKp3eWJTyjKln.standard",
+    "summary": "The Xiaomi Redmi 4X is an improved version of Xiaomi Redmi 4. It's a low-budget smartphone by Xiaomi released on February 14, 2017.",
+    "ifixit_wikiid": 547673,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.148Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 175,
+  "fields": {
+    "name": "Xiaomi Redmi 5 Plus",
+    "slug": "xiaomi-redmi-5-plus",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/NySTkSZIMBeWULeh.standard",
+    "summary": "Launch Date: February 2018\nSystem: Android 7.1.2",
+    "ifixit_wikiid": 553928,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.148Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 176,
+  "fields": {
+    "name": "Xiaomi Redmi 6A",
+    "slug": "xiaomi-redmi-6a",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/EpbVyxiCpKunlVXq.standard",
+    "summary": "The Xiaomi Redmi 6A is an entry-level smartphone and was first released in June 2018. It utilizes a 5.45-inch HD+ display and a 13MP rear camera. It is powered by the MediaTek Helio A22 processor and features a 3,000mAh battery,",
+    "ifixit_wikiid": 637664,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.150Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 177,
+  "fields": {
+    "name": "Xiaomi Redmi 7",
+    "slug": "xiaomi-redmi-7",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/GrEAXvVJeWrD4kHl.standard",
+    "summary": "The Xiaomi Redmi 7 is a low-budget smartphone by Xiaomi released March 2019. It has a 6.26\" IPS LCD display, a 12 MP main camera, a rear-mounted fingerprint sensor, a 4000 mAh battery, and runs on a Snapdragon 632.",
+    "ifixit_wikiid": 471457,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.151Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 178,
+  "fields": {
+    "name": "Xiaomi Redmi 7A",
+    "slug": "xiaomi-redmi-7a",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/iK6oBVJghqpPQWSU.standard",
+    "summary": "Released in 2019 by Redmi, it has a Qualcomm® Snapdragon™ 439 Octa-core processor and a 13.8cm (5.45) HD+ Full Screen Display, enough for most normal users",
+    "ifixit_wikiid": 504483,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 179,
+  "fields": {
+    "name": "Xiaomi Redmi 8",
+    "slug": "xiaomi-redmi-8",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/3VMqYaZsBIfroJ1a.standard",
+    "summary": "he Xiaomi Redmi 8 is a low-budget smartphone by Xiaomi released October 2019. It has a 6.22\" IPS LCD display, a 12 MP main camera, a rear-mounted fingerprint sensor, a 5000 mAh battery, and runs on a Snapdragon 439.",
+    "ifixit_wikiid": 472082,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 180,
+  "fields": {
+    "name": "Xiaomi Redmi 9",
+    "slug": "xiaomi-redmi-9",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/cMBGqhZcVbLMYUTD.standard",
+    "summary": "The Xiaomi Redmi 9 is a low-budget smartphone by Xiaomi released June 2020. It has a 6.53\" IPS LCD display, a 13 MP main camera, a rear-mounted fingerprint sensor, a 5020 mAh battery, and runs on a Mediatek Helio G80.",
+    "ifixit_wikiid": 471116,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 181,
+  "fields": {
+    "name": "Xiaomi Redmi 9A",
+    "slug": "xiaomi-redmi-9a",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/TA1MkVvoxjnI1Jvw.standard",
+    "summary": "The Xiaomi Redmi 9A is a low-budget smartphone by Xiaomi released June 2020. It has a 6.53\" IPS LCD display, a 13 MP main camera, a 5000 mAh battery, and runs on a Helio G25.",
+    "ifixit_wikiid": 471318,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 182,
+  "fields": {
+    "name": "Xiaomi Redmi 9C",
+    "slug": "xiaomi-redmi-9c",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/l5XBpVNdF3LGtwkt.standard",
+    "summary": "The Xiaomi Redmi 9C is a low-budget smartphone by Xiaomi released June 2020. It has a 6.53\" IPS LCD display, a 13 MP main camera, a 5000 mAh battery, and runs on a Helio G35.",
+    "ifixit_wikiid": 471356,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 183,
+  "fields": {
+    "name": "Xiaomi Redmi 9 Prime",
+    "slug": "xiaomi-redmi-9-prime",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/eW5r2hFsLRKhXvX4.standard",
+    "summary": "The Xiaomi Redmi 9 Prime was officially released on August 4, 2020\n\nThe smartphone is equipped with sensors such as a fingerprint sensor (rear-mounted), accelerometer, proximity, and compass. The smartphone features an Infrared port, USB 2.0, Type-C 1.0 reversible connector, USB On-The-Go, and Bluetooth 5.0.",
+    "ifixit_wikiid": 479363,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 184,
+  "fields": {
+    "name": "Xiaomi Redmi 9 Power",
+    "slug": "xiaomi-redmi-9-power",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "",
+    "ifixit_wikiid": 519178,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 185,
+  "fields": {
+    "name": "Redmi 9T",
+    "slug": "redmi-9t",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "Repair guides, manuals, and troubleshooting help for Redmi 9T. Get everything you need to repair your Redmi 9T yourself.",
+    "ifixit_wikiid": 475009,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 186,
+  "fields": {
+    "name": "Xiaomi Redmi 10",
+    "slug": "xiaomi-redmi-10",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/KfU2YEPrYBN2Wkik.standard",
+    "summary": "Xiaomi Redmi 10 has a 6.5 in (165,1 mm) IPS LCD display with 1080p+ (2400x1080) resolution (395 ppi with 20:9 aspect ratio), 16M colors, 90 Hz refresh rate .",
+    "ifixit_wikiid": 519080,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 187,
+  "fields": {
+    "name": "Xiaomi Redmi 10 5G",
+    "slug": "xiaomi-redmi-10-5g",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/4vUCCR5LrpVXISjO.standard",
+    "summary": "The Xiaomi Redmi10 5G is an entry level 5G Android smartphone which was released in March, 2022. It offers a 6.58\" IPS LCD, a 5000 mAh battery, a 50MP main camera and runs on a MediaTek Dimensity 700 chipset.",
+    "ifixit_wikiid": 612605,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.152Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 188,
+  "fields": {
+    "name": "Xiaomi Redmi 10A",
+    "slug": "xiaomi-redmi-10a",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Xiaomi Redmi 10A Android smartphone, including model 220233L2G. It features a 6.53-inch HD+ display, MediaTek Helio G25 processor, and 5000 mAh battery.",
+    "ifixit_wikiid": 646056,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.162Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 189,
+  "fields": {
+    "name": "Redmi 10c",
+    "slug": "redmi-10c",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/dfseEkYhwtZUfH4C.standard",
+    "summary": "",
+    "ifixit_wikiid": 615490,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.162Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 190,
+  "fields": {
+    "name": "Xiaomi Redmi 12",
+    "slug": "xiaomi-redmi-12",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Xiaomi Redmi 12 Android smartphone, including models 23053RN02A, 23053RN02Y, 23053RN02L.",
+    "ifixit_wikiid": 646005,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.162Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 191,
+  "fields": {
+    "name": "Xiaomi Redmi 12c",
+    "slug": "xiaomi-redmi-12c",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/5DHTqK2Zb4AlKAmU.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Xiaomi Redmi 12C Android smartphone, including model name 23028RNCAG.",
+    "ifixit_wikiid": 570730,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.162Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 192,
+  "fields": {
+    "name": "Xiaomi Redmi 13 4G",
+    "slug": "xiaomi-redmi-13-4g",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Xiaomi Redmi 13 Android smartphone, including models 2404ARN45A and 24040RN64Y. It features a 6.79-inch 90 Hz display, MediaTek Helio G91-Ultra processor, 108 MP camera, and 5030 mAh battery.",
+    "ifixit_wikiid": 646068,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.162Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 193,
+  "fields": {
+    "name": "Xiaomi Redmi 13C",
+    "slug": "xiaomi-redmi-13c",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/KtHudxpirABIqDt5.standard",
+    "summary": "Officially released on November 10, 2023. This is budget-friendly smartphone boasts a large 6.74-inch display with 90Hz refresh rate.",
+    "ifixit_wikiid": 553510,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.162Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 194,
+  "fields": {
+    "name": "Redmi 14C",
+    "slug": "redmi-14c",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "A phone made by redmi with a two eye camera. An AI camera one good flash point and a circled camera.",
+    "ifixit_wikiid": 638079,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.168Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 195,
+  "fields": {
+    "name": "Xiaomi Redmi 15 (4G)",
+    "slug": "xiaomi-redmi-15-4g",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/DkakMGdI2tgVeEHX.standard",
+    "summary": "Released in August 2025, the Redmi 15 (model number 25062RN2DY) is a high-performance budget-tier smartphone featuring a 6.9-inch LCD IPS display with a 144Hz high refresh rate. This model is notable for its Multiple Refresh Rates At Once Multiple Refresh Rates At Once capability, allowing the display to handle different refresh zones simultaneously. It is equipped with a high-capacity 7000mAh Silicon-Carbon (Si-C) battery, which offers significantly higher energy density compared to traditional lithium-ion technology, supported by 33W fast charging. It has 18W OTG. It would come with HyperOS 2 and Android 15 but will have an update to HyperOS 3 and Android 16. It doesn't include Headphone Jack but has a fingerprint sensor within Power Button. It can extend up to 16 GB of RAM. It has a Hybrid SIM slot. AI camera. Only 4G version without the Note or Pro has 7000mAh battery.\nWrote by KingZarek1.",
+    "ifixit_wikiid": 640870,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 196,
+  "fields": {
+    "name": "REDMI 15C",
+    "slug": "redmi-15c",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/YRPVCElGHvvdmEAJ.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Xiaomi REDMI 15C Android smartphone, including models 25078RA3EA, 25078RA3EY, and 25078RA3EL. It features a 6.9-inch 120 Hz display, MediaTek Helio G81-Ultra processor, 50 MP rear camera, and 6000 mAh battery.",
+    "ifixit_wikiid": 646029,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 197,
+  "fields": {
+    "name": "Xiaomi Redmi A3x",
+    "slug": "xiaomi-redmi-a3x",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Xiaomi Redmi A3x Android smartphone, including model 24048RN6CG.",
+    "ifixit_wikiid": 646027,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 198,
+  "fields": {
+    "name": "Redmi A5",
+    "slug": "redmi-a5",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Xiaomi Redmi A5 Android smartphone, including models 25028RN03A, 25028RN03L, and 25028RN03Y. It features a 6.88-inch display, UNISOC T7250 processor, 32 MP rear camera, and 5200 mAh battery.",
+    "ifixit_wikiid": 646004,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 199,
+  "fields": {
+    "name": "Xiaomi Redmi Go",
+    "slug": "xiaomi-redmi-go",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/6NCOVmaf4LLGxmUS.standard",
+    "summary": "",
+    "ifixit_wikiid": 446301,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 200,
+  "fields": {
+    "name": "Xiaomi Redmi K20",
+    "slug": "xiaomi-redmi-k20",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "Released June 2019.",
+    "ifixit_wikiid": 562842,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 201,
+  "fields": {
+    "name": "Redmi K40 Pro",
+    "slug": "redmi-k40-pro",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/S3esQVLuG1wEwKxN.standard",
+    "summary": "Released 2021, March 04\n196g, 7.8mm thickness\nAndroid 11, MIUI 12\n128GB/256GB storage, no card slot",
+    "ifixit_wikiid": 625392,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 202,
+  "fields": {
+    "name": "Xiaomi Redmi K40",
+    "slug": "xiaomi-redmi-k40",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/tHG2PscaLDxTBANg.standard",
+    "summary": "Released 2021, March 04\n196g, 7.8mm thickness\nAndroid 11, MIUI 12\n128GB/256GB storage, no card slot",
+    "ifixit_wikiid": 625391,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 203,
+  "fields": {
+    "name": "Xiaomi Redmi Power IC",
+    "slug": "xiaomi-redmi-power-ic",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "",
+    "ifixit_wikiid": 478844,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 204,
+  "fields": {
+    "name": "Redmi K50i",
+    "slug": "redmi-k50i",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "",
+    "ifixit_wikiid": 653151,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 205,
+  "fields": {
+    "name": "Redmi Note 11T Pro Plus",
+    "slug": "redmi-note-11t-pro-plus",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "",
+    "ifixit_wikiid": 653138,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.171Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 206,
+  "fields": {
+    "name": "Xiaomi 12T 5G",
+    "slug": "xiaomi-12t-5g",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ECEutvZeSRwrORG1.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Xiaomi 12T 5G smartphone, released in October 2022. Identified by model number 22071212AG.",
+    "ifixit_wikiid": 647603,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.183Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 207,
+  "fields": {
+    "name": "Xiaomi Redmi 13 5G",
+    "slug": "xiaomi-redmi-13-5g",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "Xiaomi Redmi 13 5G\n\nReleased 2024, July 12\n205g, 8.3mm thickness\nAndroid 14, HyperOS, up to 2 major upgrades\n128GB/256GB storage, microSDXC\n6.79\"\n1080x2460 pixels\n108MP/1080p\n6/8GB RAM\nSnapdragon 4 Gen 2 AE\n5030mAh\n33W",
+    "ifixit_wikiid": 652742,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.185Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 208,
+  "fields": {
+    "name": "Xiaomi Redmi A7 Pro",
+    "slug": "xiaomi-redmi-a7-pro",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/AQXmvvuEXUeDPqGM.standard",
+    "summary": "Released March 2026, identified model number 26028RN03G.",
+    "ifixit_wikiid": 653874,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.185Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 209,
+  "fields": {
+    "name": "Xiaomi Redmi Note 11T Pro",
+    "slug": "xiaomi-redmi-note-11t-pro",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "",
+    "ifixit_wikiid": 653153,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.185Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 210,
+  "fields": {
+    "name": "Xiaomi Redmi Note11E Pro",
+    "slug": "xiaomi-redmi-note11e-pro",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "",
+    "ifixit_wikiid": 653148,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.185Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 211,
+  "fields": {
+    "name": "Xiaomi Redmi Turbo 3",
+    "slug": "xiaomi-redmi-turbo-3",
+    "category": 6,
+    "brand": "Xiaomi",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r3d3JoiBVfALZOIl.standard",
+    "summary": "",
+    "ifixit_wikiid": 653155,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:54.185Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 212,
+  "fields": {
+    "name": "Oppo 5G",
+    "slug": "oppo-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653156,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.618Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 213,
+  "fields": {
+    "name": "Oppo A1 5G",
+    "slug": "oppo-a1-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653104,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.618Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 214,
+  "fields": {
+    "name": "Oppo A12",
+    "slug": "oppo-a12",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/HQw6WSmAuAZs4imj.standard",
+    "summary": "The Oppo A12 is a smartphone designed by Oppo and it were released in 2020.",
+    "ifixit_wikiid": 518968,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.619Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 215,
+  "fields": {
+    "name": "OPPO A15",
+    "slug": "oppo-a15",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/tZUMCEqwmVbHTaNN.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A15 Android smartphone, model CPH2185. It features a 6.52-inch HD+ display, MediaTek Helio P35 processor, triple rear cameras, and a 4230 mAh battery.",
+    "ifixit_wikiid": 634996,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.621Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 216,
+  "fields": {
+    "name": "Oppo A17",
+    "slug": "oppo-a17",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ldrlgWKJO2BWMUGv.standard",
+    "summary": "Released in 2022, the Oppo A17 (model number CPH2477) features a 6.56-inch HD+ display, 50MP AI rear camera, 4GB RAM, 64GB storage, and a 5000mAh battery.",
+    "ifixit_wikiid": 617479,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.621Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 217,
+  "fields": {
+    "name": "Oppo A18",
+    "slug": "oppo-a18",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/JeYYs6dLwVGUu2hx.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A18 Android smartphone, model CPH2591. It features a 6.56-inch HD+ LCD, MediaTek Helio G85 processor, and 5000 mAh battery.",
+    "ifixit_wikiid": 646055,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.622Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 218,
+  "fields": {
+    "name": "Oppo A1k",
+    "slug": "oppo-a1k",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/PUsCYLKqrHUvVH56.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Oppo A1k, released in 2019. The Oppo A1k is an entry-level smartphone featuring a 6.1\" display and a microSDXC slot.",
+    "ifixit_wikiid": 518924,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.623Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 219,
+  "fields": {
+    "name": "Oppo A2 5G",
+    "slug": "oppo-a2-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653157,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.624Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 220,
+  "fields": {
+    "name": "Oppo A3",
+    "slug": "oppo-a3",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/TeGDmIRNGUclAqeZ.standard",
+    "summary": "The Oppo A3 is an feature rich entry-level smartphone featuring high shock resistance and durability, bright display and fast charging for an affordable price. \nThe phone was released in 2024.",
+    "ifixit_wikiid": 645239,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.625Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 221,
+  "fields": {
+    "name": "OPPO A3 4G",
+    "slug": "oppo-a3-4g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A3 4G Android smartphone, including model CPH2669. The same model is sold as the OPPO A40 in some regions.",
+    "ifixit_wikiid": 646030,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.625Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 222,
+  "fields": {
+    "name": "OPPO A3 Pro 5G",
+    "slug": "oppo-a3-pro-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A3 Pro 5G Android smartphone, model CPH2639. The same CPH2639 model code is also associated with OPPO A80 5G in some markets.",
+    "ifixit_wikiid": 646086,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.626Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 223,
+  "fields": {
+    "name": "OPPO A31",
+    "slug": "oppo-a31",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/BgZF4rhxfHOsvrMQ.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A31 Android smartphone, model CPH2015. It features a 6.5-inch HD+ display, MediaTek Helio P35 processor, triple rear cameras, and a 4230 mAh battery.",
+    "ifixit_wikiid": 519034,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.627Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 224,
+  "fields": {
+    "name": "Oppo A37 FW",
+    "slug": "oppo-a37-fw",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Qe5Eq2V61MM1LjWZ.standard",
+    "summary": "Oppo A37 A37fw 16GB comes with 2GB of RAM.\nThe Oppo A37 runs Android 5.1 and is powered by a 2630 mAh non-removable (as told by Oppo ;-) battery. \nFirst released in April,2017.",
+    "ifixit_wikiid": 507835,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.627Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 225,
+  "fields": {
+    "name": "Oppo A38",
+    "slug": "oppo-a38",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/6lC6kdnLQhNFmTHi.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A38 Android smartphone, including model CPH2579. The OPPO A38 was released in September 2023.",
+    "ifixit_wikiid": 560696,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.628Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 226,
+  "fields": {
+    "name": "Oppo A3s",
+    "slug": "oppo-a3s",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/aYGrDFOc2vt6JRBn.standard",
+    "summary": "The Oppo A3s is a smartphone designed by Oppo, and were released in 2018.",
+    "ifixit_wikiid": 563185,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.630Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 227,
+  "fields": {
+    "name": "oppo a3x",
+    "slug": "oppo-a3x",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "CPH2641",
+    "ifixit_wikiid": 639172,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.630Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 228,
+  "fields": {
+    "name": "OPPO A5",
+    "slug": "oppo-a5",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/CU5Q2PpHjrjqWeNn.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A5 Android smartphone, model CPH2727. It features a 6.67-inch 90 Hz LCD, Snapdragon 6s 4G Gen 1 processor, 50 MP rear camera, and 6000 mAh battery.",
+    "ifixit_wikiid": 646050,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.631Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 229,
+  "fields": {
+    "name": "Oppo A5 (2020)",
+    "slug": "oppo-a5-2020",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/YIswW4EtWqxjxZkA.standard",
+    "summary": "This phone was announced in September 2019 and released in October 2019. It was shipped with Android 9.0 and ColorOS 6.1. It was available in the colors, Mirror Black and Dazzling White.",
+    "ifixit_wikiid": 484458,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.631Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 230,
+  "fields": {
+    "name": "OPPO A5 Pro 5G",
+    "slug": "oppo-a5-pro-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A5 Pro 5G Android smartphone, including model name CPH2695.",
+    "ifixit_wikiid": 646061,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.632Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 231,
+  "fields": {
+    "name": "Oppo A53",
+    "slug": "oppo-a53",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/M5WCOl3eqcyWY4rw.standard",
+    "summary": "The phone comes with a 6.50-inch touchscreen display offering a resolution of 720x1600 pixels at a pixel density of 269 pixels per inch (ppi) and an aspect ratio of 20:9. Oppo A53 2020 is powered by a 1.8GHz octa-core Qualcomm Snapdragon 460 processor. It comes with 4GB of RAM.",
+    "ifixit_wikiid": 519013,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.632Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 232,
+  "fields": {
+    "name": "Oppo A54",
+    "slug": "oppo-a54",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/c4xxIGAM1tcQDkfi.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A54 Android smartphone, model CPH2239. It features a 6.51-inch HD+ display, 13 MP triple rear camera, 16 MP front camera, and 5000 mAh battery.",
+    "ifixit_wikiid": 635206,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.633Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 233,
+  "fields": {
+    "name": "Oppo A55s",
+    "slug": "oppo-a55s",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/5l6V2t4GSWcTcjEy.standard",
+    "summary": "",
+    "ifixit_wikiid": 630963,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.633Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 234,
+  "fields": {
+    "name": "Oppo A57",
+    "slug": "oppo-a57",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ikurU24GvoCjiGWw.standard",
+    "summary": "",
+    "ifixit_wikiid": 644184,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.634Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 235,
+  "fields": {
+    "name": "OPPO A57",
+    "slug": "oppo-a57-2",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/bJBOIUZAsRpILQ3n.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A57 Android smartphone, model CPH2387. It features a 6.56-inch HD+ display, MediaTek Helio G35 processor, 13 MP dual rear cameras, and a 5000 mAh battery.",
+    "ifixit_wikiid": 646073,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.634Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 236,
+  "fields": {
+    "name": "Oppo A57S",
+    "slug": "oppo-a57s",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653159,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.634Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 237,
+  "fields": {
+    "name": "Oppo A58",
+    "slug": "oppo-a58",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ddKkydqVuv5bECtO.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A58 Android smartphone, including model CPH2577.",
+    "ifixit_wikiid": 646034,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 238,
+  "fields": {
+    "name": "Oppo A5i",
+    "slug": "oppo-a5i",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/qAeBbrHQJ3I1ABdY.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A5i Android smartphone, model CPH2641. It features a 6.67-inch HD+ LCD, Snapdragon 6s 4G Gen 1 processor, and 5100 mAh battery.",
+    "ifixit_wikiid": 646057,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 239,
+  "fields": {
+    "name": "OPPO A5s",
+    "slug": "oppo-a5s",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A5s Android smartphone, model CPH1909. It features a 6.2-inch display, MediaTek Helio P35 processor, dual rear cameras, and a 4230 mAh battery.",
+    "ifixit_wikiid": 564345,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 240,
+  "fields": {
+    "name": "Oppo A6",
+    "slug": "oppo-a6",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/LPr2Z2GM6umETSsL.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Oppo A6, released in 2026. The Oppo A6, a.k.a. Oppo A6 4G, is a budget smartphone that features Oppo's SuperCool VaporChamber System cooling solution and 7000 mAh battery.",
+    "ifixit_wikiid": 646100,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 241,
+  "fields": {
+    "name": "Oppo A6 Pro",
+    "slug": "oppo-a6-pro",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/wp5amvpMF1nlggG5.standard",
+    "summary": "The Oppo A6 Pro is a mid-range smartphone with an extensive battery, modern design and IP69 rating. The phone were released in 2025.",
+    "ifixit_wikiid": 645224,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 242,
+  "fields": {
+    "name": "Oppo A60",
+    "slug": "oppo-a60",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/xugLXBYepsAi2uRO.standard",
+    "summary": "",
+    "ifixit_wikiid": 563802,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 243,
+  "fields": {
+    "name": "Oppo A72",
+    "slug": "oppo-a72",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 639067,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 244,
+  "fields": {
+    "name": "Oppo A74 5G",
+    "slug": "oppo-a74-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 564341,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 245,
+  "fields": {
+    "name": "Oppo A77 5G",
+    "slug": "oppo-a77-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653160,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 246,
+  "fields": {
+    "name": "Oppo A77s",
+    "slug": "oppo-a77s",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "White lines in the screen because it fell on wet ground",
+    "ifixit_wikiid": 628207,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 247,
+  "fields": {
+    "name": "OPPO A78",
+    "slug": "oppo-a78",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/lWTK5UVf6h6WvHpJ.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO A78 Android smartphone, including model CPH2565.",
+    "ifixit_wikiid": 645059,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 248,
+  "fields": {
+    "name": "Oppo A79 5G",
+    "slug": "oppo-a79-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653158,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 249,
+  "fields": {
+    "name": "Oppo A83",
+    "slug": "oppo-a83",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/MYEcGvZH6AIC1aOO.standard",
+    "summary": "The Oppo A83 were released in 2018 and aims to balance price and performance.",
+    "ifixit_wikiid": 630806,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 250,
+  "fields": {
+    "name": "Oppo A92",
+    "slug": "oppo-a92",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/xU6jmsMHRS5CB1GZ.standard",
+    "summary": "",
+    "ifixit_wikiid": 504910,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 251,
+  "fields": {
+    "name": "Oppo A94 5G",
+    "slug": "oppo-a94-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/B5ebLh53gf2kVQnj.standard",
+    "summary": "",
+    "ifixit_wikiid": 522132,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 252,
+  "fields": {
+    "name": "Oppo A96 4G",
+    "slug": "oppo-a96-4g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/65vnW2TCWynwfMoI.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Oppo A96 4G smartphone, released in March 2022. Identified by model number CPH2333.",
+    "ifixit_wikiid": 647521,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 253,
+  "fields": {
+    "name": "Oppo A97 5G",
+    "slug": "oppo-a97-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653161,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 254,
+  "fields": {
+    "name": "Oppo A98 5G",
+    "slug": "oppo-a98-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653102,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 255,
+  "fields": {
+    "name": "Oppo CPH2499",
+    "slug": "oppo-cph2499",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653162,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 256,
+  "fields": {
+    "name": "Oppo F11",
+    "slug": "oppo-f11",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/NOF1Z1sGkGkgPppF.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Oppo F11, released in 2019. The Oppo F11 is a budget smartphone, and features a 48 MP 1.79F rear camera.",
+    "ifixit_wikiid": 484053,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 257,
+  "fields": {
+    "name": "Oppo F1s",
+    "slug": "oppo-f1s",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/CQARdSlfHv1CwwYD.standard",
+    "summary": "A 5.5-inch smartphone by Oppo, released in August 2016. Includes a non-removable 3075 mAh battery and a 16-megapixel selfie camera. Model A1601.",
+    "ifixit_wikiid": 109521,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 258,
+  "fields": {
+    "name": "Oppo F23 5G",
+    "slug": "oppo-f23-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653103,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 259,
+  "fields": {
+    "name": "Oppo F5",
+    "slug": "oppo-f5",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Dhh1UwXUvpBt631J.standard",
+    "summary": "Released in November 2017, the Oppo F5 is the first smartphone to use an 18:9 display instead of 16:9. In spite of having a 6.0-inch screen, the F5's width is similar to the 5.5\" display with 16:9. Models CPH1723 and CPH1727.",
+    "ifixit_wikiid": 115376,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 260,
+  "fields": {
+    "name": "Oppo F7",
+    "slug": "oppo-f7",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ejkJHfxtbTRyVBfQ.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Oppo F7, released in 2018. The Oppo F7 is a mid-range smartphone.",
+    "ifixit_wikiid": 563918,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 261,
+  "fields": {
+    "name": "Oppo FIND N3",
+    "slug": "oppo-find-n3",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653163,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 262,
+  "fields": {
+    "name": "Oppo Find X 5",
+    "slug": "oppo-find-x-5",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652855,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.636Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 263,
+  "fields": {
+    "name": "Oppo Find X 5 Lite",
+    "slug": "oppo-find-x-5-lite",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652856,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.650Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 264,
+  "fields": {
+    "name": "Oppo Find X 5 Pro",
+    "slug": "oppo-find-x-5-pro",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652857,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.651Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 265,
+  "fields": {
+    "name": "OPPO Find X3 Pro (5G)",
+    "slug": "oppo-find-x3-pro-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 466903,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.651Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 266,
+  "fields": {
+    "name": "Oppo Find X5",
+    "slug": "oppo-find-x5",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653166,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.651Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 267,
+  "fields": {
+    "name": "Oppo Find X5 Lite",
+    "slug": "oppo-find-x5-lite",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653187,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.651Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 268,
+  "fields": {
+    "name": "Oppo Find X5 Pro",
+    "slug": "oppo-find-x5-pro",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 538410,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.651Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 269,
+  "fields": {
+    "name": "Oppo Find X5 Pro 5G 2022",
+    "slug": "oppo-find-x5-pro-5g-2022",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653167,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.651Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 270,
+  "fields": {
+    "name": "OPPO N1",
+    "slug": "oppo-n1",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/JKSjPTNwSlmh2UMQ.standard",
+    "summary": "The OPPO N1 is an Android smart phone developed by OPPO Electronics unveiled September 23, 2013.",
+    "ifixit_wikiid": 28333,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.655Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 271,
+  "fields": {
+    "name": "Oppo PHN110",
+    "slug": "oppo-phn110",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653164,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.655Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 272,
+  "fields": {
+    "name": "Oppo PHN111",
+    "slug": "oppo-phn111",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653165,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 273,
+  "fields": {
+    "name": "Oppo R9m",
+    "slug": "oppo-r9m",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/qo3jiKLRhMtDL1qY.standard",
+    "summary": "The Oppo R9m (also known as the R9 Plus) was released in March 2016. It features a 6-inch 1080p display, and is powered by a Snapdragon 652 Octo-core processor alongside 4 GB of RAM.",
+    "ifixit_wikiid": 93740,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 274,
+  "fields": {
+    "name": "Oppo Realme",
+    "slug": "oppo-realme",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/OIXLlhrIUTwKhFHv.standard",
+    "summary": "Repair guides and disassembly information for Oppo‘s Realme Android smartphone line.",
+    "ifixit_wikiid": 508312,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 275,
+  "fields": {
+    "name": "Oppo Reno 10 5G",
+    "slug": "oppo-reno-10-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653182,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 276,
+  "fields": {
+    "name": "Oppo Reno 10 Pro Plus 5G",
+    "slug": "oppo-reno-10-pro-plus-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653183,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 277,
+  "fields": {
+    "name": "Oppo Reno 11",
+    "slug": "oppo-reno-11",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652858,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 278,
+  "fields": {
+    "name": "Oppo Reno 11 F",
+    "slug": "oppo-reno-11-f",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652859,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 279,
+  "fields": {
+    "name": "Oppo Reno 11 F 5G",
+    "slug": "oppo-reno-11-f-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653184,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 280,
+  "fields": {
+    "name": "Oppo Reno 11 Pro",
+    "slug": "oppo-reno-11-pro",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652860,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 281,
+  "fields": {
+    "name": "Oppo Reno 12",
+    "slug": "oppo-reno-12",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652861,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 282,
+  "fields": {
+    "name": "Oppo RENO 12 Pro",
+    "slug": "oppo-reno-12-pro",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653185,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 283,
+  "fields": {
+    "name": "Oppo Reno 13",
+    "slug": "oppo-reno-13",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653186,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 284,
+  "fields": {
+    "name": "Oppo Reno 4 Pro 5G",
+    "slug": "oppo-reno-4-pro-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 632049,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 285,
+  "fields": {
+    "name": "Oppo Reno 7 Pro 5G",
+    "slug": "oppo-reno-7-pro-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653189,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 286,
+  "fields": {
+    "name": "Oppo Reno 7Z 5G",
+    "slug": "oppo-reno-7z-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653190,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 287,
+  "fields": {
+    "name": "Oppo Reno 8",
+    "slug": "oppo-reno-8",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652862,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 288,
+  "fields": {
+    "name": "Oppo Reno 8 5G",
+    "slug": "oppo-reno-8-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653188,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 289,
+  "fields": {
+    "name": "Oppo Reno 8 Pro",
+    "slug": "oppo-reno-8-pro",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653192,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 290,
+  "fields": {
+    "name": "Oppo Reno 8 Pro 5G",
+    "slug": "oppo-reno-8-pro-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652863,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.657Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 291,
+  "fields": {
+    "name": "Oppo Reno 8 Pro Plus",
+    "slug": "oppo-reno-8-pro-plus",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652864,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.667Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 292,
+  "fields": {
+    "name": "Oppo Reno 8Z 5G",
+    "slug": "oppo-reno-8z-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 653191,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.668Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 293,
+  "fields": {
+    "name": "Oppo Reno 9",
+    "slug": "oppo-reno-9",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652865,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.668Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 294,
+  "fields": {
+    "name": "Oppo Reno 9 Pro",
+    "slug": "oppo-reno-9-pro",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "",
+    "ifixit_wikiid": 652866,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.668Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 295,
+  "fields": {
+    "name": "OPPO Reno10 5G",
+    "slug": "oppo-reno10-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/o63lyNWmnkcnHYDQ.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO Reno10 5G Android smartphone, model CPH2531. It features a 6.7-inch 120 Hz display, MediaTek Dimensity 7050 processor, triple rear cameras, and 5000 mAh battery.",
+    "ifixit_wikiid": 646075,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.668Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 296,
+  "fields": {
+    "name": "OPPO Reno12 F 5G",
+    "slug": "oppo-reno12-f-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/CcInOFjZsaGEKCh6.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO Reno12 F 5G Android smartphone, including model CPH2637. The same model is sold as the OPPO F27 5G or OPPO Reno12 FS 5G in some regions.",
+    "ifixit_wikiid": 646042,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.668Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 297,
+  "fields": {
+    "name": "OPPO Reno13 F 5G",
+    "slug": "oppo-reno13-f-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO Reno13 F 5G Android smartphone, model CPH2699. It features a 6.67-inch 120 Hz display, 50 MP rear camera, 32 MP front camera, and 5800 mAh battery.",
+    "ifixit_wikiid": 646089,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.671Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 298,
+  "fields": {
+    "name": "OPPO Reno14 F 5G",
+    "slug": "oppo-reno14-f-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO Reno14 F 5G Android smartphone, model CPH2743. It features a 6.57-inch AMOLED display, triple rear cameras, 32 MP front camera, and USB-C charging.",
+    "ifixit_wikiid": 646083,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.672Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 299,
+  "fields": {
+    "name": "Oppo Reno3",
+    "slug": "oppo-reno3",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/sKx6hGDiSTLESarS.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the Oppo Reno3, released in 2019. The Reno3 is a mid-range smartphone and with a 6.4\" Amoled display and multi-camera setup.",
+    "ifixit_wikiid": 629130,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.672Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 300,
+  "fields": {
+    "name": "OPPO Reno7",
+    "slug": "oppo-reno7",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/nMSwJvtuiKC5YV1w.standard",
+    "summary": "Repair, disassembly, and troubleshooting information for the OPPO Reno7 Android smartphone, model CPH2363. It features a 6.43-inch AMOLED display, Snapdragon 680 processor, 64 MP rear camera, and 4500 mAh battery.",
+    "ifixit_wikiid": 646090,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.672Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 301,
+  "fields": {
+    "name": "Oppo Reno7 5G",
+    "slug": "oppo-reno7-5g",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/ywv5EenN5wDISAWY.standard",
+    "summary": "The Oppo Reno7 5G is a smartphone designed by Oppo. The phone were released in 2022.",
+    "ifixit_wikiid": 551664,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.672Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 302,
+  "fields": {
+    "name": "Oppo X9000",
+    "slug": "oppo-x9000",
+    "category": 8,
+    "brand": "Oppo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/YNHRA1J2FdwOSOog.standard",
+    "summary": "Released on April 2014, this 16 GB Oppo Find 7a is the cheaper version of the Oppo Find 7. To distinguish the Find 7a from the 7, remove the back panel as well as the battery. There should be two serial number stickers that say X9000 where the battery lies flush to the phone.",
+    "ifixit_wikiid": 28502,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:55.672Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 303,
+  "fields": {
+    "name": "Samsung Galaxy Tab 7.0",
+    "slug": "samsung-galaxy-tab-70",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/S5UiBWG2LJxjxJNl.standard",
+    "summary": "Repair information for the 7\" Android tablet by Samsung. Fixing this device is straightforward, and requires only common tools. The Samsung Galaxy Tab is an Android-based tablet computer produced by Samsung. The 7-inch Samsung Galaxy Tab is the first model in the series. It was introduced on September 2, 2010",
+    "ifixit_wikiid": 36631,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.419Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 304,
+  "fields": {
+    "name": "Samsung Galaxy Tab 7.0 Sprint",
+    "slug": "samsung-galaxy-tab-70-sprint",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/gBpGCPuuVJQKTnPJ.standard",
+    "summary": "A tablet manufactured in 2010 by Samsung that  can be used for picture taking, reading, browsing the internet, and other things. Model number: SPH-P100",
+    "ifixit_wikiid": 82591,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.419Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 305,
+  "fields": {
+    "name": "Samsung Galaxy Tab 7.7",
+    "slug": "samsung-galaxy-tab-77",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/HrWxPo4DOGDrwMCH.standard",
+    "summary": "7.7\" Android tablet released in February 2012.\nSamsung P6800",
+    "ifixit_wikiid": 27580,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.419Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 306,
+  "fields": {
+    "name": "Samsung Galaxy Tab 8.9",
+    "slug": "samsung-galaxy-tab-89",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/DHpWyYsNjyRsOBDs.standard",
+    "summary": "The Samsung Galaxy Tab 8.9 was released on October 2nd, 2011. Model number: GT-P7310",
+    "ifixit_wikiid": 28012,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.428Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 307,
+  "fields": {
+    "name": "Samsung Galaxy Tab 10.1",
+    "slug": "samsung-galaxy-tab-101",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/kJgmptScbGFEWtFZ.standard",
+    "summary": "10.1\" Android tablet released in June of 2011.\nSamsung GT-P7510MA",
+    "ifixit_wikiid": 15179,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.430Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 308,
+  "fields": {
+    "name": "Samsung Galaxy Tab 10.1 4G",
+    "slug": "samsung-galaxy-tab-101-4g",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/SKmRk5sOPFyWSp4y.standard",
+    "summary": "The Samsung Galaxy Tab 10.1 4G (T-Mobile Model: SGH-T859 / Verizon Model: SCH-I905) was released on November 16, 2011.",
+    "ifixit_wikiid": 49830,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.430Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 309,
+  "fields": {
+    "name": "Samsung Galaxy Tab 7.0 Plus",
+    "slug": "samsung-galaxy-tab-70-plus",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/NBt4UxCLH1lRZUEi.standard",
+    "summary": "An updated model of the Samsung Galaxy Tab 7.0 introduced in October 2011. Also known as Samsung Galaxy Tab 7.0N Plus, Samsung Galaxy Tab 7.0 Plus N in Germany",
+    "ifixit_wikiid": 80061,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.430Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 310,
+  "fields": {
+    "name": "Samsung Galaxy Tab A 8.4\" (2020)",
+    "slug": "samsung-galaxy-tab-a-84-2020",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Pb2oD2j5lIrRcqMD.standard",
+    "summary": "Released in 2020, model number SM-T307U",
+    "ifixit_wikiid": 531936,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.430Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 311,
+  "fields": {
+    "name": "Samsung Galaxy Tab S5e",
+    "slug": "samsung-galaxy-tab-s5e",
+    "category": 10,
+    "brand": "Samsung",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/rLGL5dWTTY4ADFer.standard",
+    "summary": "",
+    "ifixit_wikiid": 539194,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:56.430Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 312,
+  "fields": {
+    "name": "MacBook Air 11\"",
+    "slug": "macbook-air-11",
+    "category": 12,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/YmcdJiTF1knrKWDt.standard",
+    "summary": "Repair guides, support, and troubleshooting information for MacBook Air models with 11-inch displays.",
+    "ifixit_wikiid": 10824,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:57.270Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 313,
+  "fields": {
+    "name": "MacBook Air 13\"",
+    "slug": "macbook-air-13",
+    "category": 12,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/a62Qu5bjkGFMR1Eq.standard",
+    "summary": "Repair guides, support, and troubleshooting information for MacBook Air models with 13-inch displays.",
+    "ifixit_wikiid": 10825,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:57.270Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 314,
+  "fields": {
+    "name": "MacBook Air 15\"",
+    "slug": "macbook-air-15",
+    "category": 12,
+    "brand": "Apple",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/Mk5jDPgtbEkyYn3P.standard",
+    "summary": "Repair guides, support, and troubleshooting information for MacBook Air models with 15-inch displays.",
+    "ifixit_wikiid": 514209,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:57.270Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 315,
+  "fields": {
+    "name": "Nintendo Switch",
+    "slug": "nintendo-switch",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/MBWcndaxylNLZrlX.standard",
+    "summary": "The Nintendo Switch is a handheld game console that can be played on the TV via a docking station, or on the go. Released March 3rd, 2017.",
+    "ifixit_wikiid": 75757,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.428Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 316,
+  "fields": {
+    "name": "Nintendo Switch 2",
+    "slug": "nintendo-switch-2",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/FDIMejFdqlTp5sXr.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the Nintendo Switch 2, the successor to the original (2017-2021) Nintendo Switch consoles. Announced January 2025, and officially released on June 5th, 2025.",
+    "ifixit_wikiid": 616632,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.429Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 317,
+  "fields": {
+    "name": "Nintendo Switch OLED",
+    "slug": "nintendo-switch-oled",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/XYXD2WfAZdTqHxWC.standard",
+    "summary": "Repair and disassembly guides for the Nintendo Switch OLED Model, announced and released in 2021.",
+    "ifixit_wikiid": 460986,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.430Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 318,
+  "fields": {
+    "name": "Nintendo Switch Lite",
+    "slug": "nintendo-switch-lite",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/iFjheKct1tUPeZIo.standard",
+    "summary": "A more affordable, purely handheld version of the Nintendo Switch game console, with integrated Joy-Con controllers and a slightly smaller screen. Released September 20, 2019.",
+    "ifixit_wikiid": 262202,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.431Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 319,
+  "fields": {
+    "name": "Nintendo Switch Joy-Con",
+    "slug": "nintendo-switch-joy-con",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/cnACJ2AQ4L3ZxS2s.standard",
+    "summary": "Repair guides and information for the Nintendo Switch Joy-Con controllers.",
+    "ifixit_wikiid": 100975,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.431Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 320,
+  "fields": {
+    "name": "Nintendo Switch 2 Joy-Con 2",
+    "slug": "nintendo-switch-2-joy-con-2",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/GmJtWpCimowSOWSU.standard",
+    "summary": "Repair guides, disassembly, and troubleshooting information for the Nintendo Switch 2's Joy-Con 2 controllers.",
+    "ifixit_wikiid": 616633,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.432Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 321,
+  "fields": {
+    "name": "Nintendo Switch Pro Controller",
+    "slug": "nintendo-switch-pro-controller",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/thKmAImCrLrfpOnv.standard",
+    "summary": "A wireless, more traditional video game controller produced by Nintendo for the Switch system. Model number: HAC-013.",
+    "ifixit_wikiid": 100974,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.433Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 322,
+  "fields": {
+    "name": "Nintendo Switch NES Controller",
+    "slug": "nintendo-switch-nes-controller",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/r43KAsLjuN1E2ucT.standard",
+    "summary": "Repair guides and information for Nintendo Switch NES controllers.",
+    "ifixit_wikiid": 534919,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.435Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 323,
+  "fields": {
+    "name": "Nintendo Switch 2 Pro Controller",
+    "slug": "nintendo-switch-2-pro-controller",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/c6cdjjNAHML4DJOD.standard",
+    "summary": "A wireless, more traditional, video game controller produced by Nintendo for the Switch 2 system. Released on June 5th, 2025.",
+    "ifixit_wikiid": 630207,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.436Z"
+  }
+},
+{
+  "model": "devices.device",
+  "pk": 324,
+  "fields": {
+    "name": "Third-Party Nintendo Switch Controller",
+    "slug": "third-party-nintendo-switch-controller",
+    "category": 14,
+    "brand": "Nintendo",
+    "release_year": null,
+    "image_url": "https://guide-images.cdn.ifixit.com/igi/OpX1sB4oYQkeZYBT.standard",
+    "summary": "Repair information for third-party controllers compatible with Nintendo Switch systems, including models that also support computers or mobile devices.",
+    "ifixit_wikiid": 654056,
+    "repairability_score": null,
+    "created_by": null,
+    "created_at": "2026-09-29T15:28:58.438Z"
+  }
+}
+]

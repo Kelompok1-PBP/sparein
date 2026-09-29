@@ -1,0 +1,5 @@
+extend-exclude = ["*/migrations/*"]
+
+[lint]
+# Meta.ordering dan fields di Django memang list
+ignore = ["RUF012"]
