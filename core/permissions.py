@@ -19,3 +19,8 @@ def is_member(user):
 def is_contributor(user):
     """Contributor atau admin."""
     return _role(user) in (Role.CONTRIBUTOR, Role.ADMIN)
+
+
+def is_admin(user):
+    """Admin termasuk superuser juga count admin."""
+    return _role(user) == Role.ADMIN
