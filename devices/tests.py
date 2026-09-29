@@ -205,3 +205,10 @@ class ApiTests(TestCase):
     def test_result_shape(self):
         item = self.client.get(reverse("devices:api")).json()["results"][0]
         self.assertEqual(set(item), {"name", "slug", "brand", "category", "image_url", "url"})
+
+    def test_returns_all_for_visitor(self):
+        self.assertEqual(len(self.client.get(reverse("devices:api")).json()["results"]), 2)
+
+    def test_filters_by_brand(self):
+        data = self.client.get(reverse("devices:api"), {"brand": "samsung"}).json()
+        self.assertEqual([d["name"] for d in data["results"]], ["Galaxy S21"])
