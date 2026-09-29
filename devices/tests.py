@@ -101,3 +101,8 @@ class PageTests(TestCase):
 
     def test_visitor_sees_device_list(self):
         self.assertContains(self.client.get(reverse("devices:list")), "iPhone 12")
+
+    def test_list_filters_by_query(self):
+        resp = self.client.get(reverse("devices:list"), {"q": "galaxy"})
+        self.assertNotContains(resp, "iPhone 12")
+        self.assertContains(resp, "Perangkat tidak ditemukan.")
