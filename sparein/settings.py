@@ -31,6 +31,7 @@ PRODUCTION = os.getenv("PRODUCTION", "False") == "True"
 DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", os.getenv("PWS_HOST", "")]
+CSRF_TRUSTED_ORIGINS = [f"https://{os.getenv('PWS_HOST')}"] if os.getenv("PWS_HOST") else []
 
 
 # Application definition
