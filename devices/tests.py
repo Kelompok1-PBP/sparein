@@ -146,3 +146,9 @@ class CreateTests(TestCase):
         device = Device.objects.get(name="Pixel 7")
         self.assertRedirects(resp, reverse("devices:detail", args=[device.slug]))
         self.assertEqual(device.created_by, user)
+
+    def test_rejects_far_future_year(self):
+        self.client.force_login(make_user("c2", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.post(reverse("devices:create"), {**self.data, "release_year": 20021})
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(Device.objects.exists())
