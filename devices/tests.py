@@ -1,7 +1,8 @@
+from django.http import Http404
 from django.test import TestCase
 
 from devices.models import Device, DeviceCategory
-from devices.selectors import get_device_qs
+from devices.selectors import get_device_or_404, get_device_qs
 
 
 class ModelTests(TestCase):
@@ -40,3 +41,8 @@ class SelectorTests(TestCase):
     def test_category_and_brand_combine(self):
         names = [d.name for d in get_device_qs(category="phone", brand="apple")]
         self.assertEqual(names, ["iPhone 12"])
+
+    def test_get_or_404(self):
+        self.assertEqual(get_device_or_404("iphone-12").brand, "Apple")
+        with self.assertRaises(Http404):
+            get_device_or_404("nope")
