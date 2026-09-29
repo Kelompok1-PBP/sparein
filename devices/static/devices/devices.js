@@ -34,3 +34,9 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   search();
 });
+
+let timer;
+form.addEventListener("input", () => {
+  clearTimeout(timer);
+  timer = setTimeout(search, 300);
+});
