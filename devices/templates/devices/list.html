@@ -2,6 +2,17 @@
 {% block title %}Perangkat · Sparein{% endblock %}
 {% block content %}
 <h1>Perangkat</h1>
+<form method="get" id="device-filter">
+  <label>Cari <input type="search" name="q" value="{{ filters.q }}"></label>
+  <label>Kategori
+    <select name="category">
+      <option value="">Semua</option>
+      {% for c in categories %}<option value="{{ c.slug }}"{% if c.slug == filters.category %} selected{% endif %}>{{ c.name }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Merek <input type="text" name="brand" value="{{ filters.brand }}"></label>
+  <button type="submit">Terapkan</button>
+</form>
 <section id="device-results">
   {% for d in devices %}
     {% include "partials/card.html" with title=d.name text=d.brand %}
