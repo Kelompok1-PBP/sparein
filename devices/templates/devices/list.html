@@ -15,7 +15,8 @@
 </form>
 <section id="device-results">
   {% for d in devices %}
-    {% include "partials/card.html" with title=d.name text=d.brand %}
+    {% url 'devices:detail' d.slug as detail_url %}
+    {% include "partials/card.html" with title=d.name url=detail_url text=d.brand %}
   {% empty %}
     {% include "partials/empty_state.html" with message="Perangkat tidak ditemukan." %}
   {% endfor %}
