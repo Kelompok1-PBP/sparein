@@ -194,3 +194,14 @@ class EditDeleteTests(TestCase):
         self.assertTrue(Device.objects.exists())
         self.client.post(url)
         self.assertFalse(Device.objects.exists())
+
+
+class ApiTests(TestCase):
+    def setUp(self):
+        phone = DeviceCategory.objects.create(name="Phone")
+        Device.objects.create(name="iPhone 12", category=phone, brand="Apple")
+        Device.objects.create(name="Galaxy S21", category=phone, brand="Samsung")
+
+    def test_result_shape(self):
+        item = self.client.get(reverse("devices:api")).json()["results"][0]
+        self.assertEqual(set(item), {"name", "slug", "brand", "category", "image_url", "url"})
