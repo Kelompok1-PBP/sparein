@@ -41,3 +41,15 @@ def device_create(request):
 
 def _can_edit(user, device):
     return is_admin(user) or (is_contributor(user) and device.created_by_id == user.id)
+
+
+@login_required
+def device_edit(request, slug):
+    device = get_device_or_404(slug)
+    if not _can_edit(request.user, device):
+        raise PermissionDenied
+    form = DeviceForm(request.POST or None, instance=device)
+    if form.is_valid():
+        form.save()
+        return redirect("devices:detail", slug=device.slug)
+    return render(request, "devices/form.html", {"form": form})
