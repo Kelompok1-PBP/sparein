@@ -1,3 +1,4 @@
+from django.db import models
 from django.utils.text import slugify
 
 
@@ -7,3 +8,20 @@ def unique_slug(model, value):
     while model.objects.filter(slug=slug).exists():
         slug, n = f"{base}-{n}", n + 1
     return slug
+
+
+class DeviceCategory(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=210, unique=True, blank=True)
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name_plural = "device categories"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slug(DeviceCategory, self.name)
+        super().save(*args, **kwargs)
