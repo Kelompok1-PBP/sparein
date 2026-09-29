@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Perangkat · Sparein{% endblock %}
 {% block content %}
 <h1>Perangkat</h1>
 {% if can_create %}<p><a href="{% url 'devices:create' %}">Tambah perangkat</a></p>{% endif %}
-<form method="get" id="device-filter">
+<form method="get" id="device-filter" data-api="{% url 'devices:api' %}">
   <label>Cari <input type="search" name="q" value="{{ filters.q }}"></label>
   <label>Kategori
     <select name="category">
@@ -23,3 +24,4 @@
   {% endfor %}
 </section>
 {% endblock %}
+{% block extra_js %}<script src="{% static 'devices/devices.js' %}" defer></script>{% endblock %}

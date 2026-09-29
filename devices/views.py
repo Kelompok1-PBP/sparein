@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from core.permissions import is_admin, is_contributor
 from devices.forms import DeviceForm
@@ -69,3 +71,18 @@ def device_delete(request, slug):
         device.delete()
         return redirect("devices:list")
     return render(request, "devices/confirm_delete.html", {"device": device})
+
+
+def api_devices(request):
+    results = [
+        {
+            "name": d.name,
+            "slug": d.slug,
+            "brand": d.brand,
+            "category": d.category.slug,
+            "image_url": d.image_url,
+            "url": reverse("devices:detail", args=[d.slug]),
+        }
+        for d in get_device_qs(**_filters(request))[:60]
+    ]
+    return JsonResponse({"results": results})
