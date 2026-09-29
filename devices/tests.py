@@ -152,3 +152,32 @@ class CreateTests(TestCase):
         resp = self.client.post(reverse("devices:create"), {**self.data, "release_year": 20021})
         self.assertEqual(resp.status_code, 200)
         self.assertFalse(Device.objects.exists())
+
+
+class EditDeleteTests(TestCase):
+    def setUp(self):
+        self.cat = DeviceCategory.objects.create(name="Phone")
+        self.owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
+        self.device = Device.objects.create(
+            name="iPhone 12", category=self.cat, brand="Apple", created_by=self.owner
+        )
+        self.edit_url = reverse("devices:edit", args=[self.device.slug])
+        self.payload = {"name": "iPhone 12 mini", "category": self.cat.pk, "brand": "Apple"}
+
+    def test_owner_edits(self):
+        self.client.force_login(self.owner)
+        self.client.post(self.edit_url, self.payload)
+        self.device.refresh_from_db()
+        self.assertEqual(self.device.name, "iPhone 12 mini")
+
+    def test_other_contributor_cannot_edit(self):
+        self.client.force_login(make_user("other", UserProfile.Role.CONTRIBUTOR))
+        self.assertEqual(self.client.post(self.edit_url, self.payload).status_code, 403)
+
+    def test_member_cannot_edit(self):
+        self.client.force_login(make_user("m"))
+        self.assertEqual(self.client.post(self.edit_url, self.payload).status_code, 403)
+
+    def test_admin_edits_any(self):
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+        self.assertEqual(self.client.post(self.edit_url, self.payload).status_code, 302)
