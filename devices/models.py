@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 
@@ -40,6 +41,10 @@ class Device(models.Model):
     summary = models.TextField(blank=True)
     ifixit_wikiid = models.PositiveIntegerField(null=True, blank=True, unique=True)
     repairability_score = models.PositiveSmallIntegerField(null=True, blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["name"]
