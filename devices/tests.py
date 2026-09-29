@@ -5,6 +5,7 @@ import requests
 from django.core.management import call_command
 from django.http import Http404
 from django.test import TestCase
+from django.urls import reverse
 
 from devices.ifixit import upsert_family
 from devices.models import Device, DeviceCategory
@@ -91,3 +92,12 @@ class SeedCommandTests(TestCase):
     def test_api_down_falls_back_to_fixture(self, _):
         call_command("seed_devices", stdout=StringIO(), stderr=StringIO())
         self.assertGreaterEqual(Device.objects.count(), 50)
+
+
+class PageTests(TestCase):
+    def setUp(self):
+        self.cat = DeviceCategory.objects.create(name="Phone")
+        self.device = Device.objects.create(name="iPhone 12", category=self.cat, brand="Apple")
+
+    def test_visitor_sees_device_list(self):
+        self.assertContains(self.client.get(reverse("devices:list")), "iPhone 12")
