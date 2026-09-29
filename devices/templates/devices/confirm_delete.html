@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Hapus {{ device.name }}{% endblock %}
+{% block content %}
+<h1>Hapus {{ device.name }}?</h1>
+<form method="post">{% csrf_token %}<button type="submit">Hapus</button></form>
+<p><a href="{% url 'devices:detail' device.slug %}">Batal</a></p>
+{% endblock %}
