@@ -27,7 +27,8 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-insecure-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+PRODUCTION = os.getenv("PRODUCTION", "False") == "True"
+DEBUG = not PRODUCTION
 
 ALLOWED_HOSTS = []
 
