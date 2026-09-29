@@ -5,6 +5,8 @@
 <section id="device-results">
   {% for d in devices %}
     {% include "partials/card.html" with title=d.name text=d.brand %}
+  {% empty %}
+    {% include "partials/empty_state.html" with message="Perangkat tidak ditemukan." %}
   {% endfor %}
 </section>
 {% endblock %}
