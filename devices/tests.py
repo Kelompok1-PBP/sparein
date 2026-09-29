@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.test import TestCase
 
+from devices.ifixit import upsert_family
 from devices.models import Device, DeviceCategory
 from devices.selectors import get_device_or_404, get_device_qs
 
@@ -46,3 +47,29 @@ class SelectorTests(TestCase):
         self.assertEqual(get_device_or_404("iphone-12").brand, "Apple")
         with self.assertRaises(Http404):
             get_device_or_404("nope")
+
+
+SAMPLE = {
+    "wikiid": 1,
+    "display_title": "iPhone",
+    "ancestors": [{"wikiid": 437, "display_title": "Phone"}],
+    "children": [
+        {
+            "wikiid": 10,
+            "display_title": "iPhone 12",
+            "summary": "2020 phone.",
+            "image": {"standard": "https://img.example/12.standard"},
+        },
+        {"wikiid": 11, "display_title": "iPhone 13", "summary": "", "image": None},
+    ],
+}
+
+
+class IfixitTests(TestCase):
+    def test_family_mapped_under_parent(self):
+        self.assertEqual(upsert_family(SAMPLE, "Apple"), 2)
+        d = Device.objects.get(ifixit_wikiid=10)
+        self.assertEqual(
+            (d.brand, d.category.name, d.category.parent.name), ("Apple", "iPhone", "Phone")
+        )
+        self.assertEqual(Device.objects.get(ifixit_wikiid=11).image_url, "")
