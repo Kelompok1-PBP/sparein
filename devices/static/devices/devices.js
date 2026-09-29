@@ -23,3 +23,14 @@ function render(items) {
     results.append(article);
   }
 }
+
+async function search() {
+  const params = new URLSearchParams(new FormData(form));
+  const resp = await fetch(`${form.dataset.api}?${params}`);
+  if (resp.ok) render((await resp.json()).results);
+}
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  search();
+});
