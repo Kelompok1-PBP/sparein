@@ -57,3 +57,14 @@ def device_edit(request, slug):
         form.save()
         return redirect("devices:detail", slug=device.slug)
     return render(request, "devices/form.html", {"form": form})
+
+
+@login_required
+def device_delete(request, slug):
+    device = get_device_or_404(slug)
+    if not is_admin(request.user):
+        raise PermissionDenied
+    if request.method == "POST":
+        device.delete()
+        return redirect("devices:list")
+    return render(request, "devices/confirm_delete.html", {"device": device})
