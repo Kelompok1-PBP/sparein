@@ -45,3 +45,9 @@ class PermissionTests(TestCase):
 class PageTests(TestCase):
     def test_home_renders(self):
         self.assertContains(self.client.get(reverse("core:home")), "Sparein")
+
+    def test_login_page_renders(self):
+        self.assertEqual(self.client.get(reverse("login")).status_code, 200)
+
+    def test_logout_rejects_get(self):
+        self.assertEqual(self.client.get(reverse("logout")).status_code, 405)
