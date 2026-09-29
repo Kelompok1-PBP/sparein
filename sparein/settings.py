@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-insecure-key")
 PRODUCTION = os.getenv("PRODUCTION", "False") == "True"
 DEBUG = not PRODUCTION
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", os.getenv("PWS_HOST", "")]
 
 
 # Application definition
