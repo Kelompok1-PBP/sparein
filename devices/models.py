@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.text import slugify
 
@@ -40,7 +41,9 @@ class Device(models.Model):
     image_url = models.URLField(blank=True)
     summary = models.TextField(blank=True)
     ifixit_wikiid = models.PositiveIntegerField(null=True, blank=True, unique=True)
-    repairability_score = models.PositiveSmallIntegerField(null=True, blank=True)
+    repairability_score = models.PositiveSmallIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(10)]
+    )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
     )
