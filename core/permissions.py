@@ -14,3 +14,8 @@ def _role(user):
 def is_member(user):
     """True kalau user udah login."""
     return _role(user) is not None
+
+
+def is_contributor(user):
+    """Contributor atau admin."""
+    return _role(user) in (Role.CONTRIBUTOR, Role.ADMIN)
