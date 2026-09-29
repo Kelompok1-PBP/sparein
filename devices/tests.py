@@ -1,6 +1,7 @@
 from io import StringIO
 from unittest import mock
 
+import requests
 from django.core.management import call_command
 from django.http import Http404
 from django.test import TestCase
@@ -85,3 +86,8 @@ class SeedCommandTests(TestCase):
         call_command("seed_devices", families="iPhone:Apple", stdout=StringIO())
         call_command("seed_devices", families="iPhone:Apple", stdout=StringIO())
         self.assertEqual(Device.objects.count(), 2)
+
+    @mock.patch("devices.ifixit.fetch_family", side_effect=requests.ConnectionError("down"))
+    def test_api_down_falls_back_to_fixture(self, _):
+        call_command("seed_devices", stdout=StringIO(), stderr=StringIO())
+        self.assertGreaterEqual(Device.objects.count(), 50)
