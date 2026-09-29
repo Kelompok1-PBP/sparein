@@ -18,6 +18,7 @@ def device_list(request):
         "devices": get_device_qs(**filters)[:60],  # ponytail: tanpa pagination dulu
         "categories": DeviceCategory.objects.all(),
         "filters": filters,
+        "can_create": is_contributor(request.user),
     })
 
 
