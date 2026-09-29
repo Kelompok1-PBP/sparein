@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Perangkat · Sparein{% endblock %}
+{% block content %}
+<h1>Perangkat</h1>
+<ul>
+  {% for d in devices %}
+    <li><a href="{% url 'devices:detail' d.slug %}">{{ d.name }}</a> {{ d.brand }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
