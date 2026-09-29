@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ device.name }} · Sparein{% endblock %}
+{% block content %}
+<h1>{{ device.name }}</h1>
+{% if device.image_url %}<img src="{{ device.image_url }}" alt="{{ device.name }}" width="320">{% endif %}
+<dl>
+  <dt>Kategori</dt><dd>{{ device.category }}</dd>
+  <dt>Merek</dt><dd>{{ device.brand|default:"-" }}</dd>
+  <dt>Tahun rilis</dt><dd>{{ device.release_year|default:"-" }}</dd>
+  <dt>Skor perbaikan</dt><dd>{{ device.repairability_score|default:"-" }}</dd>
+</dl>
+<p>{{ device.summary|linebreaksbr }}</p>
+<p><a href="{% url 'devices:list' %}">Kembali</a></p>
+{% endblock %}

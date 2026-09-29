@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AnonymousUser, User
 from django.test import TestCase
+from django.urls import reverse
 
 from core.models import UserProfile
 from core.permissions import is_admin, is_contributor, is_member
@@ -39,3 +40,8 @@ class PermissionTests(TestCase):
 
     def test_contributor_is_not_admin(self):
         self.assertFalse(is_admin(self.make(UserProfile.Role.CONTRIBUTOR)))
+
+
+class PageTests(TestCase):
+    def test_home_renders(self):
+        self.assertContains(self.client.get(reverse("core:home")), "Sparein")
