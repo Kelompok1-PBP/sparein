@@ -106,3 +106,11 @@ class PageTests(TestCase):
         resp = self.client.get(reverse("devices:list"), {"q": "galaxy"})
         self.assertNotContains(resp, "iPhone 12")
         self.assertContains(resp, "Perangkat tidak ditemukan.")
+
+    def test_detail_shows_brand(self):
+        resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
+        self.assertContains(resp, "Apple")
+
+    def test_missing_slug_is_404(self):
+        resp = self.client.get(reverse("devices:detail", args=["nope"]))
+        self.assertEqual(resp.status_code, 404)
