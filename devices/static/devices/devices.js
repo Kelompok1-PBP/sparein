@@ -27,7 +27,9 @@ function render(items) {
 async function search() {
   const params = new URLSearchParams(new FormData(form));
   const resp = await fetch(`${form.dataset.api}?${params}`);
-  if (resp.ok) render((await resp.json()).results);
+  if (!resp.ok) return;
+  render((await resp.json()).results);
+  history.replaceState(null, "", `?${params}`);
 }
 
 form.addEventListener("submit", (e) => {
