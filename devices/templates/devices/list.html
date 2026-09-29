@@ -2,9 +2,9 @@
 {% block title %}Perangkat · Sparein{% endblock %}
 {% block content %}
 <h1>Perangkat</h1>
-<ul>
+<section id="device-results">
   {% for d in devices %}
-    <li>{{ d.name }} {{ d.brand }}</li>
+    {% include "partials/card.html" with title=d.name text=d.brand %}
   {% endfor %}
-</ul>
+</section>
 {% endblock %}
