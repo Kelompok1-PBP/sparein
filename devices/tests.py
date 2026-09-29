@@ -1,3 +1,7 @@
+from io import StringIO
+from unittest import mock
+
+from django.core.management import call_command
 from django.http import Http404
 from django.test import TestCase
 
@@ -73,3 +77,11 @@ class IfixitTests(TestCase):
             (d.brand, d.category.name, d.category.parent.name), ("Apple", "iPhone", "Phone")
         )
         self.assertEqual(Device.objects.get(ifixit_wikiid=11).image_url, "")
+
+
+class SeedCommandTests(TestCase):
+    @mock.patch("devices.ifixit.fetch_family", return_value=SAMPLE)
+    def test_reseed_does_not_duplicate(self, _):
+        call_command("seed_devices", families="iPhone:Apple", stdout=StringIO())
+        call_command("seed_devices", families="iPhone:Apple", stdout=StringIO())
+        self.assertEqual(Device.objects.count(), 2)
