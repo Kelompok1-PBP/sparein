@@ -181,3 +181,16 @@ class EditDeleteTests(TestCase):
     def test_admin_edits_any(self):
         self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
         self.assertEqual(self.client.post(self.edit_url, self.payload).status_code, 302)
+
+    def test_owner_cannot_delete(self):
+        self.client.force_login(self.owner)
+        url = reverse("devices:delete", args=[self.device.slug])
+        self.assertEqual(self.client.post(url).status_code, 403)
+
+    def test_admin_deletes_with_post_only(self):
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+        url = reverse("devices:delete", args=[self.device.slug])
+        self.assertEqual(self.client.get(url).status_code, 200)
+        self.assertTrue(Device.objects.exists())
+        self.client.post(url)
+        self.assertFalse(Device.objects.exists())
