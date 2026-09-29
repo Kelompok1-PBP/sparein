@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, render
 
-from core.permissions import is_contributor
+from core.permissions import is_admin, is_contributor
 from devices.forms import DeviceForm
 from devices.models import DeviceCategory
 from devices.selectors import get_device_or_404, get_device_qs
@@ -37,3 +37,7 @@ def device_create(request):
         device.save()
         return redirect("devices:detail", slug=device.slug)
     return render(request, "devices/form.html", {"form": form})
+
+
+def _can_edit(user, device):
+    return is_admin(user) or (is_contributor(user) and device.created_by_id == user.id)
