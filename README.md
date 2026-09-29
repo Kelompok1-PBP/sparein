@@ -357,6 +357,7 @@ pip install -r requirements.txt
 cp .env.example .env           # isi kredensial database
 python manage.py migrate
 python manage.py seed_devices  # tarik initial data dari iFixit API
+python manage.py loaddata seed_devices  # alternatif tanpa internet
 python manage.py runserver
 ```
 
