@@ -27,6 +27,7 @@ def device_detail(request, slug):
     return render(request, "devices/detail.html", {
         "device": device,
         "can_edit": _can_edit(request.user, device),
+        "can_delete": is_admin(request.user),
     })
 
 

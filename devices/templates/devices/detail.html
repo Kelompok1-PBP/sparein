@@ -11,5 +11,6 @@
 </dl>
 <p>{{ device.summary|linebreaksbr }}</p>
 {% if can_edit %}<p><a href="{% url 'devices:edit' device.slug %}">Ubah</a></p>{% endif %}
+{% if can_delete %}<p><a href="{% url 'devices:delete' device.slug %}">Hapus</a></p>{% endif %}
 <p><a href="{% url 'devices:list' %}">Kembali</a></p>
 {% endblock %}
