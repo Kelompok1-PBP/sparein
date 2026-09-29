@@ -23,7 +23,11 @@ def device_list(request):
 
 
 def device_detail(request, slug):
-    return render(request, "devices/detail.html", {"device": get_device_or_404(slug)})
+    device = get_device_or_404(slug)
+    return render(request, "devices/detail.html", {
+        "device": device,
+        "can_edit": _can_edit(request.user, device),
+    })
 
 
 @login_required
