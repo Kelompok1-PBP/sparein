@@ -45,3 +45,15 @@ class PermissionTests(TestCase):
 class PageTests(TestCase):
     def test_home_renders(self):
         self.assertContains(self.client.get(reverse("core:home")), "Sparein")
+
+    def test_login_page_renders(self):
+        self.assertEqual(self.client.get(reverse("login")).status_code, 200)
+
+    def test_logout_rejects_get(self):
+        self.assertEqual(self.client.get(reverse("logout")).status_code, 405)
+
+    def test_register_creates_member_and_logs_in(self):
+        resp = self.client.post(reverse("core:register"), {
+            "username": "sari", "password1": "Sparein!2026", "password2": "Sparein!2026"})
+        self.assertRedirects(resp, reverse("core:home"))
+        self.assertEqual(User.objects.get(username="sari").profile.role, UserProfile.Role.MEMBER)

@@ -2,11 +2,13 @@ from io import StringIO
 from unittest import mock
 
 import requests
+from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.http import Http404
 from django.test import TestCase
 from django.urls import reverse
 
+from core.models import UserProfile
 from devices.ifixit import upsert_family
 from devices.models import Device, DeviceCategory
 from devices.selectors import get_device_or_404, get_device_qs
@@ -114,3 +116,81 @@ class PageTests(TestCase):
     def test_missing_slug_is_404(self):
         resp = self.client.get(reverse("devices:detail", args=["nope"]))
         self.assertEqual(resp.status_code, 404)
+
+
+def make_user(name, role=UserProfile.Role.MEMBER):
+    user = User.objects.create_user(name, password="x")
+    user.profile.role = role
+    user.profile.save()
+    return user
+
+
+class CreateTests(TestCase):
+    def setUp(self):
+        self.cat = DeviceCategory.objects.create(name="Phone")
+        self.data = {"name": "Pixel 7", "category": self.cat.pk, "brand": "Google"}
+
+    def test_anonymous_redirected_to_login(self):
+        resp = self.client.post(reverse("devices:create"), self.data)
+        self.assertEqual(resp.status_code, 302)
+        self.assertFalse(Device.objects.exists())
+
+    def test_member_forbidden(self):
+        self.client.force_login(make_user("m"))
+        self.assertEqual(self.client.post(reverse("devices:create"), self.data).status_code, 403)
+
+    def test_contributor_creates_and_owns(self):
+        user = make_user("c", UserProfile.Role.CONTRIBUTOR)
+        self.client.force_login(user)
+        resp = self.client.post(reverse("devices:create"), self.data)
+        device = Device.objects.get(name="Pixel 7")
+        self.assertRedirects(resp, reverse("devices:detail", args=[device.slug]))
+        self.assertEqual(device.created_by, user)
+
+    def test_rejects_far_future_year(self):
+        self.client.force_login(make_user("c2", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.post(reverse("devices:create"), {**self.data, "release_year": 20021})
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(Device.objects.exists())
+
+
+class EditDeleteTests(TestCase):
+    def setUp(self):
+        self.cat = DeviceCategory.objects.create(name="Phone")
+        self.owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
+        self.device = Device.objects.create(
+            name="iPhone 12", category=self.cat, brand="Apple", created_by=self.owner
+        )
+        self.edit_url = reverse("devices:edit", args=[self.device.slug])
+        self.payload = {"name": "iPhone 12 mini", "category": self.cat.pk, "brand": "Apple"}
+
+    def test_owner_edits(self):
+        self.client.force_login(self.owner)
+        self.client.post(self.edit_url, self.payload)
+        self.device.refresh_from_db()
+        self.assertEqual(self.device.name, "iPhone 12 mini")
+
+    def test_other_contributor_cannot_edit(self):
+        self.client.force_login(make_user("other", UserProfile.Role.CONTRIBUTOR))
+        self.assertEqual(self.client.post(self.edit_url, self.payload).status_code, 403)
+
+    def test_member_cannot_edit(self):
+        self.client.force_login(make_user("m"))
+        self.assertEqual(self.client.post(self.edit_url, self.payload).status_code, 403)
+
+    def test_admin_edits_any(self):
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+        self.assertEqual(self.client.post(self.edit_url, self.payload).status_code, 302)
+
+    def test_owner_cannot_delete(self):
+        self.client.force_login(self.owner)
+        url = reverse("devices:delete", args=[self.device.slug])
+        self.assertEqual(self.client.post(url).status_code, 403)
+
+    def test_admin_deletes_with_post_only(self):
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+        url = reverse("devices:delete", args=[self.device.slug])
+        self.assertEqual(self.client.get(url).status_code, 200)
+        self.assertTrue(Device.objects.exists())
+        self.client.post(url)
+        self.assertFalse(Device.objects.exists())

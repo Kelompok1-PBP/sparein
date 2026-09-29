@@ -2,5 +2,12 @@
   <nav>
     <a href="{% url 'core:home' %}">Sparein</a>
     <a href="{% url 'devices:list' %}">Perangkat</a>
+    {% if user.is_authenticated %}
+      <span>{{ user.username }}</span>
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Keluar</button></form>
+    {% else %}
+      <a href="{% url 'login' %}">Masuk</a>
+      <a href="{% url 'core:register' %}">Daftar</a>
+    {% endif %}
   </nav>
 </header>
