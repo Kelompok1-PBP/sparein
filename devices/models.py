@@ -28,3 +28,26 @@ class DeviceCategory(models.Model):
         if not self.slug:
             self.slug = unique_slug(DeviceCategory, self.name)
         super().save(*args, **kwargs)
+
+
+class Device(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=210, unique=True, blank=True)
+    category = models.ForeignKey(DeviceCategory, on_delete=models.PROTECT, related_name="devices")
+    brand = models.CharField(max_length=100, blank=True)
+    release_year = models.PositiveSmallIntegerField(null=True, blank=True)
+    image_url = models.URLField(blank=True)
+    summary = models.TextField(blank=True)
+    ifixit_wikiid = models.PositiveIntegerField(null=True, blank=True, unique=True)
+    repairability_score = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slug(Device, self.name)
+        super().save(*args, **kwargs)
