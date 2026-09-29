@@ -2,11 +2,13 @@ from io import StringIO
 from unittest import mock
 
 import requests
+from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.http import Http404
 from django.test import TestCase
 from django.urls import reverse
 
+from core.models import UserProfile
 from devices.ifixit import upsert_family
 from devices.models import Device, DeviceCategory
 from devices.selectors import get_device_or_404, get_device_qs
@@ -114,3 +116,33 @@ class PageTests(TestCase):
     def test_missing_slug_is_404(self):
         resp = self.client.get(reverse("devices:detail", args=["nope"]))
         self.assertEqual(resp.status_code, 404)
+
+
+def make_user(name, role=UserProfile.Role.MEMBER):
+    user = User.objects.create_user(name, password="x")
+    user.profile.role = role
+    user.profile.save()
+    return user
+
+
+class CreateTests(TestCase):
+    def setUp(self):
+        self.cat = DeviceCategory.objects.create(name="Phone")
+        self.data = {"name": "Pixel 7", "category": self.cat.pk, "brand": "Google"}
+
+    def test_anonymous_redirected_to_login(self):
+        resp = self.client.post(reverse("devices:create"), self.data)
+        self.assertEqual(resp.status_code, 302)
+        self.assertFalse(Device.objects.exists())
+
+    def test_member_forbidden(self):
+        self.client.force_login(make_user("m"))
+        self.assertEqual(self.client.post(reverse("devices:create"), self.data).status_code, 403)
+
+    def test_contributor_creates_and_owns(self):
+        user = make_user("c", UserProfile.Role.CONTRIBUTOR)
+        self.client.force_login(user)
+        resp = self.client.post(reverse("devices:create"), self.data)
+        device = Device.objects.get(name="Pixel 7")
+        self.assertRedirects(resp, reverse("devices:detail", args=[device.slug]))
+        self.assertEqual(device.created_by, user)
