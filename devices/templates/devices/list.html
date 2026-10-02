@@ -1,24 +1,40 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Perangkat · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'devices/devices.css' %}">{% endblock %}
 {% block content %}
-<h1>Perangkat</h1>
-{% if can_create %}<p><a href="{% url 'devices:create' %}">Tambah perangkat</a></p>{% endif %}
-<form method="get" id="device-filter" data-api="{% url 'devices:api' %}">
-  <label>Cari <input type="search" name="q" value="{{ filters.q }}"></label>
-  <label>Kategori
-    <select name="category">
+<div class="page-head">
+  <div>
+    <h1>Perangkat</h1>
+    <p class="page-head__sub">Cari perangkat yang mau kamu servis atau pelajari.</p>
+  </div>
+  {% if can_create %}<a class="btn btn--primary" href="{% url 'devices:create' %}">Tambah perangkat</a>{% endif %}
+</div>
+
+<form method="get" id="device-filter" class="filter card" data-api="{% url 'devices:api' %}">
+  <div class="field">
+    <label class="field__label" for="f-q">Cari</label>
+    <input class="input" type="search" id="f-q" name="q" value="{{ filters.q }}" placeholder="Nama perangkat">
+  </div>
+  <div class="field">
+    <label class="field__label" for="f-category">Kategori</label>
+    <select class="input" id="f-category" name="category">
       <option value="">Semua</option>
       {% for c in categories %}<option value="{{ c.slug }}"{% if c.slug == filters.category %} selected{% endif %}>{{ c.name }}</option>{% endfor %}
     </select>
-  </label>
-  <label>Merek <input type="text" name="brand" value="{{ filters.brand }}"></label>
-  <button type="submit">Terapkan</button>
+  </div>
+  <div class="field">
+    <label class="field__label" for="f-brand">Merek</label>
+    <input class="input" type="text" id="f-brand" name="brand" value="{{ filters.brand }}" placeholder="Misal Apple">
+  </div>
+  <button type="submit" class="btn btn--primary filter__submit">Terapkan</button>
 </form>
-<section id="device-results">
+
+<section id="device-results" class="device-grid"
+         data-placeholder="{% static 'core/icons/package-muted.svg' %}"
+         data-empty-icon="{% static 'core/icons/inbox-sky.svg' %}">
   {% for d in devices %}
-    {% url 'devices:detail' d.slug as detail_url %}
-    {% include "partials/card.html" with title=d.name url=detail_url text=d.brand %}
+    {% include "devices/_card.html" with d=d %}
   {% empty %}
     {% include "partials/empty_state.html" with message="Perangkat tidak ditemukan." %}
   {% endfor %}
