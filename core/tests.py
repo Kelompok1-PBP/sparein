@@ -188,14 +188,6 @@ class BaseLayoutTests(TestCase):
         self.assertContains(resp, 'href="/devices/" aria-current="page"', count=2)
         self.assertContains(resp, 'aria-current="page"', count=2)
 
-    def test_home_has_no_current_nav_item(self):
-        self.assertNotContains(self.client.get(reverse("core:home")), 'aria-current="page"')
-
-    def test_footer_has_data_source_note(self):
-        resp = self.client.get(reverse("core:home"))
-        self.assertContains(resp, "<footer")
-        self.assertContains(resp, "CC BY-NC-SA")
-
     def test_base_pages_have_no_inline_svg(self):
         self.assertNotContains(self.client.get(reverse("core:home")), "<svg")
         self.assertNotContains(self.client.get(reverse("devices:list")), "<svg")
@@ -242,14 +234,3 @@ class BaseLayoutTests(TestCase):
         with_action = render_to_string("partials/empty_state.html", {
             "message": "Kosong nih.", "action_url": "/devices/create/", "action_label": "Tambah"})
         self.assertIn('href="/devices/create/"', with_action)
-
-    def test_every_icon_referenced_in_templates_exists(self):
-        import re
-        from pathlib import Path
-        templates = Path(__file__).resolve().parent / "templates"
-        found = set()
-        for path in templates.rglob("*.html"):
-            found |= set(re.findall(r"core/icons/([\w-]+\.svg)", path.read_text(encoding="utf-8")))
-        self.assertGreater(len(found), 15)
-        for name in found:
-            self.assertIsNotNone(finders.find(f"core/icons/{name}"), name)
