@@ -4,6 +4,7 @@ from unittest import mock
 import requests
 from django.contrib.auth.models import User
 from django.core.management import call_command
+from django.db.models import ProtectedError
 from django.http import Http404
 from django.test import TestCase
 from django.urls import reverse
@@ -212,3 +213,18 @@ class ApiTests(TestCase):
     def test_filters_by_brand(self):
         data = self.client.get(reverse("devices:api"), {"brand": "samsung"}).json()
         self.assertEqual([d["name"] for d in data["results"]], ["Galaxy S21"])
+
+class ProtectedDeleteTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.device = Device.objects.create(name="iPhone 12", category=cat, brand="Apple")
+        self.url = reverse("devices:delete", args=[self.device.slug])
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+
+    def test_device_with_linked_rows_is_kept_with_message(self):
+        err = ProtectedError("linked", {self.device})
+        with mock.patch.object(Device, "delete", side_effect=err):
+            resp = self.client.post(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "masih dipakai")
+        self.assertTrue(Device.objects.filter(pk=self.device.pk).exists())
