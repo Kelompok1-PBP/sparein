@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="240" viewBox="0 0 390 240" fill="none" role="img" aria-label="Ilustrasi Sparein: ponsel diperbaiki dengan kunci inggris">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0A2447"/>
+    <stop offset="0.55" stop-color="#10386A"/>
+    <stop offset="1" stop-color="#0D4280"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#1581EE" stop-opacity="0.45"/>
+    <stop offset="1" stop-color="#1581EE" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0A66C9"/>
+    <stop offset="1" stop-color="#0A4FA0"/>
+  </linearGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0A2447" stop-opacity="0"/>
+    <stop offset="1" stop-color="#0A2447" stop-opacity="0.9"/>
+  </linearGradient>
+  <mask id="wrenchMask">
+    <rect x="-100" y="-120" width="200" height="260" fill="#fff"/>
+    <rect x="-13" y="-120" width="26" height="62" rx="4" fill="#000"/>
+  </mask>
+</defs>
+<rect width="390" height="240" fill="url(#bg)"/>
+<circle cx="290" cy="130" r="170" fill="url(#glow)"/>
+<path d="M461.9 15.7 L480.0 21.2 L478.0 40.7 L459.2 42.5 L451.7 62.2 L464.7 76.0 L453.2 91.9 L436.0 84.1 L419.7 97.4 L423.9 115.9 L406.1 123.9 L395.2 108.5 L374.3 111.9 L368.8 130.0 L349.3 128.0 L347.5 109.2 L327.8 101.7 L314.0 114.7 L298.1 103.2 L305.9 86.0 L292.6 69.7 L274.1 73.9 L266.1 56.1 L281.5 45.2 L278.1 24.3 L260.0 18.8 L262.0 -0.7 L280.8 -2.5 L288.3 -22.2 L275.3 -36.0 L286.8 -51.9 L304.0 -44.1 L320.3 -57.4 L316.1 -75.9 L333.9 -83.9 L344.8 -68.5 L365.7 -71.9 L371.2 -90.0 L390.7 -88.0 L392.5 -69.2 L412.2 -61.7 L426.0 -74.7 L441.9 -63.2 L434.1 -46.0 L447.4 -29.7 L465.9 -33.9 L473.9 -16.1 L458.5 -5.2Z M406.0 20.0 A36 36 0 1 0 334.0 20.0 A36 36 0 1 0 406.0 20.0Z" fill="#0D4280" fill-opacity="0.75" fill-rule="evenodd"/>
+<path d="M125.5 238.2 L138.5 245.4 L133.5 261.7 L118.7 260.2 L108.2 275.1 L114.5 288.6 L100.8 298.8 L89.7 288.9 L72.5 294.8 L69.7 309.4 L52.6 309.7 L49.4 295.1 L32.0 289.8 L21.1 299.9 L7.2 290.1 L13.1 276.4 L2.2 261.9 L-12.5 263.7 L-18.0 247.6 L-5.2 240.0 L-5.5 221.8 L-18.5 214.6 L-13.5 198.3 L1.3 199.8 L11.8 184.9 L5.5 171.4 L19.2 161.2 L30.3 171.1 L47.5 165.2 L50.3 150.6 L67.4 150.3 L70.6 164.9 L88.0 170.2 L98.9 160.1 L112.8 169.9 L106.9 183.6 L117.8 198.1 L132.5 196.3 L138.0 212.4 L125.2 220.0Z M86.0 230.0 A26 26 0 1 0 34.0 230.0 A26 26 0 1 0 86.0 230.0Z" fill="#0A4FA0" fill-opacity="0.55" fill-rule="evenodd"/>
+<g stroke="#47A2F4" stroke-opacity="0.65" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M248 150 H150 V90 H110"/></g>
+<circle cx="110" cy="90" r="5" fill="#0A2447" stroke="#47A2F4" stroke-width="2.5"/><circle cx="110" cy="90" r="1.9" fill="#B0D7FB"/><circle cx="150" cy="150" r="5" fill="#0A2447" stroke="#47A2F4" stroke-width="2.5"/><circle cx="150" cy="150" r="1.9" fill="#B0D7FB"/>
+<g transform="translate(300 150) rotate(-8) scale(0.42)"><rect x="-120.0" y="-215.0" width="240" height="430" rx="40" fill="#0A2447" stroke="#7FBEF8" stroke-width="3"/>
+    <rect x="-108.0" y="-203.0" width="216" height="406" rx="32" fill="url(#screen)"/>
+    <rect x="-26" y="-195.0" width="52" height="12" rx="6" fill="#0A2447"/>
+<g transform="translate(0 20) rotate(40)"><g transform="scale(1.0)">
+      <g mask="url(#wrenchMask)"><circle cx="0" cy="-70" r="46" fill="#D7EBFD"/></g>
+      <rect x="-15" y="-34" width="30" height="130" rx="15" fill="#D7EBFD"/>
+      <circle cx="0" cy="78" r="6" fill="#0A4FA0"/>
+    </g></g></g>
+<g transform="translate(344 190) scale(0.5294117647058824)">
+      <circle r="34" fill="#16A34A" stroke="#0A2447" stroke-width="6"/>
+      <path d="M-14 1 L-4 11 L15 -10" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+<path d="M70 141 Q70 150 79 150 Q70 150 70 159 Q70 150 61 150 Q70 150 70 141Z" fill="#D7EBFD"/><path d="M150 194 Q150 200 156 200 Q150 200 150 206 Q150 200 144 200 Q150 200 150 194Z" fill="#7FBEF8"/>
+</svg>

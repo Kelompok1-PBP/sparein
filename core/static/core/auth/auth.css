@@ -1,0 +1,436 @@
+/* Halaman autentikasi (login dan daftar). Token warna ngikutin docs/DESIGN-SYSTEM.md */
+:root {
+  --blue-50: #EFF7FE;
+  --blue-100: #D7EBFD;
+  --blue-200: #B0D7FB;
+  --blue-300: #7FBEF8;
+  --blue-400: #47A2F4;
+  --blue-500: #1581EE;
+  --blue-600: #0A66C9;
+  --blue-700: #0A4FA0;
+  --blue-800: #0D4280;
+  --blue-900: #10386A;
+  --blue-950: #0A2447;
+  --success: #16A34A;
+  --danger: #DC2626;
+  --ink: #0A0A0A;
+  --muted: #5B6472;
+  --surface: #F7F9FC;
+  --white: #FFFFFF;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--ink);
+  background: var(--blue-950);
+}
+
+/* ---------- layout, mobile dulu ---------- */
+.auth {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.auth__art {
+  position: relative;
+  flex: none;
+  height: 240px;
+  overflow: hidden;
+  background: var(--blue-950);
+}
+
+.auth__art picture {
+  position: absolute;
+  inset: 0;
+}
+
+.auth__art-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.auth__logo {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  border-radius: 4px;
+}
+
+.auth__logo img {
+  display: block;
+  width: auto;
+  height: 28px;
+}
+
+.auth__switch-top {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--blue-200);
+}
+
+.auth__switch-top a {
+  color: var(--white);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.auth__switch-top a:hover { text-decoration: underline; }
+
+.auth__tagline,
+.auth__back { display: none; }
+
+.auth__panel {
+  position: relative;
+  flex: 1;
+  margin-top: -24px;
+  padding: 24px;
+  background: var(--white);
+  border-radius: 24px 24px 0 0;
+}
+
+.auth__wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.auth__heading { margin: 0; }
+
+.auth__title {
+  margin: 0;
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.auth__lead {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted);
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.auth__switch {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* ---------- layout desktop: dua panel selebar sama ---------- */
+@media (min-width: 768px) {
+  .auth {
+    flex-direction: row;
+    background: var(--white);
+  }
+
+  .auth__art,
+  .auth__panel {
+    flex: none;
+    width: 50%;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .auth__art { height: auto; }
+
+  /* di halaman daftar, ilustrasi pindah ke kanan */
+  .auth--register .auth__art { order: 2; }
+
+  .auth__logo { top: 48px; left: 64px; }
+  .auth__logo img { height: 32px; }
+  .auth__switch-top { display: none; }
+
+  .auth__tagline {
+    display: block;
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    bottom: 64px;
+    margin: 0;
+    color: var(--white);
+  }
+
+  .auth__tagline-title {
+    display: block;
+    margin: 0;
+    font-size: 40px;
+    line-height: 48px;
+    font-weight: 700;
+  }
+
+  .auth__tagline-title span { display: block; }
+  .auth__tagline-title span + span { color: var(--blue-300); }
+
+  .auth__tagline-motto {
+    display: block;
+    margin: 8px 0 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--blue-200);
+  }
+
+  .auth__panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    padding: 96px 64px 64px;
+    border-radius: 0;
+  }
+
+  .auth__back {
+    position: absolute;
+    top: 48px;
+    left: 64px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .auth__back:hover { color: var(--ink); }
+
+  .auth__title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
+
+/* ---------- field ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field__label {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.field__req {
+  margin-left: 4px;
+  color: var(--danger);
+}
+
+.field__control { position: relative; }
+
+.input {
+  display: block;
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--blue-200);
+  border-radius: 10px;
+  background: var(--white);
+  font: inherit;
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--ink);
+}
+
+.input:hover { border-color: var(--blue-300); }
+
+.input:focus-visible {
+  outline: 2px solid var(--blue-400);
+  outline-offset: 2px;
+}
+
+.input[aria-invalid="true"] { border-color: var(--danger); }
+
+.input--password { padding-right: 48px; }
+
+.field__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.field__toggle[hidden] { display: none; }
+.field__toggle:hover { color: var(--ink); }
+
+.field__toggle:focus-visible {
+  outline: 2px solid var(--blue-400);
+  outline-offset: -2px;
+}
+
+.field__toggle .icon-eye-off { display: none; }
+.field__toggle[aria-pressed="true"] .icon-eye { display: none; }
+.field__toggle[aria-pressed="true"] .icon-eye-off { display: block; }
+
+.field__msg {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted);
+}
+
+.field__msg--error {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  color: var(--danger);
+}
+
+.field__msg--error svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.field__msg--error span { display: block; }
+
+/* ---------- tombol dan link ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn--block { width: 100%; }
+
+.btn--primary {
+  background: var(--blue-500);
+  color: var(--white);
+}
+
+.btn--primary:hover { background: var(--blue-600); }
+.btn--primary:active { background: var(--blue-700); }
+
+.btn--primary:disabled,
+.btn--primary[aria-busy="true"] {
+  background: var(--blue-300);
+  cursor: not-allowed;
+}
+
+.btn:focus-visible,
+.link:focus-visible,
+.auth__back:focus-visible,
+.auth__logo:focus-visible,
+.auth__switch-top a:focus-visible {
+  outline: 2px solid var(--blue-400);
+  outline-offset: 2px;
+}
+
+.link {
+  border-radius: 4px;
+  font-weight: 600;
+  color: var(--blue-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:hover { color: var(--blue-600); }
+
+/* ---------- kotak info dan error ---------- */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-left: 4px solid;
+  border-radius: 0 10px 10px 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink);
+}
+
+.alert svg { flex: none; }
+.alert p { margin: 0; }
+
+.alert--info {
+  border-color: var(--blue-500);
+  background: rgba(21, 129, 238, 0.08);
+}
+
+.alert--info svg { color: var(--blue-500); }
+
+.alert--error {
+  border-color: var(--danger);
+  background: rgba(220, 38, 38, 0.1);
+}
+
+.alert--error svg { color: var(--danger); }
+
+/* ---------- efek geser waktu pindah login <-> daftar ---------- */
+@keyframes auth-slide-in {
+  from { transform: translateX(var(--from)); }
+  to { transform: none; }
+}
+
+@keyframes auth-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.auth--login { --art-from: 100%; --panel-from: -100%; }
+.auth--register { --art-from: -100%; --panel-from: 100%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .auth-swapping .auth__panel { animation: auth-fade-in 300ms ease-out both; }
+
+  @media (min-width: 768px) {
+    .auth-swapping .auth__art {
+      --from: var(--art-from);
+      animation: auth-slide-in 500ms cubic-bezier(0.65, 0, 0.35, 1) both;
+    }
+
+    .auth-swapping .auth__panel {
+      --from: var(--panel-from);
+      animation: auth-slide-in 500ms cubic-bezier(0.65, 0, 0.35, 1) both;
+    }
+  }
+}
