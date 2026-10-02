@@ -369,7 +369,7 @@ python manage.py runserver
 |---|---|
 | Repositori | <https://github.com/Kelompok1-PBP/sparein> |
 | Deployment PWS | <https://muhammad-sultan51-sparein.pws.cs.ui.ac.id> |
-| Desain Figma | menyusul di Checkpoint 2 |
+| Desain Figma | <https://www.figma.com/files/team/1681171501069468571/all-projects> |
 | Panduan kontribusi | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
 | Kontrak modul | [`docs/MODULES.md`](docs/MODULES.md) |
 | Design system | [`docs/DESIGN-SYSTEM.md`](docs/DESIGN-SYSTEM.md) |
