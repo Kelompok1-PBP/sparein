@@ -35,7 +35,7 @@ jobs:
           fi
           current_branch=$(git branch --show-current)
           echo "Deploying branch: $current_branch"
-          if ! push_output=$(git push "$PWS_URL" "$current_branch:master" 2>&1); then
+          if ! push_output=$(git push --force "$PWS_URL" "$current_branch:master" 2>&1); then
             echo "Push failed with output: ${push_output//$PWS_URL/***}"
             echo "::error::Unable to push to PWS. Resolve the conflict manually, then re-run this workflow."
             exit 1

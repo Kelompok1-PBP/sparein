@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Sparein{% endblock %}</title>
+</head>
+<body>
+  {% include "partials/header.html" %}
+  <main>{% block content %}{% endblock %}</main>
+  {% include "partials/footer.html" %}
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

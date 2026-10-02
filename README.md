@@ -357,6 +357,7 @@ pip install -r requirements.txt
 cp .env.example .env           # isi kredensial database
 python manage.py migrate
 python manage.py seed_devices  # tarik initial data dari iFixit API
+python manage.py loaddata seed_devices  # alternatif tanpa internet
 python manage.py runserver
 ```
 
@@ -367,7 +368,7 @@ python manage.py runserver
 | | |
 |---|---|
 | Repositori | <https://github.com/Kelompok1-PBP/sparein> |
-| Deployment PWS | menyusul di Checkpoint 2 |
+| Deployment PWS | <https://muhammad-sultan51-sparein.pws.cs.ui.ac.id> |
 | Desain Figma | menyusul di Checkpoint 2 |
 | Panduan kontribusi | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
 | Kontrak modul | [`docs/MODULES.md`](docs/MODULES.md) |

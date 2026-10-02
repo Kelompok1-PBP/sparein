@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Masuk · Sparein{% endblock %}
+{% block content %}
+<h1>Masuk</h1>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Masuk</button></form>
+<p><a href="{% url 'core:register' %}">Belum punya akun?</a></p>
+{% endblock %}
