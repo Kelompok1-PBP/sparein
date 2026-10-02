@@ -133,3 +133,104 @@ class AuthIconTests(TestCase):
         for resp in pages:
             self.assertNotContains(resp, "<svg")
             self.assertContains(resp, "core/icons/")
+
+
+class BaseLayoutTests(TestCase):
+    def make(self, username, role=None, superuser=False):
+        if superuser:
+            return User.objects.create_superuser(username, password="Sparein!2026")
+        user = User.objects.create_user(username, password="Sparein!2026")
+        if role:
+            user.profile.role = role
+            user.profile.save()
+        return user
+
+    def get_as(self, user, url):
+        self.client.force_login(user)
+        return self.client.get(url)
+
+    def test_visitor_header_shows_login_and_register_only(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, "skip-link")
+        self.assertContains(resp, 'data-site-header')
+        self.assertContains(resp, reverse("login"))
+        self.assertContains(resp, reverse("core:register"))
+        self.assertNotContains(resp, "Jurnal Saya")
+        self.assertNotContains(resp, "Keluar")
+
+    def test_member_header_has_account_menu_without_create_or_admin(self):
+        resp = self.get_as(self.make("budi"), reverse("core:home"))
+        self.assertContains(resp, "badge--member")
+        self.assertContains(resp, "Jurnal Saya")
+        self.assertNotContains(resp, "Perangkat baru")
+        self.assertNotContains(resp, "Panel admin")
+
+    def test_logout_is_a_post_form_with_csrf(self):
+        resp = self.get_as(self.make("budi"), reverse("core:home"))
+        self.assertContains(resp, f'method="post" action="{reverse("logout")}"')
+        self.assertContains(resp, "csrfmiddlewaretoken")
+
+    def test_contributor_header_has_create_menu_but_no_admin_link(self):
+        resp = self.get_as(self.make("sari", "CONTRIBUTOR"), reverse("core:home"))
+        self.assertContains(resp, "badge--contributor")
+        self.assertContains(resp, "Perangkat baru")
+        self.assertNotContains(resp, "Panel admin")
+
+    def test_admin_header_has_create_menu_and_admin_panel(self):
+        for user in (self.make("bos", "ADMIN"), self.make("root", superuser=True)):
+            resp = self.get_as(user, reverse("core:home"))
+            self.assertContains(resp, "badge--admin")
+            self.assertContains(resp, "Panel admin")
+            self.assertContains(resp, "Perangkat baru")
+
+    def test_current_page_marked_in_nav(self):
+        resp = self.client.get(reverse("devices:list"))
+        self.assertContains(resp, 'href="/devices/" aria-current="page"', count=2)
+        self.assertContains(resp, 'aria-current="page"', count=2)
+
+    def test_base_pages_have_no_inline_svg(self):
+        self.assertNotContains(self.client.get(reverse("core:home")), "<svg")
+        self.assertNotContains(self.client.get(reverse("devices:list")), "<svg")
+
+    def test_member_gets_403_page_for_contributor_only_page(self):
+        resp = self.get_as(self.make("budi"), reverse("devices:create"))
+        self.assertEqual(resp.status_code, 403)
+        self.assertContains(resp, "Kamu belum bisa buka halaman ini", status_code=403)
+        self.assertContains(resp, "khusus Contributor atau Admin", status_code=403)
+
+    def test_contributor_gets_generic_403_message_on_admin_only_action(self):
+        from devices.models import Device, DeviceCategory
+        device = Device.objects.create(name="Kipas", category=DeviceCategory.objects.create(name="Dapur"))
+        resp = self.get_as(self.make("sari", "CONTRIBUTOR"), reverse("devices:delete", args=[device.slug]))
+        self.assertEqual(resp.status_code, 403)
+        self.assertContains(resp, "Akunmu tidak punya izin buat aksi ini.", status_code=403)
+
+    def test_unknown_url_renders_custom_404(self):
+        resp = self.client.get("/tidak-ada-halaman/")
+        self.assertContains(resp, "Halaman ini tidak ketemu", status_code=404)
+
+    def test_toast_renders_each_message_level(self):
+        from django.template.loader import render_to_string
+
+        class Msg:
+            def __init__(self, level_tag, text):
+                self.level_tag, self.text = level_tag, text
+
+            def __str__(self):
+                return self.text
+
+        html = render_to_string("partials/toasts.html", {"messages": [
+            Msg("success", "Tersimpan."), Msg("error", "Gagal."), Msg("info", "Halo.")]})
+        for cls in ("toast--success", "toast--error", "toast--info"):
+            self.assertIn(cls, html)
+        self.assertIn("Tersimpan.", html)
+        self.assertEqual(render_to_string("partials/toasts.html", {"messages": []}).strip(), "")
+
+    def test_empty_state_shows_message_and_optional_action(self):
+        from django.template.loader import render_to_string
+        plain = render_to_string("partials/empty_state.html", {"message": "Kosong nih."})
+        self.assertIn("Kosong nih.", plain)
+        self.assertNotIn("btn--primary", plain)
+        with_action = render_to_string("partials/empty_state.html", {
+            "message": "Kosong nih.", "action_url": "/devices/create/", "action_label": "Tambah"})
+        self.assertIn('href="/devices/create/"', with_action)

@@ -1,0 +1,5 @@
+{% load static %}{# Daftar item menu "Buat". Parameter: cls (class tambahan buat tiap item) #}
+<a class="menu__item {{ cls }}" href="{% url 'devices:create' %}"><img src="{% static 'core/icons/smartphone-muted.svg' %}" alt="" width="20" height="20">Perangkat baru</a>
+<a class="menu__item {{ cls }}" href="/diagnostics/symptoms/create/"><img src="{% static 'core/icons/stethoscope-muted.svg' %}" alt="" width="20" height="20">Gejala baru</a>
+<a class="menu__item {{ cls }}" href="/guides/create/"><img src="{% static 'core/icons/book-open-muted.svg' %}" alt="" width="20" height="20">Panduan baru</a>
+<a class="menu__item {{ cls }}" href="/parts/create/"><img src="{% static 'core/icons/package-muted.svg' %}" alt="" width="20" height="20">Suku cadang baru</a>

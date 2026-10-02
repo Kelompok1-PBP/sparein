@@ -1,0 +1,14 @@
+{% load static %}{# Notifikasi dari Django messages. Level: success, error, info, warning #}
+{% if messages %}
+  <div class="toasts" role="status" aria-live="polite">
+    {% for message in messages %}
+      <div class="toast toast--{{ message.level_tag|default:'info' }}" data-toast>
+        {% if message.level_tag == 'success' %}<img src="{% static 'core/icons/circle-check-success.svg' %}" alt="" width="20" height="20">
+        {% elif message.level_tag == 'error' %}<img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="20" height="20">
+        {% else %}<img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20">{% endif %}
+        <p>{{ message }}</p>
+        <button class="toast__close" type="button" data-toast-close aria-label="Tutup notifikasi"><img src="{% static 'core/icons/x-muted.svg' %}" alt="" width="20" height="20"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
