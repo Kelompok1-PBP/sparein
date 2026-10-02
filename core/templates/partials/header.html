@@ -52,58 +52,53 @@
       {% endif %}
     </div>
 
-    <button class="site-header__burger" type="button" data-menu-open aria-label="Buka menu" aria-expanded="false" aria-controls="menu-mobile">
-      <img src="{% static 'core/icons/menu-ink.svg' %}" alt="" width="24" height="24">
-    </button>
+    <details class="mobile-nav">
+      <summary aria-label="Menu">
+        <img class="icon-menu" src="{% static 'core/icons/menu-ink.svg' %}" alt="" width="24" height="24">
+        <img class="icon-close" src="{% static 'core/icons/x-ink.svg' %}" alt="" width="24" height="24">
+      </summary>
+      <nav class="mobile-nav__panel" aria-label="Menu mobile">
+        {% if user.is_authenticated %}
+          <div class="mobile-nav__account">
+            <span class="avatar avatar--lg" aria-hidden="true">{{ user.username|slice:":1"|upper }}</span>
+            <div class="mobile-nav__who">
+              <p>{{ user.username }}</p>
+              {% include "partials/role_badge.html" %}
+            </div>
+          </div>
+        {% endif %}
+        <div class="mobile-nav__list">
+          <a class="menu__item menu__item--lg" href="{% url 'devices:list' %}"{% if ns == 'devices' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/smartphone-muted.svg' %}" alt="" width="20" height="20">Perangkat</a>
+          <a class="menu__item menu__item--lg" href="/diagnostics/"{% if ns == 'diagnostics' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/stethoscope-muted.svg' %}" alt="" width="20" height="20">Diagnosa</a>
+          <a class="menu__item menu__item--lg" href="/guides/"{% if ns == 'guides' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/book-open-muted.svg' %}" alt="" width="20" height="20">Panduan</a>
+          <a class="menu__item menu__item--lg" href="/parts/"{% if ns == 'parts' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/package-muted.svg' %}" alt="" width="20" height="20">Suku Cadang</a>
+          {% if user.is_authenticated %}
+            <a class="menu__item menu__item--lg" href="/journal/"{% if ns == 'journal' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/notebook-pen-muted.svg' %}" alt="" width="20" height="20">Jurnal</a>
+            <hr class="menu__sep">
+            <a class="menu__item menu__item--lg" href="/profile/"><img src="{% static 'core/icons/user-muted.svg' %}" alt="" width="20" height="20">Profil Saya</a>
+            <a class="menu__item menu__item--lg" href="/guides/saved/"><img src="{% static 'core/icons/bookmark-muted.svg' %}" alt="" width="20" height="20">Panduan Tersimpan</a>
+            {% if user.is_superuser or user.profile.role == "ADMIN" or user.profile.role == "CONTRIBUTOR" %}
+              <hr class="menu__sep">
+              <p class="menu__title">Buat baru</p>
+              {% include "partials/create_items.html" with cls="menu__item--lg" %}
+            {% endif %}
+            {% if user.is_superuser or user.profile.role == "ADMIN" %}
+              <a class="menu__item menu__item--lg" href="{% url 'admin:index' %}" target="_blank" rel="noopener"><img src="{% static 'core/icons/shield-muted.svg' %}" alt="" width="20" height="20">Panel admin<img class="menu__ext" src="{% static 'core/icons/external-link-muted.svg' %}" alt="" width="16" height="16"></a>
+            {% endif %}
+            <hr class="menu__sep">
+            <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+              <button class="menu__item menu__item--lg menu__item--danger" type="submit"><img src="{% static 'core/icons/log-out-danger.svg' %}" alt="" width="20" height="20">Keluar</button>
+            </form>
+          {% endif %}
+        </div>
+        {% if not user.is_authenticated %}
+          <div class="mobile-nav__actions">
+            <a class="btn btn--primary btn--block" href="{% url 'core:register' %}">Daftar</a>
+            <a class="btn btn--secondary btn--block" href="{% url 'login' %}">Masuk</a>
+          </div>
+        {% endif %}
+      </nav>
+    </details>
   </div>
 </header>
-
-<div class="mobile-menu" id="menu-mobile" hidden>
-  <div class="mobile-menu__top">
-    <a href="{% url 'core:home' %}" aria-label="Sparein, ke beranda"><img src="{% static 'core/brand/sparein-lockup.svg' %}" alt="" width="111" height="28"></a>
-    <button class="mobile-menu__close" type="button" data-menu-close aria-label="Tutup menu"><img src="{% static 'core/icons/x-ink.svg' %}" alt="" width="20" height="20"></button>
-  </div>
-
-  {% if user.is_authenticated %}
-    <div class="mobile-menu__account">
-      <span class="avatar avatar--lg" aria-hidden="true">{{ user.username|slice:":1"|upper }}</span>
-      <div class="mobile-menu__who">
-        <p>{{ user.username }}</p>
-        {% include "partials/role_badge.html" %}
-      </div>
-    </div>
-  {% endif %}
-
-  <nav class="mobile-menu__list" aria-label="Menu mobile">
-    <a class="menu__item menu__item--lg" href="{% url 'devices:list' %}"{% if ns == 'devices' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/smartphone-muted.svg' %}" alt="" width="20" height="20">Perangkat</a>
-    <a class="menu__item menu__item--lg" href="/diagnostics/"{% if ns == 'diagnostics' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/stethoscope-muted.svg' %}" alt="" width="20" height="20">Diagnosa</a>
-    <a class="menu__item menu__item--lg" href="/guides/"{% if ns == 'guides' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/book-open-muted.svg' %}" alt="" width="20" height="20">Panduan</a>
-    <a class="menu__item menu__item--lg" href="/parts/"{% if ns == 'parts' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/package-muted.svg' %}" alt="" width="20" height="20">Suku Cadang</a>
-    {% if user.is_authenticated %}
-      <a class="menu__item menu__item--lg" href="/journal/"{% if ns == 'journal' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/notebook-pen-muted.svg' %}" alt="" width="20" height="20">Jurnal</a>
-      <hr class="menu__sep">
-      <a class="menu__item menu__item--lg" href="/profile/"><img src="{% static 'core/icons/user-muted.svg' %}" alt="" width="20" height="20">Profil Saya</a>
-      <a class="menu__item menu__item--lg" href="/guides/saved/"><img src="{% static 'core/icons/bookmark-muted.svg' %}" alt="" width="20" height="20">Panduan Tersimpan</a>
-      {% if user.is_superuser or user.profile.role == "ADMIN" or user.profile.role == "CONTRIBUTOR" %}
-        <hr class="menu__sep">
-        <p class="menu__title">Buat baru</p>
-        {% include "partials/create_items.html" with cls="menu__item--lg" %}
-      {% endif %}
-      {% if user.is_superuser or user.profile.role == "ADMIN" %}
-        <a class="menu__item menu__item--lg" href="{% url 'admin:index' %}" target="_blank" rel="noopener"><img src="{% static 'core/icons/shield-muted.svg' %}" alt="" width="20" height="20">Panel admin<img class="menu__ext" src="{% static 'core/icons/external-link-muted.svg' %}" alt="" width="16" height="16"></a>
-      {% endif %}
-      <hr class="menu__sep">
-      <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-        <button class="menu__item menu__item--lg menu__item--danger" type="submit"><img src="{% static 'core/icons/log-out-danger.svg' %}" alt="" width="20" height="20">Keluar</button>
-      </form>
-    {% endif %}
-  </nav>
-
-  {% if not user.is_authenticated %}
-    <div class="mobile-menu__actions">
-      <a class="btn btn--primary btn--block" href="{% url 'core:register' %}">Daftar</a>
-      <a class="btn btn--secondary btn--block" href="{% url 'login' %}">Masuk</a>
-    </div>
-  {% endif %}
-</div>
 {% endwith %}

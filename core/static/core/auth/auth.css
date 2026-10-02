@@ -209,32 +209,21 @@ body {
   outline-offset: 2px;
 }
 
-/* ---------- efek geser waktu pindah login <-> daftar ---------- */
-@keyframes auth-slide-in {
-  from { transform: translateX(var(--from)); }
-  to { transform: none; }
+/* ---------- efek geser waktu pindah login <-> daftar ----------
+   Dua panel dikasih nama yang sama di kedua halaman. Browser yang dukung View Transitions
+   (Chrome, Edge, Safari baru) otomatis ngegeser panel dari posisi lama ke posisi baru.
+   Browser lain tetap pindah halaman biasa. Tanpa JS. */
+@view-transition { navigation: auto; }
+
+.auth__art { view-transition-name: auth-art; }
+.auth__panel { view-transition-name: auth-panel; }
+
+::view-transition-group(auth-art),
+::view-transition-group(auth-panel) {
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-@keyframes auth-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.auth--login { --art-from: 100%; --panel-from: -100%; }
-.auth--register { --art-from: -100%; --panel-from: 100%; }
-
-@media (prefers-reduced-motion: no-preference) {
-  .auth-swapping .auth__panel { animation: auth-fade-in 300ms ease-out both; }
-
-  @media (min-width: 768px) {
-    .auth-swapping .auth__art {
-      --from: var(--art-from);
-      animation: auth-slide-in 500ms cubic-bezier(0.65, 0, 0.35, 1) both;
-    }
-
-    .auth-swapping .auth__panel {
-      --from: var(--panel-from);
-      animation: auth-slide-in 500ms cubic-bezier(0.65, 0, 0.35, 1) both;
-    }
-  }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) { animation-duration: 0.01ms; }
 }
