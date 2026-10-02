@@ -1,13 +1,18 @@
-<header>
-  <nav>
-    <a href="{% url 'core:home' %}">Sparein</a>
-    <a href="{% url 'devices:list' %}">Perangkat</a>
-    {% if user.is_authenticated %}
-      <span>{{ user.username }}</span>
-      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Keluar</button></form>
-    {% else %}
-      <a href="{% url 'login' %}">Masuk</a>
-      <a href="{% url 'core:register' %}">Daftar</a>
-    {% endif %}
+{% load static %}
+<header class="site-header">
+  <nav class="site-nav" aria-label="Navigasi utama">
+    <a class="site-logo" href="{% url 'core:home' %}"><img src="{% static 'core/brand/sparein-lockup-light.svg' %}" alt="Sparein" width="108" height="28"></a>
+    <div class="site-links">
+      <a href="{% url 'devices:list' %}" {% if request.resolver_match.app_name == 'devices' %}aria-current="page"{% endif %}>Perangkat</a>
+      <span class="nav-pending" title="Modul diagnosis belum tersedia">Diagnosa</span>
+      <a href="{% url 'guides:list' %}" {% if request.resolver_match.app_name == 'guides' %}aria-current="page"{% endif %}>Panduan</a>
+      <span class="nav-pending" title="Modul suku cadang belum tersedia">Suku Cadang</span>
+      <span class="nav-pending" title="Modul jurnal belum tersedia">Jurnal</span>
+    </div>
+    <div class="site-account">
+      {% if user.is_authenticated %}
+      <details class="account-menu"><summary aria-label="Menu akun {{ user.username }}"><span class="avatar">{{ user.username|first|upper }}</span><span aria-hidden="true">⌄</span></summary><div class="account-panel"><strong>{{ user.username }}</strong><a href="{% url 'guides:list' %}">Panduan Perbaikan</a><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Keluar</button></form></div></details>
+      {% else %}<a href="{% url 'login' %}">Masuk</a><a class="signup-link" href="{% url 'core:register' %}">Daftar</a>{% endif %}
+    </div>
   </nav>
 </header>

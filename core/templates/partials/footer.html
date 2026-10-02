@@ -1,1 +1,10 @@
-<footer><p>Sparein · Kelompok 1 PBP</p></footer>
+{% load static %}
+<footer class="site-footer"><div class="footer-inner">
+  <div class="footer-columns">
+    <div class="footer-brand"><a class="site-logo" href="{% url 'core:home' %}"><img src="{% static 'core/brand/sparein-lockup-light.svg' %}" alt="Sparein" width="108" height="28"></a><p>Repair first, discard last.</p></div>
+    <div><h2>Jelajahi</h2><a href="{% url 'devices:list' %}">Perangkat</a><span>Diagnosa</span><a href="{% url 'guides:list' %}">Panduan</a><span>Suku Cadang</span></div>
+    <div><h2>Akun</h2><a href="{% url 'login' %}">Masuk</a><a href="{% url 'core:register' %}">Daftar</a><span>Jurnal</span></div>
+    <div><h2>Tentang</h2><a href="{% url 'core:home' %}">Tentang Sparein</a><a href="https://github.com/Kelompok1-PBP/sparein">GitHub</a></div>
+  </div>
+  <div class="footer-bottom"><p>Sebagian data perangkat dan panduan berasal dari iFixit, dipakai di bawah lisensi CC BY-NC-SA.</p><p>Kelompok 1 · Pemrograman Berbasis Platform · Fasilkom UI · 2026</p></div>
+</div></footer>
