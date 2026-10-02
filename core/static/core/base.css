@@ -108,6 +108,9 @@ img { max-width: 100%; }
 .btn--ghost { background: transparent; color: var(--blue-700); }
 .btn--ghost:hover { background: var(--blue-50); }
 
+.btn--danger { background: var(--danger); color: var(--white); }
+.btn--danger:hover { background: #B91C1C; }
+
 .btn:disabled,
 .btn[aria-busy="true"] {
   background: var(--blue-300);
