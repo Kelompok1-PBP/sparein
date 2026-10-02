@@ -1,0 +1,8 @@
+{% load static %}{# Jejak halaman dua tingkat. Parameter: parent_label, parent_url, current #}
+<nav aria-label="Breadcrumb">
+  <ol class="breadcrumb">
+    <li><a href="{{ parent_url }}">{{ parent_label }}</a></li>
+    <li aria-hidden="true"><img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16"></li>
+    <li aria-current="page">{{ current }}</li>
+  </ol>
+</nav>

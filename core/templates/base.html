@@ -1,13 +1,23 @@
-<!doctype html>
+{% load static %}<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Sparein{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'core/base.css' %}">
+  {% block extra_css %}{% endblock %}
+  <script src="{% static 'core/base.js' %}" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#konten">Lewati ke konten utama</a>
   {% include "partials/header.html" %}
-  <main>{% block content %}{% endblock %}</main>
+  {% include "partials/toasts.html" %}
+  <main id="konten" class="site-main">
+    <div class="container">
+      {% block page_header %}{% endblock %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
   {% include "partials/footer.html" %}
   {% block extra_js %}{% endblock %}
 </body>

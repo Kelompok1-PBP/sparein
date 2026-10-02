@@ -1,1 +1,43 @@
-<footer><p>Sparein · Kelompok 1 PBP</p></footer>
+{% load static %}
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__top">
+      <div>
+        <a class="site-footer__brand" href="{% url 'core:home' %}" aria-label="Sparein, ke beranda"><img src="{% static 'core/brand/sparein-lockup.svg' %}" alt="" width="111" height="28"></a>
+        <p class="site-footer__tagline">Repair first, discard last.</p>
+      </div>
+      <nav aria-label="Jelajahi">
+        <h2 class="site-footer__title">Jelajahi</h2>
+        <ul class="site-footer__list">
+          <li><a href="{% url 'devices:list' %}">Perangkat</a></li>
+          <li><a href="/diagnostics/">Diagnosa</a></li>
+          <li><a href="/guides/">Panduan</a></li>
+          <li><a href="/parts/">Suku Cadang</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Akun">
+        <h2 class="site-footer__title">Akun</h2>
+        <ul class="site-footer__list">
+          {% if user.is_authenticated %}
+            <li><a href="/profile/">Profil Saya</a></li>
+            <li><a href="/journal/">Jurnal Saya</a></li>
+          {% else %}
+            <li><a href="{% url 'login' %}">Masuk</a></li>
+            <li><a href="{% url 'core:register' %}">Daftar</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+      <nav aria-label="Tentang">
+        <h2 class="site-footer__title">Tentang</h2>
+        <ul class="site-footer__list">
+          <li><a href="https://github.com/Kelompok1-PBP/sparein#readme" target="_blank" rel="noopener">Tentang Sparein</a></li>
+          <li><a href="https://github.com/Kelompok1-PBP/sparein" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">
+      <p>Sebagian data perangkat dan panduan berasal dari iFixit, dipakai di bawah lisensi CC BY-NC-SA.</p>
+      <p>Kelompok 1 · Pemrograman Berbasis Platform · Fasilkom UI · 2026</p>
+    </div>
+  </div>
+</footer>

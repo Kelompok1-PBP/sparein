@@ -1,0 +1,7 @@
+{# Judul halaman. Parameter: title, description (opsional). Kalau butuh tombol aksi, tulis markup .page-header langsung (lihat base.css) #}
+<div class="page-header">
+  <div>
+    <h1 class="page-header__title">{{ title }}</h1>
+    {% if description %}<p class="page-header__desc">{{ description }}</p>{% endif %}
+  </div>
+</div>

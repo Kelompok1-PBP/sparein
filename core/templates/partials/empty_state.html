@@ -1,1 +1,6 @@
-<p>{{ message|default:"Belum ada data." }}</p>
+{% load static %}{# State kosong. Parameter: message (opsional), action_url dan action_label (opsional) #}
+<div class="empty-state">
+  <img src="{% static 'core/icons/inbox-sky.svg' %}" alt="" width="48" height="48">
+  <p>{{ message|default:"Belum ada data." }}</p>
+  {% if action_url %}<a class="btn btn--primary" href="{{ action_url }}">{{ action_label }}</a>{% endif %}
+</div>
