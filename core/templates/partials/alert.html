@@ -1,0 +1,10 @@
+{% load static %}
+{# Kotak info atau error. Parameter: kind (info atau error), message #}
+<div class="alert alert--{{ kind }}" role="{% if kind == 'error' %}alert{% else %}status{% endif %}">
+  {% if kind == 'error' %}
+    <img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="20" height="20">
+  {% else %}
+    <img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20">
+  {% endif %}
+  <p>{{ message }}</p>
+</div>

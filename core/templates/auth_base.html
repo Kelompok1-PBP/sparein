@@ -1,0 +1,39 @@
+{% load static %}<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Sparein{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'core/auth/auth.css' %}">
+  <script src="{% static 'core/auth/auth.js' %}"></script>
+</head>
+<body>
+  {# Layout khusus login dan daftar: dua panel (ilustrasi dan form), ngga pakai header dan footer biasa #}
+  <div class="auth auth--{% block mode %}login{% endblock %}">
+    <div class="auth__art">
+      <picture>
+        <source media="(min-width: 768px)" srcset="{% static 'core/auth/auth-illustration.svg' %}">
+        <img class="auth__art-img" src="{% static 'core/auth/auth-illustration-banner.svg' %}" alt="" width="390" height="240">
+      </picture>
+      <a class="auth__logo" href="{% url 'core:home' %}" aria-label="Sparein, ke beranda">
+        <img src="{% static 'core/brand/sparein-lockup-dark.svg' %}" alt="" width="111" height="28">
+      </a>
+      {% block mode_link_top %}{% endblock %}
+      <p class="auth__tagline">
+        <span class="auth__tagline-title">{% block tagline %}{% endblock %}</span>
+        <span class="auth__tagline-motto">Repair first, discard last.</span>
+      </p>
+    </div>
+
+    <main class="auth__panel">
+      <a class="auth__back" href="{% url 'core:home' %}">
+        <img src="{% static 'core/icons/arrow-left-muted.svg' %}" alt="" width="16" height="16">
+        Kembali ke beranda
+      </a>
+      <div class="auth__wrap">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+</body>
+</html>

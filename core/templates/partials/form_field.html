@@ -1,0 +1,31 @@
+{% load static %}
+{# Satu isian form. Parameter: field, label, kind (text atau password), autocomplete, hint (opsional) #}
+<div class="field">
+  <label class="field__label" for="{{ field.id_for_label }}">{{ label }}<span class="field__req" aria-hidden="true">*</span></label>
+  <div class="field__control">
+    <input class="input{% if kind == 'password' %} input--password{% endif %}"
+           type="{{ kind }}"
+           name="{{ field.html_name }}"
+           id="{{ field.id_for_label }}"
+           {% if kind != 'password' and field.value %}value="{{ field.value }}"{% endif %}
+           autocomplete="{{ autocomplete }}"
+           {% if kind != 'password' %}autocapitalize="none" spellcheck="false"{% endif %}
+           aria-required="true"
+           {% if field.errors %}aria-invalid="true"{% endif %}
+           {% if field.errors or hint %}aria-describedby="{{ field.id_for_label }}-msg"{% endif %}>
+    {% if kind == 'password' %}
+      <button type="button" class="field__toggle" data-toggle-password hidden aria-label="Tampilkan password" aria-pressed="false">
+        <img class="icon-eye" src="{% static 'core/icons/eye-muted.svg' %}" alt="" width="20" height="20">
+        <img class="icon-eye-off" src="{% static 'core/icons/eye-off-muted.svg' %}" alt="" width="20" height="20">
+      </button>
+    {% endif %}
+  </div>
+  {% if field.errors %}
+    <div class="field__msg field__msg--error" id="{{ field.id_for_label }}-msg">
+      <img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="16" height="16">
+      <div>{% for error in field.errors %}<span>{{ error }}</span>{% endfor %}</div>
+    </div>
+  {% elif hint %}
+    <p class="field__msg" id="{{ field.id_for_label }}-msg">{{ hint }}</p>
+  {% endif %}
+</div>
