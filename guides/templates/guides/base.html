@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% load static %}{% block title %}Panduan perbaikan · Sparein{% endblock %}{% block content %}<link rel="stylesheet" href="{% static 'guides/guides.css' %}">{% for message in messages %}<p class="notice" role="status">{{ message }}</p>{% endfor %}{% block guide_content %}{% endblock %}{% endblock %}
