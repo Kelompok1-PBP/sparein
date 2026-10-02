@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.staticfiles import finders
 from django.test import TestCase
 from django.urls import reverse
 
@@ -113,3 +114,22 @@ class AuthPageTests(TestCase):
             "username": "budi", "password1": "Sparein!2026", "password2": "beda-sekali"})
         self.assertNotContains(resp, "Sparein!2026")
         self.assertNotContains(resp, "beda-sekali")
+
+
+class AuthIconTests(TestCase):
+    ICONS = ("eye-muted", "eye-off-muted", "circle-alert-danger", "info-blue", "arrow-left-muted")
+
+    def test_icon_files_exist(self):
+        for name in self.ICONS:
+            self.assertIsNotNone(finders.find(f"core/icons/{name}.svg"), name)
+
+    def test_auth_pages_call_svg_files_instead_of_inline_svg(self):
+        pages = (
+            self.client.get(reverse("login"), {"next": "/devices/"}),
+            self.client.post(reverse("login"), {"username": "x", "password": "y"}),
+            self.client.get(reverse("core:register")),
+            self.client.post(reverse("core:register"), {"username": "x"}),
+        )
+        for resp in pages:
+            self.assertNotContains(resp, "<svg")
+            self.assertContains(resp, "core/icons/")
