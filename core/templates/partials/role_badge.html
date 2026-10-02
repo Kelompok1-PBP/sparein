@@ -1,0 +1,2 @@
+{# Penanda role user yang lagi login. Admin kalau superuser atau role ADMIN #}
+{% if user.is_superuser or user.profile.role == "ADMIN" %}<span class="badge badge--admin">Admin</span>{% elif user.profile.role == "CONTRIBUTOR" %}<span class="badge badge--contributor">Contributor</span>{% else %}<span class="badge badge--member">Member</span>{% endif %}

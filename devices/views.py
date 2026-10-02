@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -67,10 +68,14 @@ def device_delete(request, slug):
     device = get_device_or_404(slug)
     if not is_admin(request.user):
         raise PermissionDenied
+    blocked = False
     if request.method == "POST":
-        device.delete()
-        return redirect("devices:list")
-    return render(request, "devices/confirm_delete.html", {"device": device})
+        try:
+            device.delete()
+            return redirect("devices:list")
+        except ProtectedError:  # guides dan parts PROTECT ke Device
+            blocked = True
+    return render(request, "devices/confirm_delete.html", {"device": device, "blocked": blocked})
 
 
 def api_devices(request):

@@ -2,6 +2,7 @@
 {% block title %}Hapus {{ device.name }}{% endblock %}
 {% block content %}
 <h1>Hapus {{ device.name }}?</h1>
+{% if blocked %}<p role="alert">Perangkat ini masih dipakai panduan atau suku cadang. Hapus atau pindahkan dulu data yang terhubung.</p>{% endif %}
 <form method="post">{% csrf_token %}<button type="submit">Hapus</button></form>
 <p><a href="{% url 'devices:detail' device.slug %}">Batal</a></p>
 {% endblock %}
