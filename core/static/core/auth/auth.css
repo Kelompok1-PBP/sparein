@@ -290,7 +290,7 @@ body {
 }
 
 .field__toggle[hidden] { display: none; }
-.field__toggle:hover { color: var(--ink); }
+.field__toggle:hover img { filter: brightness(0.35); }
 
 .field__toggle:focus-visible {
   outline: 2px solid var(--blue-400);
@@ -315,7 +315,7 @@ body {
   color: var(--danger);
 }
 
-.field__msg--error svg {
+.field__msg--error img {
   flex: none;
   margin-top: 2px;
 }
@@ -388,7 +388,7 @@ body {
   color: var(--ink);
 }
 
-.alert svg { flex: none; }
+.alert img { flex: none; }
 .alert p { margin: 0; }
 
 .alert--info {
@@ -396,14 +396,12 @@ body {
   background: rgba(21, 129, 238, 0.08);
 }
 
-.alert--info svg { color: var(--blue-500); }
 
 .alert--error {
   border-color: var(--danger);
   background: rgba(220, 38, 38, 0.1);
 }
 
-.alert--error svg { color: var(--danger); }
 
 /* ---------- efek geser waktu pindah login <-> daftar ---------- */
 @keyframes auth-slide-in {

@@ -1,9 +1,10 @@
+{% load static %}
 {# Kotak info atau error. Parameter: kind (info atau error), message #}
 <div class="alert alert--{{ kind }}" role="{% if kind == 'error' %}alert{% else %}status{% endif %}">
   {% if kind == 'error' %}
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+    <img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="20" height="20">
   {% else %}
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    <img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20">
   {% endif %}
   <p>{{ message }}</p>
 </div>
