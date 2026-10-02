@@ -57,3 +57,59 @@ class PageTests(TestCase):
             "username": "sari", "password1": "Sparein!2026", "password2": "Sparein!2026"})
         self.assertRedirects(resp, reverse("core:home"))
         self.assertEqual(User.objects.get(username="sari").profile.role, UserProfile.Role.MEMBER)
+
+
+class AuthPageTests(TestCase):
+    def test_login_uses_auth_layout_without_site_chrome(self):
+        resp = self.client.get(reverse("login"))
+        self.assertContains(resp, "Masuk ke Sparein")
+        self.assertContains(resp, "auth--login")
+        self.assertNotContains(resp, "<footer")
+
+    def test_login_with_next_shows_info_and_keeps_next(self):
+        resp = self.client.get(reverse("login"), {"next": "/devices/create/"})
+        self.assertContains(resp, "Masuk dulu ya buat lanjut.")
+        self.assertContains(resp, 'name="next" value="/devices/create/"')
+
+    def test_login_without_next_has_no_info(self):
+        resp = self.client.get(reverse("login"))
+        self.assertNotContains(resp, "Masuk dulu ya buat lanjut.")
+
+    def test_wrong_password_shows_message_and_never_echoes_password(self):
+        User.objects.create_user("sari", password="Sparein!2026")
+        resp = self.client.post(reverse("login"), {"username": "sari", "password": "salah-banget"})
+        self.assertContains(resp, "Username atau password salah. Coba cek lagi ya.")
+        self.assertContains(resp, 'value="sari"')
+        self.assertNotContains(resp, "salah-banget")
+
+    def test_login_links_to_register(self):
+        self.assertContains(self.client.get(reverse("login")), reverse("core:register"))
+
+    def test_register_has_three_fields_and_no_email(self):
+        resp = self.client.get(reverse("core:register"))
+        self.assertContains(resp, "auth--register")
+        for name in ("username", "password1", "password2"):
+            self.assertContains(resp, f'name="{name}"')
+        self.assertNotContains(resp, 'name="email"')
+
+    def test_register_links_to_login(self):
+        self.assertContains(self.client.get(reverse("core:register")), reverse("login"))
+
+    def test_register_taken_username_marks_field_invalid(self):
+        User.objects.create_user("sari", password="Sparein!2026")
+        resp = self.client.post(reverse("core:register"), {
+            "username": "sari", "password1": "Sparein!2026", "password2": "Sparein!2026"})
+        self.assertContains(resp, 'aria-invalid="true"')
+        self.assertContains(resp, "field__msg--error")
+
+    def test_register_password_mismatch_shows_error_on_confirm_field(self):
+        resp = self.client.post(reverse("core:register"), {
+            "username": "budi", "password1": "Sparein!2026", "password2": "beda-sekali"})
+        self.assertContains(resp, "field__msg--error")
+        self.assertFalse(User.objects.filter(username="budi").exists())
+
+    def test_register_never_echoes_passwords(self):
+        resp = self.client.post(reverse("core:register"), {
+            "username": "budi", "password1": "Sparein!2026", "password2": "beda-sekali"})
+        self.assertNotContains(resp, "Sparein!2026")
+        self.assertNotContains(resp, "beda-sekali")
