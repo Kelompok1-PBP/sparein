@@ -29,6 +29,8 @@ jobs:
         env:
           PWS_URL: ${{ secrets.PWS_URL }}
         run: |
+          # buang newline atau spasi yang ikut ke-paste waktu ngisi secret
+          PWS_URL="$(printf '%s' "$PWS_URL" | tr -d '[:space:]')"
           if [ -z "$PWS_URL" ]; then
             echo "::error::Repository secret PWS_URL is not set. Add it under Settings > Secrets and variables > Actions before merging to main."
             exit 1
