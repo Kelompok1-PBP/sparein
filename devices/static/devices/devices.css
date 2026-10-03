@@ -1,4 +1,4 @@
-/* Halaman perangkat: katalog, detail, form, hapus. Kelas dasar (.btn, .card, .field) ada di core/base.css */
+/* Halaman perangkat katalog, detail, form, hapus */
 
 .page-head {
   display: flex;
@@ -104,7 +104,6 @@
 
 .device-form { display: flex; flex-direction: column; gap: 16px; }
 
-/* widget bawaan Django ngga punya class, jadi distyle dari sini biar mirip .input */
 .device-form input,
 .device-form select,
 .device-form textarea {

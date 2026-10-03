@@ -31,8 +31,8 @@
 </form>
 
 <section id="device-results" class="device-grid"
-         data-placeholder="{% static 'core/icons/package-muted.svg' %}"
-         data-empty-icon="{% static 'core/icons/inbox-sky.svg' %}">
+        data-placeholder="{% static 'core/icons/package-muted.svg' %}"
+        data-empty-icon="{% static 'core/icons/inbox-sky.svg' %}">
   {% for d in devices %}
     {% include "devices/_card.html" with d=d %}
   {% empty %}
