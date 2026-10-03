@@ -1,0 +1,10 @@
+{% load static %}{# Kartu perangkat. Parameter: d (device). Markup-nya harus sama dengan yang dibuat devices.js #}
+<article class="device-card">
+  <a class="device-card__link" href="{% url 'devices:detail' d.slug %}">
+    <div class="device-card__img">
+      <img src="{% if d.image_url %}{{ d.image_url }}{% else %}{% static 'core/icons/package-muted.svg' %}{% endif %}" alt="" loading="lazy"{% if not d.image_url %} class="is-placeholder" width="40" height="40"{% endif %}>
+    </div>
+    <h3 class="device-card__name">{{ d.name }}</h3>
+    {% if d.brand %}<p class="device-card__brand">{{ d.brand }}</p>{% endif %}
+  </a>
+</article>

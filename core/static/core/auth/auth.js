@@ -1,5 +1,3 @@
-// Dipakai di halaman login dan daftar. Tanpa JS halamannya tetap jalan,
-// cuma efek geser, tombol lihat password, dan teks "Memproses..." yang hilang.
 (function () {
   var KEY = "auth-swap";
 

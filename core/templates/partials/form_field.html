@@ -4,15 +4,15 @@
   <label class="field__label" for="{{ field.id_for_label }}">{{ label }}<span class="field__req" aria-hidden="true">*</span></label>
   <div class="field__control">
     <input class="input{% if kind == 'password' %} input--password{% endif %}"
-           type="{{ kind }}"
-           name="{{ field.html_name }}"
-           id="{{ field.id_for_label }}"
-           {% if kind != 'password' and field.value %}value="{{ field.value }}"{% endif %}
-           autocomplete="{{ autocomplete }}"
-           {% if kind != 'password' %}autocapitalize="none" spellcheck="false"{% endif %}
-           aria-required="true"
-           {% if field.errors %}aria-invalid="true"{% endif %}
-           {% if field.errors or hint %}aria-describedby="{{ field.id_for_label }}-msg"{% endif %}>
+      type="{{ kind }}"
+      name="{{ field.html_name }}"
+      id="{{ field.id_for_label }}"
+      {% if kind != 'password' and field.value %}value="{{ field.value }}"{% endif %}
+      autocomplete="{{ autocomplete }}"
+      {% if kind != 'password' %}autocapitalize="none" spellcheck="false"{% endif %}
+      aria-required="true"
+      {% if field.errors %}aria-invalid="true"{% endif %}
+      {% if field.errors or hint %}aria-describedby="{{ field.id_for_label }}-msg"{% endif %}>
     {% if kind == 'password' %}
       <button type="button" class="field__toggle" data-toggle-password hidden aria-label="Tampilkan password" aria-pressed="false">
         <img class="icon-eye" src="{% static 'core/icons/eye-muted.svg' %}" alt="" width="20" height="20">
