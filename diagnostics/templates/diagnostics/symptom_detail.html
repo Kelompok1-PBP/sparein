@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ symptom.title }} · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'diagnostics/diagnostics.css' %}">{% endblock %}
+{% block content %}
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="{% url 'diagnostics:list' %}">Diagnosa</a> /
+  <a href="{% url 'diagnostics:list' %}?device={{ symptom.device.slug }}">{{ symptom.device.name }}</a> /
+  <span aria-current="page">{{ symptom.title }}</span>
+</nav>
+
+<div class="page-head">
+  <h1>{{ symptom.title }}</h1>
+  <span class="sev sev--{{ symptom.severity }}">{{ symptom.get_severity_display }}</span>
+</div>
+
+<p class="meta">
+  Perangkat: <a class="link" href="{% url 'devices:detail' symptom.device.slug %}">{{ symptom.device.name }}</a>
+  {% if symptom.created_by %}· Ditambahkan oleh {{ symptom.created_by.username }}{% endif %}
+</p>
+
+{% if symptom.description %}<p>{{ symptom.description|linebreaksbr }}</p>{% endif %}
+
+<section class="section">
+  <h2>Panduan yang bisa membantu</h2>
+  <p><a class="link" href="{{ guides_url }}">Lihat semua panduan {{ symptom.device.name }}</a></p>
+</section>
+
+<a class="btn btn--secondary" href="{% url 'diagnostics:list' %}?device={{ symptom.device.slug }}">Kembali ke diagnosa</a>
+{% endblock %}

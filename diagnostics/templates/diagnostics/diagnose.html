@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Diagnosa masalah · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'diagnostics/diagnostics.css' %}">{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Diagnosa masalah</h1>
+  {% if not device %}<p class="page-head__sub">Pilih perangkatmu dulu, lalu centang gejala yang kamu alami.</p>{% endif %}
+</div>
+
+{% if not device %}
+  <section class="card picker" id="device-picker" data-api="{{ api_devices }}" data-target="{% url 'diagnostics:list' %}">
+    <label class="field__label" for="picker-q">Perangkat apa yang bermasalah?</label>
+    <input class="input" type="search" id="picker-q" placeholder="Ketik nama perangkat" autocomplete="off">
+    <div id="picker-results" aria-live="polite"></div>
+    <noscript><p>Aktifkan JavaScript buat mencari, atau pilih perangkat dari <a class="link" href="{% url 'devices:list' %}">katalog</a>.</p></noscript>
+  </section>
+{% else %}
+  <div class="device-row card">
+    <strong>{{ device.name }}</strong>{% if device.brand %} · {{ device.brand }}{% endif %}
+    <a class="link" href="{% url 'diagnostics:list' %}">Ganti perangkat</a>
+  </div>
+
+  {% if not symptoms %}
+    {% include "partials/empty_state.html" with message="Belum ada gejala yang dicatat buat "|add:device.name|add:"." %}
+    <p><a class="link" href="{{ guides_url }}">Lihat panduan</a></p>
+    {% if can_create %}<p><a class="link" href="/diagnostics/symptoms/create/?device={{ device.slug }}">+ Tambah gejala buat perangkat ini</a></p>{% endif %}
+  {% else %}
+    <div class="diagnose">
+      <form method="get" id="symptom-form" class="diagnose__symptoms" data-api="{{ api_diagnose }}" data-guides="{{ guides_url }}">
+        <input type="hidden" name="device" value="{{ device.slug }}">
+        <h2>Gejala yang kamu alami</h2>
+        <p class="meta">Centang semua yang sesuai. Boleh lebih dari satu.</p>
+        <ul class="symptom-list">
+          {% for s in symptoms %}
+            <li>
+              <label class="symptom" for="symptom-{{ s.pk }}">
+                <input type="checkbox" id="symptom-{{ s.pk }}" name="symptom" value="{{ s.pk }}"{% if s.pk in ticked %} checked{% endif %}>
+                <span class="symptom__text">
+                  <span class="symptom__title">{{ s.title }}</span>
+                  {% if s.description %}<span class="symptom__desc">{{ s.description|truncatechars:80 }}</span>{% endif %}
+                </span>
+                <span class="sev sev--{{ s.severity }}">{{ s.get_severity_display }}</span>
+              </label>
+              <a class="link symptom__more" href="{% url 'diagnostics:detail' s.slug %}">Detail</a>
+            </li>
+          {% endfor %}
+        </ul>
+        <noscript><button type="submit" class="btn btn--primary">Lihat kemungkinan</button></noscript>
+        <p><a class="link" href="{{ guides_url }}">Gejalamu tidak ada di daftar? Lihat semua panduan {{ device.name }}</a></p>
+        {% if can_create %}<p><a class="link" href="/diagnostics/symptoms/create/?device={{ device.slug }}">+ Tambah gejala buat perangkat ini</a></p>{% endif %}
+      </form>
+
+      <section class="diagnose__results" aria-labelledby="results-title">
+        <h2 id="results-title">Kemungkinan masalah</h2>
+        <div id="diagnosis-results" aria-live="polite">{% include "diagnostics/_results.html" %}</div>
+        <p class="alert alert--info">Hasil ini perkiraan. Kalau ragu atau barangnya berisiko, bawa ke teknisi.</p>
+      </section>
+    </div>
+  {% endif %}
+{% endif %}
+{% endblock %}

@@ -1,8 +1,11 @@
+from django.contrib.auth.models import User
 from django.http import Http404
 from django.test import TestCase
+from django.urls import reverse
 
+from core.models import UserProfile
 from devices.models import Device, DeviceCategory
-from diagnostics.models import Cause, Symptom
+from diagnostics.models import Cause, DiagnosisSession, Symptom
 from diagnostics.selectors import (
     get_symptom_or_404,
     get_symptom_qs,
@@ -108,5 +111,104 @@ class RankCausesTests(TestCase):
         other = make_device("iPhone 12")
         self.assertEqual(self.rank(self.s1, device=other), [])
 
+    def test_result_carries_label(self):
+        self.assertEqual(self.rank(self.s1, self.s2)[0]["likelihood_label"], "Tinggi")
+
     def test_result_carries_note(self):
         self.assertEqual(self.rank(self.s1, self.s2)[0]["note"], "Umum")
+
+
+def make_user(name, role=UserProfile.Role.MEMBER):
+    user = User.objects.create_user(name, password="Sparein!2026")
+    user.profile.role = role
+    user.profile.save()
+    return user
+
+
+class DiagnoseSetup(TestCase):
+    def setUp(self):
+        self.device = make_device()
+        self.panas = Symptom.objects.create(device=self.device, title="HP panas", severity="low")
+        self.boros = Symptom.objects.create(device=self.device, title="Baterai boros")
+        self.aus = Cause.objects.create(device=self.device, title="Baterai sudah aus", note="Umum")
+        self.aus.symptoms.add(self.boros)
+
+
+class DiagnosePageTests(DiagnoseSetup):
+    url = reverse("diagnostics:list")
+
+    def test_without_device_asks_to_pick_one(self):
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Perangkat apa yang bermasalah?")
+        self.assertContains(resp, reverse("devices:api"))
+
+    def test_with_device_lists_its_symptoms(self):
+        resp = self.client.get(self.url, {"device": self.device.slug})
+        self.assertContains(resp, "HP panas")
+        self.assertContains(resp, "Baterai boros")
+        self.assertContains(resp, "Centang gejala")
+
+    def test_unknown_device_is_404(self):
+        self.assertEqual(self.client.get(self.url, {"device": "nope"}).status_code, 404)
+
+    def test_device_without_symptoms_shows_empty_state(self):
+        other = make_device("iPhone 12")
+        resp = self.client.get(self.url, {"device": other.slug})
+        self.assertContains(resp, "Belum ada gejala yang dicatat buat iPhone 12.")
+
+    def test_ticked_symptom_renders_ranked_result_without_js(self):
+        resp = self.client.get(self.url, {"device": self.device.slug, "symptom": [self.boros.pk]})
+        self.assertContains(resp, "Baterai sudah aus")
+        self.assertContains(resp, "1 kemungkinan ditemukan")
+        self.assertContains(resp, "Kemungkinan tinggi")
+        self.assertContains(resp, "checked")
+
+    def test_garbage_symptom_param_is_ignored(self):
+        resp = self.client.get(self.url, {"device": self.device.slug, "symptom": ["abc", ""]})
+        self.assertEqual(resp.status_code, 200)
+
+    def test_add_symptom_link_only_for_contributor(self):
+        params = {"device": self.device.slug}
+        self.assertNotContains(self.client.get(self.url, params), "Tambah gejala")
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        self.assertContains(self.client.get(self.url, params), "Tambah gejala")
+
+
+class SymptomDetailTests(DiagnoseSetup):
+    def test_visitor_reads_detail(self):
+        resp = self.client.get(reverse("diagnostics:detail", args=[self.panas.slug]))
+        self.assertContains(resp, "HP panas")
+        self.assertContains(resp, "Ringan")
+        self.assertContains(resp, self.device.name)
+
+    def test_unknown_slug_is_404(self):
+        self.assertEqual(self.client.get(reverse("diagnostics:detail", args=["nope"])).status_code, 404)
+
+
+class ApiTests(DiagnoseSetup):
+    def test_symptoms_result_shape(self):
+        item = self.client.get(reverse("diagnostics:api-symptoms")).json()["results"][0]
+        self.assertEqual(set(item), {"id", "title", "slug", "description", "severity", "device", "url"})
+
+    def test_symptoms_filter_by_severity(self):
+        data = self.client.get(reverse("diagnostics:api-symptoms"), {"severity": "low"}).json()
+        self.assertEqual([r["title"] for r in data["results"]], ["HP panas"])
+
+    def test_symptoms_filter_by_device(self):
+        other = make_device("iPhone 12")
+        Symptom.objects.create(device=other, title="Speaker pecah")
+        data = self.client.get(reverse("diagnostics:api-symptoms"), {"device": other.slug}).json()
+        self.assertEqual([r["title"] for r in data["results"]], ["Speaker pecah"])
+
+    def test_diagnose_returns_ranked_results_without_saving(self):
+        resp = self.client.get(reverse("diagnostics:api-diagnose"),
+                               {"device": self.device.slug, "symptom": [self.boros.pk]})
+        data = resp.json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["results"][0]["title"], "Baterai sudah aus")
+        self.assertEqual(data["results"][0]["likelihood"], "high")
+        self.assertEqual(data["results"][0]["likelihood_label"], "Tinggi")
+        self.assertFalse(DiagnosisSession.objects.exists())
+
+    def test_diagnose_unknown_device_is_404(self):
+        self.assertEqual(self.client.get(reverse("diagnostics:api-diagnose"), {"device": "x"}).status_code, 404)

@@ -22,10 +22,12 @@ def rank_causes(device_id, symptom_ids):
         own = {s.pk for s in cause.symptoms.all()}
         matched = len(own & ticked)
         if matched:
+            likelihood = _likelihood(matched, len(own))
             key = (-matched / len(own), -matched, cause.title)
             result = {
                 "cause": cause,
-                "likelihood": _likelihood(matched, len(own)),
+                "likelihood": likelihood,
+                "likelihood_label": Likelihood(likelihood).label,
                 "note": cause.note,
             }
             scored.append((key, result))
