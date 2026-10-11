@@ -328,3 +328,12 @@ class SaveSessionTests(DiagnoseSetup):
 
     def test_unknown_device_is_404(self):
         self.assertEqual(self.client.post(self.url, {"device": "nope", "symptom": [1]}).status_code, 404)
+
+
+class SeedFixtureTests(TestCase):
+    fixtures = ["seed_devices", "seed_diagnostics"]
+
+    def test_seed_gives_a_working_diagnosis(self):
+        device = Device.objects.get(pk=8)
+        ids = list(get_symptoms_for_device(device.pk).values_list("pk", flat=True)[:1])
+        self.assertTrue(rank_causes(device.pk, ids))
