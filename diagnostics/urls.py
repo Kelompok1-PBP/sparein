@@ -11,4 +11,5 @@ urlpatterns = [
     path("diagnostics/<slug:slug>/delete/", views.symptom_delete, name="delete"),
     path("api/symptoms/", views.api_symptoms, name="api-symptoms"),
     path("api/diagnose/", views.api_diagnose, name="api-diagnose"),
+    path("api/diagnose/save/", views.api_save, name="save"),
 ]

@@ -4,6 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 
 from core.permissions import is_admin, is_contributor
 from devices.selectors import get_device_or_404, get_device_qs
@@ -13,7 +14,7 @@ from diagnostics.selectors import (
     get_symptom_qs,
     get_symptoms_for_device,
 )
-from diagnostics.services import rank_causes
+from diagnostics.services import rank_causes, save_session
 
 
 def _ticked(request):
@@ -130,3 +131,14 @@ def api_diagnose(request):
         for r in rank_causes(device.pk, _ticked(request))
     ]
     return JsonResponse({"count": len(results), "results": results, "guides_url": _guides_url(device)})
+
+
+@require_POST
+def api_save(request):
+    """Simpan hasil diagnosa. Dipanggil dari tombol, bukan tiap centang."""
+    device = get_device_or_404(request.POST.get("device", "").strip())
+    ids = [int(v) for v in request.POST.getlist("symptom") if v.isdigit()]
+    session = save_session(request.user, device, ids)
+    if session is None:
+        return JsonResponse({"error": "Pilih minimal satu gejala."}, status=400)
+    return JsonResponse({"saved": True, "id": session.pk})

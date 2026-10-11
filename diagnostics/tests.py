@@ -289,3 +289,42 @@ class SymptomWriteTests(DiagnoseSetup):
         self.assertNotContains(resp, "Hapus")
         self.client.force_login(make_user("adm", UserProfile.Role.ADMIN))
         self.assertContains(self.client.get(url), "Hapus")
+
+
+class SaveSessionTests(DiagnoseSetup):
+    url = reverse("diagnostics:save")
+
+    def post(self, **extra):
+        data = {"device": self.device.slug, "symptom": [self.boros.pk], **extra}
+        return self.client.post(self.url, data)
+
+    def test_get_not_allowed(self):
+        self.assertEqual(self.client.get(self.url).status_code, 405)
+
+    def test_anonymous_session_is_saved_with_results(self):
+        resp = self.post()
+        session = DiagnosisSession.objects.get()
+        self.assertEqual(resp.json(), {"saved": True, "id": session.pk})
+        self.assertIsNone(session.user)
+        self.assertEqual(list(session.symptoms.all()), [self.boros])
+        result = session.results.get()
+        self.assertEqual((result.cause, result.likelihood, result.note), (self.aus, "high", "Umum"))
+
+    def test_member_session_belongs_to_user(self):
+        user = make_user("m")
+        self.client.force_login(user)
+        self.post()
+        self.assertEqual(DiagnosisSession.objects.get().user, user)
+
+    def test_without_symptoms_is_rejected(self):
+        resp = self.client.post(self.url, {"device": self.device.slug})
+        self.assertEqual(resp.status_code, 400)
+        self.assertFalse(DiagnosisSession.objects.exists())
+
+    def test_symptoms_of_other_device_are_ignored(self):
+        foreign = Symptom.objects.create(device=make_device("iPhone 12"), title="Asing")
+        resp = self.client.post(self.url, {"device": self.device.slug, "symptom": [foreign.pk]})
+        self.assertEqual(resp.status_code, 400)
+
+    def test_unknown_device_is_404(self):
+        self.assertEqual(self.client.post(self.url, {"device": "nope", "symptom": [1]}).status_code, 404)
