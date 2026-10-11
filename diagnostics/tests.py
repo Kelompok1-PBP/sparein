@@ -212,3 +212,80 @@ class ApiTests(DiagnoseSetup):
 
     def test_diagnose_unknown_device_is_404(self):
         self.assertEqual(self.client.get(reverse("diagnostics:api-diagnose"), {"device": "x"}).status_code, 404)
+
+
+class SymptomWriteTests(DiagnoseSetup):
+    def payload(self, **extra):
+        data = {"device": self.device.pk, "title": "Speaker pecah",
+                "description": "Suara kecil", "severity": "low"}
+        return {**data, **extra}
+
+    def test_visitor_is_sent_to_login(self):
+        resp = self.client.get(reverse("diagnostics:create"))
+        self.assertRedirects(resp, f"{reverse('login')}?next={reverse('diagnostics:create')}")
+
+    def test_member_gets_403(self):
+        self.client.force_login(make_user("m"))
+        self.assertEqual(self.client.get(reverse("diagnostics:create")).status_code, 403)
+
+    def test_contributor_creates_and_becomes_owner(self):
+        user = make_user("c", UserProfile.Role.CONTRIBUTOR)
+        self.client.force_login(user)
+        resp = self.client.post(reverse("diagnostics:create"), self.payload())
+        symptom = Symptom.objects.get(title="Speaker pecah")
+        self.assertRedirects(resp, reverse("diagnostics:detail", args=[symptom.slug]))
+        self.assertEqual(symptom.created_by, user)
+
+    def test_create_form_preselects_device_from_query(self):
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("diagnostics:create"), {"device": self.device.slug})
+        self.assertEqual(resp.context["form"].initial["device"], self.device)
+
+    def test_invalid_post_shows_errors_and_saves_nothing(self):
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.post(reverse("diagnostics:create"), self.payload(title=""))
+        self.assertContains(resp, "field__msg--error")
+        self.assertEqual(Symptom.objects.count(), 2)
+
+    def test_owner_edits_and_slug_stays(self):
+        owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
+        self.panas.created_by = owner
+        self.panas.save()
+        self.client.force_login(owner)
+        url = reverse("diagnostics:edit", args=[self.panas.slug])
+        self.client.post(url, self.payload(title="HP terlalu panas"))
+        self.panas.refresh_from_db()
+        self.assertEqual((self.panas.title, self.panas.slug), ("HP terlalu panas", "hp-panas"))
+
+    def test_other_contributor_cannot_edit_but_admin_can(self):
+        url = reverse("diagnostics:edit", args=[self.panas.slug])
+        self.client.force_login(make_user("other", UserProfile.Role.CONTRIBUTOR))
+        self.assertEqual(self.client.get(url).status_code, 403)
+        self.client.force_login(make_user("adm", UserProfile.Role.ADMIN))
+        self.assertEqual(self.client.get(url).status_code, 200)
+
+    def test_delete_is_admin_only_and_post_only(self):
+        url = reverse("diagnostics:delete", args=[self.panas.slug])
+        owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
+        self.panas.created_by = owner
+        self.panas.save()
+        self.client.force_login(owner)
+        self.assertEqual(self.client.post(url).status_code, 403)
+        self.client.force_login(make_user("adm", UserProfile.Role.ADMIN))
+        self.assertEqual(self.client.get(url).status_code, 200)
+        self.assertTrue(Symptom.objects.filter(pk=self.panas.pk).exists())
+        self.assertRedirects(self.client.post(url), reverse("diagnostics:list"))
+        self.assertFalse(Symptom.objects.filter(pk=self.panas.pk).exists())
+
+    def test_detail_buttons_follow_role(self):
+        url = reverse("diagnostics:detail", args=[self.panas.slug])
+        self.assertNotContains(self.client.get(url), "Ubah")
+        owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
+        self.panas.created_by = owner
+        self.panas.save()
+        self.client.force_login(owner)
+        resp = self.client.get(url)
+        self.assertContains(resp, "Ubah")
+        self.assertNotContains(resp, "Hapus")
+        self.client.force_login(make_user("adm", UserProfile.Role.ADMIN))
+        self.assertContains(self.client.get(url), "Hapus")

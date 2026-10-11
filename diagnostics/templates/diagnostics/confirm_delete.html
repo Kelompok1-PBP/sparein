@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Hapus gejala · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'diagnostics/diagnostics.css' %}">{% endblock %}
+{% block content %}
+<div class="form-page card">
+  <h1>Hapus gejala?</h1>
+  <p>Gejala <strong>{{ symptom.title }}</strong> akan dihapus dan tidak bisa dikembalikan.</p>
+  <form method="post">{% csrf_token %}
+    <div class="form-page__actions">
+      <a class="btn btn--ghost" href="{% url 'diagnostics:detail' symptom.slug %}">Batal</a>
+      <button type="submit" class="btn btn--primary btn--danger">Hapus</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

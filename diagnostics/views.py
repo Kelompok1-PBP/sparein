@@ -1,9 +1,13 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from core.permissions import is_admin, is_contributor
-from devices.selectors import get_device_or_404
+from devices.selectors import get_device_or_404, get_device_qs
+from diagnostics.forms import SymptomForm
 from diagnostics.selectors import (
     get_symptom_or_404,
     get_symptom_qs,
@@ -51,6 +55,46 @@ def symptom_detail(request, slug):
         "can_edit": _can_edit(request.user, symptom),
         "can_delete": is_admin(request.user),
     })
+
+
+@login_required
+def symptom_create(request):
+    if not is_contributor(request.user):
+        raise PermissionDenied
+    initial = {"device": get_device_qs().filter(slug=request.GET.get("device", "")).first()}
+    form = SymptomForm(request.POST or None, initial=initial)
+    if form.is_valid():
+        symptom = form.save(commit=False)
+        symptom.created_by = request.user
+        symptom.save()
+        messages.success(request, "Gejala berhasil disimpan.")
+        return redirect("diagnostics:detail", slug=symptom.slug)
+    return render(request, "diagnostics/symptom_form.html", {"form": form})
+
+
+@login_required
+def symptom_edit(request, slug):
+    symptom = get_symptom_or_404(slug)
+    if not _can_edit(request.user, symptom):
+        raise PermissionDenied
+    form = SymptomForm(request.POST or None, instance=symptom)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Gejala berhasil disimpan.")
+        return redirect("diagnostics:detail", slug=symptom.slug)
+    return render(request, "diagnostics/symptom_form.html", {"form": form})
+
+
+@login_required
+def symptom_delete(request, slug):
+    symptom = get_symptom_or_404(slug)
+    if not is_admin(request.user):
+        raise PermissionDenied
+    if request.method == "POST":
+        symptom.delete()
+        messages.success(request, "Gejala berhasil dihapus.")
+        return redirect("diagnostics:list")
+    return render(request, "diagnostics/confirm_delete.html", {"symptom": symptom})
 
 
 def api_symptoms(request):

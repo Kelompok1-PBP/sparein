@@ -24,7 +24,7 @@
   {% if not symptoms %}
     {% include "partials/empty_state.html" with message="Belum ada gejala yang dicatat buat "|add:device.name|add:"." %}
     <p><a class="link" href="{{ guides_url }}">Lihat panduan</a></p>
-    {% if can_create %}<p><a class="link" href="/diagnostics/symptoms/create/?device={{ device.slug }}">+ Tambah gejala buat perangkat ini</a></p>{% endif %}
+    {% if can_create %}<p><a class="link" href="{% url 'diagnostics:create' %}?device={{ device.slug }}">+ Tambah gejala buat perangkat ini</a></p>{% endif %}
   {% else %}
     <div class="diagnose">
       <form method="get" id="symptom-form" class="diagnose__symptoms" data-api="{{ api_diagnose }}" data-guides="{{ guides_url }}">
@@ -48,7 +48,7 @@
         </ul>
         <noscript><button type="submit" class="btn btn--primary">Lihat kemungkinan</button></noscript>
         <p><a class="link" href="{{ guides_url }}">Gejalamu tidak ada di daftar? Lihat semua panduan {{ device.name }}</a></p>
-        {% if can_create %}<p><a class="link" href="/diagnostics/symptoms/create/?device={{ device.slug }}">+ Tambah gejala buat perangkat ini</a></p>{% endif %}
+        {% if can_create %}<p><a class="link" href="{% url 'diagnostics:create' %}?device={{ device.slug }}">+ Tambah gejala buat perangkat ini</a></p>{% endif %}
       </form>
 
       <section class="diagnose__results" aria-labelledby="results-title">
