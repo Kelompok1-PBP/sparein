@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static parts_tags %}
+{% block title %}{{ part.name }} · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'parts/parts.css' %}">{% endblock %}
+{% block content %}
+<nav class="parts-breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="{% url 'parts:list' %}">Suku Cadang</a></li>
+    <li><a href="{% url 'parts:list' %}?category={{ part.category }}">{{ part.get_category_display }}</a></li>
+    <li aria-current="page">{{ part.name }}</li>
+  </ol>
+</nav>
+
+<div class="part-hero">
+  <div class="part-hero__media">
+    {% if part.image_url %}<img src="{{ part.image_url }}" alt="{{ part.name }}" referrerpolicy="no-referrer">
+    {% else %}<img src="{% static 'core/icons/package-muted.svg' %}" alt="" width="64" height="64">{% endif %}
+  </div>
+  <div class="part-hero__info">
+    <span class="badge part-badge">{{ part.get_category_display }}</span>
+    <h1>{{ part.name }}</h1>
+    {% if part.part_number %}
+      <div class="part-number">
+        <span class="part-number__label">Nomor part</span>
+        <code id="part-number">{{ part.part_number }}</code>
+        {# tombolnya dimunculin detail.js, tanpa JS ga ada gunanya #}
+        <button class="part-number__copy" type="button" data-copy="#part-number" data-icon="{% static 'core/icons/circle-check-success.svg' %}" aria-label="Salin nomor part" hidden>
+          <img src="{% static 'parts/icons/copy-muted.svg' %}" alt="" width="16" height="16">
+        </button>
+      </div>
+    {% endif %}
+    {% if part.description %}<p>{{ part.description|linebreaksbr }}</p>{% endif %}
+    <p class="part-summary">
+      {% if not sources %}Harga belum tersedia.
+      {% elif not show_price %}<a class="link" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Masuk untuk lihat harga</a>
+      {% elif lowest_price == highest_price %}Harga {{ lowest_price|rupiah }} dari {{ sources|length }} toko
+      {% else %}Kisaran {{ lowest_price|rupiah }} sampai {{ highest_price|rupiah }} dari {{ sources|length }} toko{% endif %}
+    </p>
+  </div>
+</div>
+
+<section class="part-section" aria-labelledby="compat-title">
+  <h2 id="compat-title">Cocok untuk perangkat</h2>
+  {% if compatibilities %}
+    <ul class="compat-list">
+      {% for c in compatibilities %}
+        <li class="card compat-item">
+          {% if c.device.image_url %}<img src="{{ c.device.image_url }}" alt="" width="40" height="40" loading="lazy" referrerpolicy="no-referrer">
+          {% else %}<img src="{% static 'core/icons/smartphone-muted.svg' %}" alt="" width="40" height="40">{% endif %}
+          <div>
+            <a class="compat-item__name" href="{% url 'devices:detail' c.device.slug %}">{{ c.device.name }}</a>
+            {% if c.note %}<p class="compat-item__note">{{ c.note }}</p>{% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="parts-muted">Belum ada perangkat yang dicatat.</p>
+  {% endif %}
+</section>
+
+<section class="part-section" aria-labelledby="sources-title">
+  <h2 id="sources-title">Tempat beli</h2>
+  {% if sources %}
+    {% include "partials/alert.html" with kind="info" message="Harga bisa berubah. Selalu cek lagi di toko sebelum beli." %}
+    <table class="source-table">
+      <thead>
+        <tr>
+          <th scope="col">Toko</th>
+          <th scope="col">Kota</th>
+          {% if show_price %}<th scope="col">Harga</th><th scope="col">Kontak</th>{% endif %}
+          <th scope="col">Dicek</th>
+          <th scope="col"><span class="parts-sr">Tautan toko</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in sources %}
+          <tr>
+            <th scope="row">{{ s.vendor_name }}</th>
+            <td data-label="Kota">{{ s.city }}</td>
+            {% if show_price %}
+              <td data-label="Harga">{{ s.price|rupiah }}</td>
+              <td data-label="Kontak">{{ s.contact|default:"-" }}</td>
+            {% endif %}
+            <td data-label="Dicek">
+              {{ s.last_checked|days_ago }}
+              {% if s.stale %}<img class="source-stale" src="{% static 'parts/icons/triangle-alert-warning.svg' %}" alt="Data lebih dari 30 hari, mungkin sudah berubah" title="Data lebih dari 30 hari, mungkin sudah berubah" width="16" height="16">{% endif %}
+            </td>
+            <td>
+              <a class="btn btn--secondary btn--sm" href="{{ s.url }}" target="_blank" rel="noopener noreferrer">
+                Kunjungi toko<span class="parts-sr"> {{ s.vendor_name }} (tab baru)</span>
+                <img src="{% static 'core/icons/external-link-muted.svg' %}" alt="" width="16" height="16">
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if not show_price %}
+      <div class="parts-locked">
+        <p>Harga dan kontak penjual cuma buat member.</p>
+        <div class="parts-locked__actions">
+          <a class="btn btn--primary btn--sm" href="{% url 'core:register' %}">Daftar</a>
+          <a class="btn btn--secondary btn--sm" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Masuk</a>
+        </div>
+      </div>
+    {% endif %}
+  {% else %}
+    {% include "partials/empty_state.html" with message="Belum ada toko yang terdaftar buat suku cadang ini." %}
+  {% endif %}
+</section>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'parts/detail.js' %}" defer></script>{% endblock %}

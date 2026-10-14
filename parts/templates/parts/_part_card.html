@@ -1,0 +1,16 @@
+{% load static parts_tags %}
+{# Kartu suku cadang di direktori. Harga cuma buat member, visitor diarahkan ke Masuk #}
+<article class="card part-card">
+  <div class="part-card__media">
+    {% if part.image_url %}<img src="{{ part.image_url }}" alt="" loading="lazy" referrerpolicy="no-referrer">
+    {% else %}<img src="{% static 'core/icons/package-muted.svg' %}" alt="" width="40" height="40">{% endif %}
+  </div>
+  <span class="badge part-badge">{{ part.get_category_display }}</span>
+  <h2 class="part-card__title"><a href="{% url 'parts:detail' part.slug %}">{{ part.name }}</a></h2>
+  {% if part.part_number %}<p class="part-card__number">{{ part.part_number }}</p>{% endif %}
+  <p class="part-card__price">
+    {% if not part.source_count %}Harga belum tersedia
+    {% elif show_price %}Mulai <strong>{{ part.lowest_price|rupiah }}</strong> · {{ part.source_count }} toko
+    {% else %}<a class="link" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Masuk untuk lihat harga</a>{% endif %}
+  </p>
+</article>
