@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Suku Cadang · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'parts/parts.css' %}">{% endblock %}
+{% block content %}
+<div class="parts-head">
+  <div>
+    <h1>Suku Cadang</h1>
+    <p class="parts-muted">Cek suku cadang yang cocok dan toko yang menjualnya.</p>
+  </div>
+</div>
+{% include "partials/alert.html" with kind="info" message="Sparein tidak menjual barang. Kami cuma menunjukkan toko yang menjual." %}
+
+<div class="parts-layout">
+  <form class="card parts-filter" method="get" id="part-filter" aria-label="Filter suku cadang">
+    <div class="field">
+      <label class="field__label" for="f-q">Cari</label>
+      <input class="input" type="search" id="f-q" name="q" value="{{ filters.q }}" placeholder="Nama atau nomor part">
+    </div>
+    <div class="field">
+      <label class="field__label" for="f-device">Perangkat</label>
+      <select class="input" id="f-device" name="device">
+        <option value="">Semua perangkat</option>
+        {% for d in devices %}<option value="{{ d.slug }}"{% if d.slug == filters.device %} selected{% endif %}>{{ d.name }}</option>{% endfor %}
+      </select>
+    </div>
+    <fieldset class="parts-filter__group">
+      <legend class="field__label">Kategori</legend>
+      {% for value, label in categories %}
+        <label class="parts-check"><input type="checkbox" name="category" value="{{ value }}"{% if value in filters.category %} checked{% endif %}>{{ label }}</label>
+      {% endfor %}
+    </fieldset>
+    {# filter harga sengaja ga ada buat visitor, kalau ada harganya bisa ditebak #}
+    {% if show_price %}
+      <div class="field">
+        <label class="field__label" for="f-max-price">Harga maksimal (Rp)</label>
+        <input class="input" type="number" id="f-max-price" name="max_price" min="1" inputmode="numeric" placeholder="Contoh: 250000" value="{{ filters.max_price|default_if_none:'' }}">
+      </div>
+    {% endif %}
+    <div class="parts-filter__actions">
+      <button class="btn btn--primary btn--block" type="submit">Terapkan filter</button>
+      <a class="link" href="{% url 'parts:list' %}">Reset filter</a>
+    </div>
+  </form>
+
+  <section aria-label="Hasil pencarian suku cadang">
+    <p class="parts-count" id="part-count" role="status" aria-live="polite">{{ parts|length }} suku cadang</p>
+    {% if parts %}
+      <div class="part-grid" id="part-results">
+        {% for part in parts %}{% include "parts/_part_card.html" %}{% endfor %}
+      </div>
+    {% else %}
+      {% url 'parts:list' as reset_url %}
+      {% if show_reset %}
+        {% include "partials/empty_state.html" with message=empty_message action_url=reset_url action_label="Reset filter" %}
+      {% else %}
+        {% include "partials/empty_state.html" with message=empty_message %}
+      {% endif %}
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
