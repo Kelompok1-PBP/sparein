@@ -1,0 +1,15 @@
+{# Satu baris toko di form. Parameter: row, number (kosong di <template>, diisi form.js) #}
+<div class="part-row">
+  <div class="part-row__head">
+    <h3 class="part-row__title">Toko <span data-row-number>{{ number }}</span></h3>
+    <label class="parts-check">{{ row.DELETE }}Hapus baris ini</label>
+  </div>
+  {% for hidden in row.hidden_fields %}{{ hidden }}{% endfor %}
+  <div class="part-row__fields">
+    {% include "parts/_field.html" with field=row.vendor_name %}
+    {% include "parts/_field.html" with field=row.city %}
+    {% include "parts/_field.html" with field=row.price %}
+    {% include "parts/_field.html" with field=row.contact %}
+    {% include "parts/_field.html" with field=row.url wide=True %}
+  </div>
+</div>

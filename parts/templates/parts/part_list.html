@@ -8,6 +8,9 @@
     <h1>Suku Cadang</h1>
     <p class="parts-muted">Cek suku cadang yang cocok dan toko yang menjualnya.</p>
   </div>
+  {% if can_create %}
+    <a class="btn btn--primary" href="{% url 'parts:create' %}"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="20" height="20">Tambah suku cadang</a>
+  {% endif %}
 </div>
 {% include "partials/alert.html" with kind="info" message="Sparein tidak menjual barang. Kami cuma menunjukkan toko yang menjual." %}
 

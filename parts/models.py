@@ -4,11 +4,14 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 
+# kepake sama route /parts/create/ dan /parts/sync/, jadi ga boleh jadi slug
+RESERVED_SLUGS = {"create", "sync"}
+
 
 def unique_slug(value):
     base = slugify(value)[:200] or "suku-cadang"
     slug, n = base, 2
-    while SparePart.objects.filter(slug=slug).exists():
+    while slug in RESERVED_SLUGS or SparePart.objects.filter(slug=slug).exists():
         slug, n = f"{base}-{n}", n + 1
     return slug
 

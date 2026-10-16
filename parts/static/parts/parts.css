@@ -279,3 +279,117 @@
 
 .parts-locked p { margin: 0; font-weight: 600; }
 .parts-locked__actions { display: flex; gap: 8px; }
+
+.part-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.parts-danger-text { color: var(--danger); }
+
+/* ---------- form tambah/edit (P42) ---------- */
+.parts-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.parts-form h1 + p { margin: 0; }
+
+.parts-form__body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.parts-form__body > .card { margin: 0; }
+
+.part-form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.part-form-card h2 { margin: 0; font-size: 20px; line-height: 28px; }
+.part-form-card h2 + p { margin: 4px 0 0; }
+.part-form-card > .btn { align-self: flex-start; }
+.part-form-card > .btn[hidden] { display: none; }
+
+.parts-optional { font-weight: 400; color: var(--muted); }
+.parts-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.parts-form textarea.input { height: auto; padding: 8px 12px; }
+
+.part-rows { display: flex; flex-direction: column; gap: 16px; }
+.part-rows:empty { display: none; }
+
+.part-row {
+  padding: 16px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+/* baris yang dicentang hapus dibikin pudar, masih bisa dibatalin */
+.part-row:has([name$="-DELETE"]:checked) .part-row__fields { opacity: 0.5; }
+
+.part-row__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.part-row__title { margin: 0; font-size: 16px; line-height: 24px; }
+
+.part-row__fields { display: grid; gap: 16px; }
+
+@media (min-width: 640px) {
+  .part-row__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .part-row__wide { grid-column: 1 / -1; }
+}
+
+.parts-form__actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .parts-form__actions { flex-direction: row; justify-content: flex-end; }
+}
+
+/* ---------- konfirmasi hapus ---------- */
+.parts-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 440px;
+  margin: 32px auto 0;
+  padding: 24px;
+}
+
+.parts-confirm__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+}
+
+.parts-confirm__title { margin: 0 0 8px; font-size: 20px; line-height: 28px; }
+
+.parts-confirm__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.parts-btn-danger { background: var(--danger); color: var(--white); }
+.parts-btn-danger:hover { filter: brightness(0.9); }
+.parts-btn-danger:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }

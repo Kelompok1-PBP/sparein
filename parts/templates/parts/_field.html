@@ -1,0 +1,14 @@
+{% load static %}
+{# Satu isian form suku cadang. Parameter: field, wide (opsional, selebar baris) #}
+<div class="field{% if wide %} part-row__wide{% endif %}">
+  <label class="field__label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="field__req" aria-hidden="true">*</span>{% else %} <span class="parts-optional">(opsional)</span>{% endif %}</label>
+  {{ field }}
+  {% if field.errors %}
+    <div class="field__msg field__msg--error" id="{{ field.auto_id }}_error">
+      <img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="16" height="16">
+      <div>{% for error in field.errors %}<span>{{ error }}</span>{% endfor %}</div>
+    </div>
+  {% elif field.help_text %}
+    <p class="field__msg" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>
+  {% endif %}
+</div>
