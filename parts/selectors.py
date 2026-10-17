@@ -49,12 +49,27 @@ def visible_part_qs(user, **filters):
     )
 
 
+def _visible_sources(qs, user, *extra):
+    if is_member(user):
+        return qs.order_by("price", "vendor_name").values(*extra, *MEMBER_SOURCE_FIELDS)
+    return qs.order_by("vendor_name").values(*extra, *PUBLIC_SOURCE_FIELDS)
+
+
 def get_sources_for(part, user):
     """Toko penjual satu suku cadang.
 
     price, currency, contact cuma di-select buat member. Visitor diurutin
     by nama toko biar urutannya ga bocorin toko mana yang paling murah
     """
-    if is_member(user):
-        return part.sources.order_by("price", "vendor_name").values(*MEMBER_SOURCE_FIELDS)
-    return part.sources.order_by("vendor_name").values(*PUBLIC_SOURCE_FIELDS)
+    return _visible_sources(part.sources.all(), user)
+
+
+def get_sources_for_parts(parts, user):
+    """Sama kayak get_sources_for tapi buat banyak suku cadang dalam satu query.
+
+    Hasilnya dict part_id -> list toko, dipakai API biar ga N+1
+    """
+    grouped = {}
+    for row in _visible_sources(PartSource.objects.filter(part__in=parts), user, "part_id"):
+        grouped.setdefault(row.pop("part_id"), []).append(row)
+    return grouped

@@ -10,4 +10,5 @@ urlpatterns = [
     path("parts/<slug:slug>/", views.part_detail, name="detail"),
     path("parts/<slug:slug>/edit/", views.part_edit, name="edit"),
     path("parts/<slug:slug>/delete/", views.part_delete, name="delete"),
+    path("api/parts/", views.part_api, name="api"),
 ]
