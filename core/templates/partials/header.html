@@ -1,5 +1,5 @@
 {% load static %}
-{# Link ke modul yang belum jadi (diagnostics, guides, parts, journal) ditulis langsung sesuai rute di docs/MODULES.md. Ganti ke {% url %} kalau modulnya udah ada. #}
+{# Link ke modul yang belum jadi (parts, journal) ditulis langsung sesuai rute di docs/MODULES.md. Ganti ke {% url %} kalau modulnya udah ada. #}
 {% with ns=request.resolver_match.namespace %}
 <header class="site-header" data-site-header>
   <div class="site-header__inner container">
@@ -9,7 +9,7 @@
 
     <nav class="site-nav" aria-label="Utama">
       <a class="site-nav__link" href="{% url 'devices:list' %}"{% if ns == 'devices' %} aria-current="page"{% endif %}>Perangkat</a>
-      <a class="site-nav__link" href="/diagnostics/"{% if ns == 'diagnostics' %} aria-current="page"{% endif %}>Diagnosa</a>
+      <a class="site-nav__link" href="{% url 'diagnostics:list' %}"{% if ns == 'diagnostics' %} aria-current="page"{% endif %}>Diagnosa</a>
       <a class="site-nav__link" href="/guides/"{% if ns == 'guides' %} aria-current="page"{% endif %}>Panduan</a>
       <a class="site-nav__link" href="/parts/"{% if ns == 'parts' %} aria-current="page"{% endif %}>Suku Cadang</a>
       {% if user.is_authenticated %}<a class="site-nav__link" href="/journal/"{% if ns == 'journal' %} aria-current="page"{% endif %}>Jurnal</a>{% endif %}
@@ -69,7 +69,7 @@
         {% endif %}
         <div class="mobile-nav__list">
           <a class="menu__item menu__item--lg" href="{% url 'devices:list' %}"{% if ns == 'devices' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/smartphone-muted.svg' %}" alt="" width="20" height="20">Perangkat</a>
-          <a class="menu__item menu__item--lg" href="/diagnostics/"{% if ns == 'diagnostics' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/stethoscope-muted.svg' %}" alt="" width="20" height="20">Diagnosa</a>
+          <a class="menu__item menu__item--lg" href="{% url 'diagnostics:list' %}"{% if ns == 'diagnostics' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/stethoscope-muted.svg' %}" alt="" width="20" height="20">Diagnosa</a>
           <a class="menu__item menu__item--lg" href="/guides/"{% if ns == 'guides' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/book-open-muted.svg' %}" alt="" width="20" height="20">Panduan</a>
           <a class="menu__item menu__item--lg" href="/parts/"{% if ns == 'parts' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/package-muted.svg' %}" alt="" width="20" height="20">Suku Cadang</a>
           {% if user.is_authenticated %}

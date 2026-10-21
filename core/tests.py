@@ -234,3 +234,16 @@ class BaseLayoutTests(TestCase):
         with_action = render_to_string("partials/empty_state.html", {
             "message": "Kosong nih.", "action_url": "/devices/create/", "action_label": "Tambah"})
         self.assertIn('href="/devices/create/"', with_action)
+
+
+class DiagnosticsLinkTests(TestCase):
+    def test_header_links_to_diagnostics_by_url_name(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, f'href="{reverse("diagnostics:list")}"')
+
+    def test_create_menu_links_to_new_symptom_form(self):
+        user = User.objects.create_user("c", password="Sparein!2026")
+        user.profile.role = UserProfile.Role.CONTRIBUTOR
+        user.profile.save()
+        self.client.force_login(user)
+        self.assertContains(self.client.get(reverse("core:home")), reverse("diagnostics:create"))
