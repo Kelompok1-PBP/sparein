@@ -45,6 +45,7 @@ def diagnose(request):
         "guides_url": _guides_url(device),
         "can_create": is_contributor(request.user),
         "api_diagnose": reverse("diagnostics:api-diagnose"),
+        "api_save": reverse("diagnostics:save"),
     })
 
 

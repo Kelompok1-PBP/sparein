@@ -1,0 +1,166 @@
+/* Halaman diagnosa: pilih perangkat, centang gejala, detail, form */
+
+.page-head { margin-bottom: 24px; }
+.page-head h1 { margin: 0; }
+.page-head__sub { margin: 4px 0 0; color: var(--muted); }
+.meta { margin: 0 0 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.actions { display: flex; gap: 8px; margin-bottom: 24px; }
+.section { margin-block: 32px; }
+
+.breadcrumb { margin-bottom: 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.breadcrumb a { color: var(--muted); }
+
+/* tombol bahaya, dipakai buat hapus */
+.btn--danger { color: var(--danger); border-color: var(--danger); }
+.btn--danger:hover { background: rgba(220, 38, 38, 0.1); }
+.btn--primary.btn--danger { background: var(--danger); color: var(--white); }
+.btn--primary.btn--danger:hover { background: #B91C1C; }
+
+/* ---------- badge keparahan: warna + teks ---------- */
+.sev {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sev--low { background: rgba(22, 163, 74, 0.1); color: var(--success); }
+.sev--medium { background: rgba(217, 119, 6, 0.1); color: var(--warning); }
+.sev--high { background: rgba(220, 38, 38, 0.1); color: var(--danger); }
+
+/* ---------- pilih perangkat ---------- */
+.picker { max-width: 720px; margin-inline: auto; }
+.picker:hover { border-color: var(--blue-200); }
+.picker .input { margin-top: 8px; }
+.picker__list { margin: 12px 0 0; padding: 0; list-style: none; }
+.picker__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 10px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.picker__item:hover { background: var(--blue-50); }
+.picker__item:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.picker__brand { color: var(--muted); }
+
+.device-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 24px;
+}
+
+.device-row:hover { border-color: var(--blue-200); }
+
+/* ---------- gejala dan hasil ---------- */
+.diagnose { display: grid; gap: 32px; }
+
+.symptom-list { margin: 0 0 16px; padding: 0; list-style: none; }
+.symptom-list li { position: relative; margin-bottom: 8px; }
+
+.symptom {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 44px;
+  padding: 12px 64px 12px 12px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--white);
+  cursor: pointer;
+}
+
+.symptom:hover { border-color: var(--blue-400); }
+.symptom:has(input:checked) { border-color: var(--blue-500); background: var(--blue-50); }
+.symptom:has(input:focus-visible) { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.symptom input { flex: none; width: 20px; height: 20px; margin-top: 3px; accent-color: var(--blue-500); }
+.symptom__text { flex: 1; display: flex; flex-direction: column; }
+.symptom__title { font-weight: 600; }
+.symptom__desc { font-size: 14px; line-height: 20px; color: var(--muted); }
+.symptom__more { position: absolute; right: 12px; bottom: 10px; font-size: 14px; }
+.symptom .sev { align-self: flex-start; }
+
+.result-count { margin: 0 0 12px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.results { margin: 0 0 16px; padding: 0; list-style: none; }
+
+.result {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--white);
+}
+
+.result + .result { margin-top: 8px; }
+
+.result__rank {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--blue-100);
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 14px;
+}
+
+.result__body { flex: 1; }
+.result__title { margin: 0 0 8px; font-size: 16px; line-height: 26px; }
+.result__likelihood,
+.result__note { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--muted); }
+.result__body .link { display: inline-block; margin-top: 8px; font-size: 14px; }
+
+/* bar kemungkinan: panjang ikut level, teks tetap ada di bawahnya */
+.bar { display: block; height: 8px; border-radius: 999px; background: var(--blue-100); overflow: hidden; }
+.bar span { display: block; height: 100%; border-radius: 999px; background: var(--blue-500); }
+.bar--high span { width: 100%; }
+.bar--medium span { width: 60%; }
+.bar--low span { width: 30%; }
+
+.skeleton {
+  height: 96px;
+  border-radius: 14px;
+  background: var(--blue-100);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.skeleton + .skeleton { margin-top: 8px; }
+@keyframes pulse { 50% { opacity: 0.5; } }
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+
+.save-result { margin-bottom: 16px; }
+
+/* ---------- form dan konfirmasi ---------- */
+.form-page { max-width: 720px; margin-inline: auto; }
+.form-page:hover { border-color: var(--blue-200); }
+.form-page h1 { font-size: 24px; line-height: 32px; }
+.form-page .input,
+.form-page :is(select, textarea) { width: 100%; }
+.form-page__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+
+.form-page [id$="severity"] { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.form-page [id$="severity"] label {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px solid var(--blue-200);
+  border-radius: 10px;
+}
+
+.form-page [id$="severity"] label:has(input:checked) { border-color: var(--blue-500); background: var(--blue-50); }
+.form-page [id$="severity"] input { margin-top: 5px; accent-color: var(--blue-500); }
+
+@media (min-width: 768px) {
+  .diagnose { grid-template-columns: 7fr 5fr; align-items: start; }
+  .diagnose__results { position: sticky; top: 88px; }
+}

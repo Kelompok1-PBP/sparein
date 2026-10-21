@@ -163,6 +163,15 @@ class DiagnosePageTests(DiagnoseSetup):
         self.assertContains(resp, "Kemungkinan tinggi")
         self.assertContains(resp, "checked")
 
+    def test_page_wires_script_and_save_button(self):
+        resp = self.client.get(self.url, {"device": self.device.slug})
+        self.assertContains(resp, "diagnostics/diagnostics.js")
+        self.assertContains(resp, f'data-api="{reverse("diagnostics:save")}"')
+        self.assertContains(resp, "csrfmiddlewaretoken")
+
+    def test_picker_state_also_loads_script(self):
+        self.assertContains(self.client.get(self.url), "diagnostics/diagnostics.js")
+
     def test_garbage_symptom_param_is_ignored(self):
         resp = self.client.get(self.url, {"device": self.device.slug, "symptom": ["abc", ""]})
         self.assertEqual(resp.status_code, 200)

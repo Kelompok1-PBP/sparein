@@ -54,9 +54,14 @@
       <section class="diagnose__results" aria-labelledby="results-title">
         <h2 id="results-title">Kemungkinan masalah</h2>
         <div id="diagnosis-results" aria-live="polite">{% include "diagnostics/_results.html" %}</div>
+        <form id="save-form" class="save-result" data-api="{{ api_save }}" hidden>{% csrf_token %}
+          <button type="submit" class="btn btn--secondary">Simpan hasil</button>
+          <p class="meta" id="save-note" aria-live="polite"></p>
+        </form>
         <p class="alert alert--info">Hasil ini perkiraan. Kalau ragu atau barangnya berisiko, bawa ke teknisi.</p>
       </section>
     </div>
   {% endif %}
 {% endif %}
 {% endblock %}
+{% block extra_js %}<script src="{% static 'diagnostics/diagnostics.js' %}" defer></script>{% endblock %}
