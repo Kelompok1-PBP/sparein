@@ -121,6 +121,7 @@ A session collects the symptoms a user ticks for one device and returns ranked l
 | JSON | `GET /api/symptoms/?device=&severity=` | Visitor |
 | JSON | `GET /api/diagnose/?device=<slug>&symptom=<id>&symptom=<id>` | Visitor, compute only |
 | JSON | `POST /api/diagnose/save/` | Visitor, saves a session |
+| Read | `GET /diagnostics/my/sessions/` | Member, own sessions only |
 
 AJAX: ticking a symptom updates the ranked result list without a page reload. The page also renders the result from `?symptom=` on the server, so it works without JavaScript.
 

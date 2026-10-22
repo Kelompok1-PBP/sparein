@@ -21,7 +21,7 @@ Alurnya: **pilih perangkat, centang gejala, lihat kemungkinan masalah**. Halaman
 
 | Keadaan | URL | Isi |
 |---|---|---|
-| A, belum pilih perangkat | `/diagnostics/` | Kolom cari perangkat (AJAX ke `/api/devices/`) |
+| A, belum pilih perangkat | `/diagnostics/` | Kolom cari perangkat (AJAX ke `/api/devices/`) dan ubin kategori yang membuka `/devices/?category=` |
 | B, perangkat sudah dipilih | `/diagnostics/?device=iphone-17` | Daftar gejala di kiri, hasil di kanan |
 
 Modul ini cuma bergantung ke `core` dan `devices`. Perangkat diambil lewat `devices.selectors` (`get_device_or_404`, `get_device_qs`), tidak pernah query langsung ke tabel `devices`.
@@ -67,6 +67,7 @@ Contoh: penyebab "Baterai aus" punya gejala A dan B. Kalau user mencentang A dan
 | JSON gejala | `GET /api/symptoms/?device=&severity=` | Semua |
 | JSON hasil | `GET /api/diagnose/?device=&symptom=` | Semua |
 | Simpan hasil | `POST /api/diagnose/save/` | Semua |
+| Riwayat diagnosa | `GET /diagnostics/my/sessions/` | Login, cuma milik sendiri |
 
 Visitor yang buka form dilempar ke halaman login, Member kena 403. Pengecekan ada di view, memakai `core.permissions`.
 
@@ -85,6 +86,8 @@ Dua hal yang sengaja dibikin begini:
 - **Menghitung tidak menulis database.** Kalau tiap centang bikin sesi baru, visitor anonim bisa ngebanjirin tabel. Sesi baru disimpan waktu user menekan tombol **Simpan hasil** (`POST /api/diagnose/save/`).
 - **Tetap jalan tanpa JavaScript.** Form gejala adalah form GET biasa. Server juga merender hasil dari `?symptom=` yang ada di URL. Tanpa JS, tombol "Lihat kemungkinan" muncul sebagai gantinya.
 
+Di mobile, setelah ada hasil muncul bar biru menempel di bawah layar ("2 kemungkinan ditemukan · Lihat") yang membawa user ke panel hasil.
+
 Panel hasil punya `aria-live="polite"` supaya pembaca layar menyebut hasil baru. Tingkat kemungkinan selalu ditulis dengan kata ("Kemungkinan tinggi"), bukan cuma bar atau warna.
 
 ## 6. Struktur file
@@ -99,7 +102,7 @@ diagnostics/
 ├─ admin.py
 ├─ fixtures/seed_diagnostics.json   data contoh iPhone 17 dan MacBook Air 13"
 ├─ static/diagnostics/              diagnostics.css, diagnostics.js
-├─ templates/diagnostics/           diagnose, _results, symptom_detail, symptom_form, confirm_delete
+├─ templates/diagnostics/           diagnose, _results, history, symptom_detail, symptom_form, confirm_delete
 └─ tests.py
 ```
 
@@ -127,8 +130,6 @@ Kode ditulis test-first. `tests.py` mencakup model, selector, ranking, halaman, 
 
 ## 8. Yang sengaja ngga dibikin
 
-- **Riwayat diagnosa.** Sesi sudah tersimpan tapi belum ada halaman buat melihatnya. Butuh keputusan tim soal letaknya (mungkin di Profil).
 - **Panduan terkait per gejala.** `RepairGuide` belum punya FK `symptom` (lihat `guides/README.md`, dan Q10 di UI Specs). Untuk sementara tombol "Lihat panduan terkait" membuka daftar panduan yang difilter ke perangkat.
-- **Kategori di keadaan A.** Mockup punya ubin kategori. Belum dibikin karena API perangkat belum ngirim nama kategori (Q21).
 - **Form untuk Cause.** Cukup lewat Django admin dulu.
-- **Bar ringkasan hasil di mobile** dan **Select perangkat yang bisa dicari** di form gejala.
+- **Hapus riwayat diagnosa.** Halaman riwayat baru bisa melihat dan mengulang diagnosa.

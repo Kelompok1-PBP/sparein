@@ -275,7 +275,7 @@ Kalau disuruh jelasin dalam 3 sampai 5 menit, urutannya begini:
 
 Biar kodenya tetap bisa dipelajari, hal-hal ini sengaja ditunda:
 
-- **Halaman Profil** (`/profile/`). Butuh view dan URL baru, jadi masuk backend dan perlu keputusan tim dulu.
+- **Jumlah di jalan pintas Profil** ("3 catatan", "5 panduan"). Halaman Profil (`/profile/`) sudah ada, tapi angkanya butuh data dari jurnal dan panduan tersimpan yang modulnya belum jadi, jadi kartunya cuma berisi tautan.
 - **Toast di alur nyata.** Komponennya udah ada, tapi belum ada view yang ngirim `messages.success(...)`.
 - **Tailwind.** Belum ada setup build.
 - **Mode gelap.**
