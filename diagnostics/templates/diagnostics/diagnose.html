@@ -15,6 +15,22 @@
     <div id="picker-results" aria-live="polite"></div>
     <noscript><p>Aktifkan JavaScript buat mencari, atau pilih perangkat dari <a class="link" href="{% url 'devices:list' %}">katalog</a>.</p></noscript>
   </section>
+  {% if categories %}
+    <section class="section">
+      <h2>Atau pilih dari kategori</h2>
+      <ul class="tiles">
+        {% for c in categories %}
+          <li>
+            <a class="tile" href="{% url 'devices:list' %}?category={{ c.category__slug }}">
+              <img src="{% static 'core/icons/package-muted.svg' %}" alt="" width="24" height="24">
+              <span class="tile__name">{{ c.category__name }}</span>
+              <span class="tile__count">{{ c.total }} perangkat</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
 {% else %}
   <div class="device-row card">
     <strong>{{ device.name }}</strong>{% if device.brand %} · {{ device.brand }}{% endif %}

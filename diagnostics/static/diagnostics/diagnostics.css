@@ -164,3 +164,28 @@
   .diagnose { grid-template-columns: 7fr 5fr; align-items: start; }
   .diagnose__results { position: sticky; top: 88px; }
 }
+
+/* ---------- ubin kategori ---------- */
+.tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 16px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--white);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.tile:hover { border-color: var(--blue-400); }
+.tile:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.tile__name { font-weight: 600; }
+.tile__count { font-size: 14px; line-height: 20px; color: var(--muted); }
+
+@media (min-width: 768px) {
+  .tiles { grid-template-columns: repeat(4, 1fr); }
+}

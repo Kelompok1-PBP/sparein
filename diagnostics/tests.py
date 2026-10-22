@@ -346,3 +346,23 @@ class SeedFixtureTests(TestCase):
         device = Device.objects.get(pk=8)
         ids = list(get_symptoms_for_device(device.pk).values_list("pk", flat=True)[:1])
         self.assertTrue(rank_causes(device.pk, ids))
+
+
+class CategoryTilesTests(TestCase):
+    def setUp(self):
+        phone = DeviceCategory.objects.create(name="Phone")
+        laptop = DeviceCategory.objects.create(name="Laptop")
+        for name in ("iPhone 11", "iPhone 12"):
+            Device.objects.create(name=name, category=phone)
+        Device.objects.create(name="MacBook", category=laptop)
+
+    def test_picker_lists_categories_with_device_count(self):
+        resp = self.client.get(reverse("diagnostics:list"))
+        self.assertContains(resp, "Atau pilih dari kategori")
+        self.assertContains(resp, "2 perangkat")
+        self.assertContains(resp, "1 perangkat")
+        self.assertContains(resp, f'{reverse("devices:list")}?category=phone')
+
+    def test_tiles_hidden_once_device_is_chosen(self):
+        resp = self.client.get(reverse("diagnostics:list"), {"device": "iphone-11"})
+        self.assertNotContains(resp, "Atau pilih dari kategori")

@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -33,7 +34,16 @@ def _guides_url(device):
 def diagnose(request):
     slug = request.GET.get("device", "").strip()
     if not slug:
-        return render(request, "diagnostics/diagnose.html", {"api_devices": reverse("devices:api")})
+        categories = (
+            get_device_qs()
+            .values("category__name", "category__slug")
+            .annotate(total=Count("pk"))
+            .order_by("category__name")
+        )
+        return render(request, "diagnostics/diagnose.html", {
+            "api_devices": reverse("devices:api"),
+            "categories": categories,
+        })
     device = get_device_or_404(slug)
     ticked = _ticked(request)
     results = rank_causes(device.pk, ticked)
