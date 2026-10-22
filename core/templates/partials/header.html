@@ -34,7 +34,7 @@
               {% include "partials/role_badge.html" %}
             </div>
             <hr class="menu__sep">
-            <a class="menu__item" href="/profile/"><img src="{% static 'core/icons/user-muted.svg' %}" alt="" width="20" height="20">Profil Saya</a>
+            <a class="menu__item" href="{% url 'core:profile' %}"><img src="{% static 'core/icons/user-muted.svg' %}" alt="" width="20" height="20">Profil Saya</a>
             <a class="menu__item" href="/journal/"><img src="{% static 'core/icons/notebook-pen-muted.svg' %}" alt="" width="20" height="20">Jurnal Saya</a>
             <a class="menu__item" href="/guides/saved/"><img src="{% static 'core/icons/bookmark-muted.svg' %}" alt="" width="20" height="20">Panduan Tersimpan</a>
             {% if user.is_superuser or user.profile.role == "ADMIN" %}
@@ -75,7 +75,7 @@
           {% if user.is_authenticated %}
             <a class="menu__item menu__item--lg" href="/journal/"{% if ns == 'journal' %} aria-current="page"{% endif %}><img src="{% static 'core/icons/notebook-pen-muted.svg' %}" alt="" width="20" height="20">Jurnal</a>
             <hr class="menu__sep">
-            <a class="menu__item menu__item--lg" href="/profile/"><img src="{% static 'core/icons/user-muted.svg' %}" alt="" width="20" height="20">Profil Saya</a>
+            <a class="menu__item menu__item--lg" href="{% url 'core:profile' %}"><img src="{% static 'core/icons/user-muted.svg' %}" alt="" width="20" height="20">Profil Saya</a>
             <a class="menu__item menu__item--lg" href="/guides/saved/"><img src="{% static 'core/icons/bookmark-muted.svg' %}" alt="" width="20" height="20">Panduan Tersimpan</a>
             {% if user.is_superuser or user.profile.role == "ADMIN" or user.profile.role == "CONTRIBUTOR" %}
               <hr class="menu__sep">

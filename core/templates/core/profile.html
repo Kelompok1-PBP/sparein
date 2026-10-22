@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Profil Saya · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'core/profile.css' %}">{% endblock %}
+{% block content %}
+<h1>Profil Saya</h1>
+
+<div class="profile">
+  <section class="card profile__identity" aria-label="Identitas akun">
+    <span class="avatar avatar--xl" aria-hidden="true">{{ user.username|slice:":1"|upper }}</span>
+    <div>
+      <h2 class="profile__name">{{ user.username }}</h2>
+      {% include "partials/role_badge.html" %}
+      <p class="profile__since">Bergabung sejak {{ user.date_joined|date:"j M Y" }}</p>
+    </div>
+  </section>
+
+  <ul class="profile__shortcuts">
+    <li>
+      <a class="card shortcut" href="/journal/">
+        <img src="{% static 'core/icons/notebook-pen-muted.svg' %}" alt="" width="24" height="24">
+        <span class="shortcut__title">Jurnal Saya</span>
+        <span class="shortcut__text">Catatan perbaikanmu</span>
+      </a>
+    </li>
+    <li>
+      <a class="card shortcut" href="/guides/saved/">
+        <img src="{% static 'core/icons/bookmark-muted.svg' %}" alt="" width="24" height="24">
+        <span class="shortcut__title">Panduan Tersimpan</span>
+        <span class="shortcut__text">Panduan yang kamu simpan</span>
+      </a>
+    </li>
+    <li>
+      <a class="card shortcut" href="{% url 'diagnostics:history' %}">
+        <img src="{% static 'core/icons/stethoscope-muted.svg' %}" alt="" width="24" height="24">
+        <span class="shortcut__title">Riwayat Diagnosa</span>
+        <span class="shortcut__text">Hasil diagnosa yang kamu simpan</span>
+      </a>
+    </li>
+  </ul>
+
+  <section class="info-card" aria-label="Info role">
+    <img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="24" height="24">
+    <div>
+      {% if role == "member" %}
+        <h2 class="info-card__title">Mau jadi Contributor?</h2>
+        <p>Contributor bisa menulis panduan, menambah gejala, dan mendaftarkan suku cadang. Kalau kamu tertarik, hubungi admin Sparein dan sebutkan username kamu. Admin akan mengubah role akunmu.</p>
+      {% elif role == "contributor" %}
+        <h2 class="info-card__title">Kamu Contributor</h2>
+        <p>Kamu bisa menambah perangkat, gejala, panduan, dan suku cadang lewat tombol + Buat di header.</p>
+      {% else %}
+        <h2 class="info-card__title">Kamu Admin</h2>
+        <p>Kamu bisa memoderasi semua konten dan mengatur role pengguna lewat panel admin.</p>
+        <a class="btn btn--secondary btn--sm" href="{% url 'admin:index' %}" target="_blank" rel="noopener">Buka panel admin<img src="{% static 'core/icons/external-link-muted.svg' %}" alt="" width="16" height="16"></a>
+      {% endif %}
+    </div>
+  </section>
+
+  <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+    <button type="submit" class="btn btn--sm btn--danger-outline">Keluar</button>
+  </form>
+</div>
+{% endblock %}

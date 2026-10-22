@@ -19,7 +19,7 @@
         <h2 class="site-footer__title">Akun</h2>
         <ul class="site-footer__list">
           {% if user.is_authenticated %}
-            <li><a href="/profile/">Profil Saya</a></li>
+            <li><a href="{% url 'core:profile' %}">Profil Saya</a></li>
             <li><a href="/journal/">Jurnal Saya</a></li>
           {% else %}
             <li><a href="{% url 'login' %}">Masuk</a></li>
