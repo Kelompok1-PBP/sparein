@@ -216,3 +216,9 @@
 @media (min-width: 768px) {
   .result-bar { display: none; }
 }
+
+/* ---------- riwayat ---------- */
+.history__head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline; }
+.history__device { margin: 0 0 4px; font-size: 20px; line-height: 28px; }
+.page-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+.page-head__sub { flex-basis: 100%; }

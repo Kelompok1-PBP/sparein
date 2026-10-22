@@ -11,6 +11,7 @@ from core.permissions import is_admin, is_contributor
 from devices.selectors import get_device_or_404, get_device_qs
 from diagnostics.forms import SymptomForm
 from diagnostics.selectors import (
+    get_sessions_for_user,
     get_symptom_or_404,
     get_symptom_qs,
     get_symptoms_for_device,
@@ -56,6 +57,14 @@ def diagnose(request):
         "can_create": is_contributor(request.user),
         "api_diagnose": reverse("diagnostics:api-diagnose"),
         "api_save": reverse("diagnostics:save"),
+    })
+
+
+@login_required
+def history(request):
+    return render(request, "diagnostics/history.html", {
+        "sessions": get_sessions_for_user(request.user),
+        "diagnose_url": reverse("diagnostics:list"),
     })
 
 

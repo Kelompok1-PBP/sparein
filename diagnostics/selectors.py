@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from diagnostics.models import Symptom
+from diagnostics.models import DiagnosisSession, Symptom
 
 
 def get_symptoms_for_device(device_id):
@@ -20,3 +20,12 @@ def get_symptom_qs(*, device=None, severity=None):
 
 def get_symptom_or_404(slug):
     return get_object_or_404(get_symptom_qs(), slug=slug)
+
+
+def get_sessions_for_user(user):
+    """Riwayat diagnosa milik satu user, terbaru dulu."""
+    return (
+        DiagnosisSession.objects.filter(user=user)
+        .select_related("device")
+        .prefetch_related("symptoms", "results__cause")
+    )

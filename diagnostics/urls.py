@@ -5,6 +5,7 @@ from diagnostics import views
 app_name = "diagnostics"
 urlpatterns = [
     path("diagnostics/", views.diagnose, name="list"),
+    path("diagnostics/my/sessions/", views.history, name="history"),
     path("diagnostics/symptoms/create/", views.symptom_create, name="create"),
     path("diagnostics/<slug:slug>/", views.symptom_detail, name="detail"),
     path("diagnostics/<slug:slug>/edit/", views.symptom_edit, name="edit"),

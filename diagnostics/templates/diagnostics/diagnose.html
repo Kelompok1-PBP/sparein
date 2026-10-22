@@ -6,6 +6,7 @@
 <div class="page-head">
   <h1>Diagnosa masalah</h1>
   {% if not device %}<p class="page-head__sub">Pilih perangkatmu dulu, lalu centang gejala yang kamu alami.</p>{% endif %}
+  {% if user.is_authenticated %}<a class="link" href="{% url 'diagnostics:history' %}">Riwayat diagnosa</a>{% endif %}
 </div>
 
 {% if not device %}

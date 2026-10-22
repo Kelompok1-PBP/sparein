@@ -11,7 +11,7 @@ from diagnostics.selectors import (
     get_symptom_qs,
     get_symptoms_for_device,
 )
-from diagnostics.services import rank_causes
+from diagnostics.services import rank_causes, save_session
 
 
 def make_device(name="iPhone 11"):
@@ -386,3 +386,41 @@ class ResultBarTests(DiagnoseSetup):
     def test_bar_hidden_when_nothing_is_ticked(self):
         resp = self.client.get(self.url, {"device": self.device.slug})
         self.assertContains(resp, 'class="result-bar" href="#results-title" hidden')
+
+
+class HistoryTests(DiagnoseSetup):
+    url = reverse("diagnostics:history")
+
+    def save_for(self, user):
+        return save_session(user, self.device, [self.boros.pk])
+
+    def test_visitor_is_sent_to_login(self):
+        self.assertRedirects(self.client.get(self.url), f"{reverse('login')}?next={self.url}")
+
+    def test_member_sees_only_own_sessions(self):
+        me, other = make_user("me"), make_user("other")
+        self.save_for(me)
+        Cause.objects.create(device=self.device, title="Rahasia orang lain").symptoms.add(self.panas)
+        save_session(other, self.device, [self.panas.pk])
+        self.client.force_login(me)
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Baterai sudah aus")
+        self.assertContains(resp, "Baterai boros")
+        self.assertNotContains(resp, "Rahasia orang lain")
+
+    def test_rerun_link_restores_ticked_symptoms(self):
+        me = make_user("me")
+        self.save_for(me)
+        self.client.force_login(me)
+        resp = self.client.get(self.url)
+        self.assertContains(resp, f"?device={self.device.slug}&amp;symptom={self.boros.pk}")
+
+    def test_empty_state(self):
+        self.client.force_login(make_user("me"))
+        self.assertContains(self.client.get(self.url), "Belum ada riwayat diagnosa.")
+
+    def test_diagnose_page_links_to_history_only_when_logged_in(self):
+        page = reverse("diagnostics:list")
+        self.assertNotContains(self.client.get(page), "Riwayat diagnosa")
+        self.client.force_login(make_user("me"))
+        self.assertContains(self.client.get(page), "Riwayat diagnosa")
