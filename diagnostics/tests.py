@@ -366,3 +366,11 @@ class CategoryTilesTests(TestCase):
     def test_tiles_hidden_once_device_is_chosen(self):
         resp = self.client.get(reverse("diagnostics:list"), {"device": "iphone-11"})
         self.assertNotContains(resp, "Atau pilih dari kategori")
+
+
+class DeviceSelectFilterTests(DiagnoseSetup):
+    def test_form_has_search_box_for_device_select_and_script(self):
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("diagnostics:create"))
+        self.assertContains(resp, 'data-filter-for="id_device"')
+        self.assertContains(resp, "diagnostics/diagnostics.js")

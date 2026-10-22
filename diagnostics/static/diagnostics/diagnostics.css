@@ -189,3 +189,5 @@
 @media (min-width: 768px) {
   .tiles { grid-template-columns: repeat(4, 1fr); }
 }
+
+.device-filter { margin-bottom: 8px; }

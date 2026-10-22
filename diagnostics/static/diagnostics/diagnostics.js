@@ -160,3 +160,19 @@ if (form) {
     });
   }
 }
+
+/* ---------- cari di Select perangkat (form gejala) ---------- */
+const deviceFilter = document.querySelector("[data-filter-for]");
+if (deviceFilter) {
+  const select = document.getElementById(deviceFilter.dataset.filterFor);
+  const options = [...select.options];
+  deviceFilter.hidden = false; // tanpa JS Select biasa tetap bisa dipakai
+
+  deviceFilter.addEventListener("input", () => {
+    const q = deviceFilter.value.trim().toLowerCase();
+    const chosen = select.value;
+    // dibangun ulang karena <option hidden> tidak didukung semua browser
+    select.replaceChildren(...options.filter((o) => !o.value || o.value === chosen || o.text.toLowerCase().includes(q)));
+    select.value = chosen;
+  });
+}

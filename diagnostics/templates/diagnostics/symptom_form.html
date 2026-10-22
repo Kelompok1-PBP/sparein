@@ -12,6 +12,9 @@
     {% for field in form %}
       <div class="field">
         <label class="field__label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="field__req" aria-hidden="true">*</span>{% endif %}</label>
+        {% if field.name == "device" %}
+          <input class="input device-filter" type="search" placeholder="Cari perangkat" aria-label="Cari perangkat" data-filter-for="{{ field.id_for_label }}" hidden>
+        {% endif %}
         {{ field }}
         {% if field.errors %}
           <div class="field__msg field__msg--error">
@@ -30,3 +33,4 @@
   </form>
 </div>
 {% endblock %}
+{% block extra_js %}<script src="{% static 'diagnostics/diagnostics.js' %}" defer></script>{% endblock %}
