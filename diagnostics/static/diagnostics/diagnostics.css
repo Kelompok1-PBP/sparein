@@ -191,3 +191,28 @@
 }
 
 .device-filter { margin-bottom: 8px; }
+
+/* ---------- bar hasil, cuma di mobile ---------- */
+.result-bar {
+  position: fixed;
+  inset: auto 16px 16px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: var(--blue-500);
+  color: var(--white);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.result-bar:hover { background: var(--blue-600); }
+.result-bar:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.result-bar[hidden] { display: none; }
+
+@media (min-width: 768px) {
+  .result-bar { display: none; }
+}

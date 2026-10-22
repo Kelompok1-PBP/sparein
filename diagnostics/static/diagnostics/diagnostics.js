@@ -60,6 +60,13 @@ if (form) {
   const emptyIcon = panel.querySelector("img")?.src;
   const csrf = document.querySelector("#save-form [name=csrfmiddlewaretoken]")?.value;
 
+  const bar = document.querySelector(".result-bar");
+  const setBar = (count) => {
+    if (!bar) return;
+    bar.hidden = !count;
+    bar.textContent = `${count} kemungkinan ditemukan · Lihat`;
+  };
+
   const ticked = () => new URLSearchParams(new FormData(form));
 
   // Markup ini harus sama dengan diagnostics/_results.html
@@ -109,17 +116,20 @@ if (form) {
     panel.replaceChildren();
     if (!data.count) {
       panel.append(makeEmpty("Belum ada kemungkinan yang cocok buat kombinasi gejala ini.", null, data.guides_url));
+      setBar(0);
       return;
     }
     const list = el("ol", "results");
     data.results.forEach((r, i) => list.append(makeResult(r, i + 1, data.guides_url)));
     panel.append(el("p", "result-count", `${data.count} kemungkinan ditemukan`), list);
+    setBar(data.count);
   };
 
   const refresh = async () => {
     const params = ticked();
     if (!params.has("symptom")) {
       panel.replaceChildren(makeEmpty("Centang gejala di sebelah kiri buat lihat kemungkinan masalahnya.", emptyIcon));
+      setBar(0);
       history.replaceState(null, "", `?${params}`);
       return;
     }

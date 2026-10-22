@@ -42,6 +42,7 @@
     <p><a class="link" href="{{ guides_url }}">Lihat panduan</a></p>
     {% if can_create %}<p><a class="link" href="{% url 'diagnostics:create' %}?device={{ device.slug }}">+ Tambah gejala buat perangkat ini</a></p>{% endif %}
   {% else %}
+    <a class="result-bar" href="#results-title"{% if not results %} hidden{% endif %}>{{ results|length }} kemungkinan ditemukan · Lihat</a>
     <div class="diagnose">
       <form method="get" id="symptom-form" class="diagnose__symptoms" data-api="{{ api_diagnose }}" data-guides="{{ guides_url }}">
         <input type="hidden" name="device" value="{{ device.slug }}">

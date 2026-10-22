@@ -374,3 +374,15 @@ class DeviceSelectFilterTests(DiagnoseSetup):
         resp = self.client.get(reverse("diagnostics:create"))
         self.assertContains(resp, 'data-filter-for="id_device"')
         self.assertContains(resp, "diagnostics/diagnostics.js")
+
+
+class ResultBarTests(DiagnoseSetup):
+    url = reverse("diagnostics:list")
+
+    def test_bar_shows_count_when_something_is_ticked(self):
+        resp = self.client.get(self.url, {"device": self.device.slug, "symptom": [self.boros.pk]})
+        self.assertContains(resp, '<a class="result-bar" href="#results-title">1 kemungkinan ditemukan')
+
+    def test_bar_hidden_when_nothing_is_ticked(self):
+        resp = self.client.get(self.url, {"device": self.device.slug})
+        self.assertContains(resp, 'class="result-bar" href="#results-title" hidden')
