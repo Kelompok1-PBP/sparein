@@ -1,6 +1,8 @@
 from decimal import Decimal
+from io import StringIO
 
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
 from django.test import TestCase
 
 from devices.models import Device, DeviceCategory
@@ -8,6 +10,7 @@ from guides.models import RepairGuide
 
 from .impact import DEFAULT_MASS_KG, DEFAULT_REPLACEMENT_COST
 from .models import CategoryImpactProfile, ImpactEstimate, RepairLog
+from .selectors import logs_for, site_impact_totals, user_impact_summary
 
 Status = RepairLog.Status
 
@@ -84,3 +87,37 @@ class ImpactTests(JournalBase):
         guide.delete()
         log.refresh_from_db()
         self.assertIsNone(log.guide)
+
+
+class SelectorTests(JournalBase):
+    def test_logs_for_returns_only_own_records(self):
+        mine = self.make_log()
+        self.make_log(user=self.other, title="Punya orang lain")
+        self.assertEqual(list(logs_for(self.user)), [mine])
+
+    def test_user_summary_counts_only_own_successes(self):
+        self.make_log(status=Status.SUCCEEDED)
+        self.make_log(status=Status.FAILED)
+        self.make_log(user=self.other, status=Status.SUCCEEDED)
+        summary = user_impact_summary(self.user)
+        self.assertEqual(summary["repairs"], 1)
+        self.assertEqual(summary["waste_avoided_kg"], Decimal("0.20"))
+
+    def test_site_totals_span_all_users_and_default_to_zero(self):
+        self.assertEqual(site_impact_totals()["repairs"], 0)
+        self.make_log(status=Status.SUCCEEDED)
+        self.make_log(user=self.other, status=Status.SUCCEEDED)
+        totals = site_impact_totals()
+        self.assertEqual(totals["repairs"], 2)
+        self.assertEqual(totals["cost_avoided"], 6_000_000)
+
+
+class SeedCommandTests(TestCase):
+    def test_seed_creates_profiles_for_root_categories_only(self):
+        root = DeviceCategory.objects.create(name="Mac Laptop")
+        DeviceCategory.objects.create(name="MacBook Air", parent=root)
+        out = StringIO()
+        call_command("seed_impact_profiles", stdout=out)
+        call_command("seed_impact_profiles", stdout=out)  # aman dijalankan ulang
+        self.assertEqual(CategoryImpactProfile.objects.count(), 1)
+        self.assertEqual(CategoryImpactProfile.objects.get().category, root)
