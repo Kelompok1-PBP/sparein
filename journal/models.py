@@ -2,6 +2,24 @@ from django.conf import settings
 from django.db import models
 
 
+class CategoryImpactProfile(models.Model):
+    category = models.OneToOneField(
+        "devices.DeviceCategory",
+        on_delete=models.CASCADE,
+        related_name="impact_profile",
+    )
+    avg_mass_kg = models.DecimalField(max_digits=6, decimal_places=2)
+    replacement_cost = models.PositiveBigIntegerField(
+        help_text="Total biaya yang diperlukan untuk mengganti perangkat dengan yang baru (Rp)"
+    )
+
+    class Meta:
+        ordering = ["category__name"]
+
+    def __str__(self):
+        return f"{self.category} ({self.avg_mass_kg} kg)"
+
+    
 class RepairLog(models.Model):
     class Status(models.TextChoices):
         PLANNED = "planned", "Direncanakan"
@@ -42,3 +60,13 @@ class RepairLog(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ImpactEstimate(models.Model):
+    log = models.OneToOneField(RepairLog, on_delete=models.CASCADE, related_name="impact")
+    waste_avoided_kg = models.DecimalField(max_digits=8, decimal_places=2)
+    cost_avoided = models.PositiveBigIntegerField()
+    computed_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.log}: {self.waste_avoided_kg} kg"
