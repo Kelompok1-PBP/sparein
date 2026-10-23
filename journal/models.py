@@ -61,6 +61,12 @@ class RepairLog(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+            super().save(*args, **kwargs)
+            from .impact import sync_impact
+    
+            sync_impact(self)
+
 
 class ImpactEstimate(models.Model):
     log = models.OneToOneField(RepairLog, on_delete=models.CASCADE, related_name="impact")
