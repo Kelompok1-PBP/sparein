@@ -97,12 +97,12 @@ diagnostics/
 ├─ models.py        Symptom, Cause, DiagnosisSession, DiagnosisResult
 ├─ selectors.py     get_symptoms_for_device (diekspor), get_symptom_qs, get_symptom_or_404
 ├─ services.py      rank_causes, save_session
-├─ forms.py         SymptomForm
+├─ forms.py         SymptomForm, SeverityRadio (radio keparahan tampil sebagai kartu)
 ├─ views.py, urls.py
 ├─ admin.py
 ├─ fixtures/seed_diagnostics.json   data contoh iPhone 17 dan MacBook Air 13"
 ├─ static/diagnostics/              diagnostics.css, diagnostics.js
-├─ templates/diagnostics/           diagnose, _results, history, symptom_detail, symptom_form, confirm_delete
+├─ templates/diagnostics/           diagnose, _results, history, symptom_detail, symptom_form, confirm_delete, widgets/
 └─ tests.py
 ```
 
