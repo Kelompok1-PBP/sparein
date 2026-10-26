@@ -17,7 +17,7 @@
     </div>
   </section>
 {% else %}
-  <div>
+  <div data-journal data-csrf="{{ csrf_token }}">
     <section class="journal-head">
       <div>
         <h1>Jurnal perbaikan</h1>
@@ -38,6 +38,8 @@
       <button class="btn btn--secondary" type="submit">Terapkan</button>
     </form>
 
+    <p class="sr-only" role="status" aria-live="polite" data-live></p>
+
     {% if logs %}
       <ul class="log-list">
         {% for log in logs %}
@@ -49,10 +51,14 @@
                 {% if log.repaired_at %} · {{ log.repaired_at|date:"j F Y" }}{% endif %}
                 · Biaya Rp{{ log.cost_spent|floatformat:"0g" }}
               </p>
-              <p class="log__impact">{% if log.impact %}Menghindari {{ log.impact.waste_avoided_kg|floatformat:"2g" }} kg limbah, menghemat Rp{{ log.impact.cost_avoided|floatformat:"0g" }}{% endif %}</p>
+              <p class="log__impact" data-impact>{% if log.impact %}Menghindari {{ log.impact.waste_avoided_kg|floatformat:"2g" }} kg limbah, menghemat Rp{{ log.impact.cost_avoided|floatformat:"0g" }}{% endif %}</p>
             </div>
             <div class="log__side">
-              <span class="status-badge" data-status="{{ log.status }}">{{ log.get_status_display }}</span>
+              <span class="status-badge" data-badge data-status="{{ log.status }}">{{ log.get_status_display }}</span>
+              <label class="sr-only" for="status-{{ log.pk }}">Ubah status {{ log.title }}</label>
+              <select class="input input--sm" id="status-{{ log.pk }}" data-status-select data-url="{% url 'journal:status' log.pk %}" data-current="{{ log.status }}">
+                {% for value, label in statuses %}<option value="{{ value }}"{% if value == log.status %} selected{% endif %}>{{ label }}</option>{% endfor %}
+              </select>
               <div class="journal-actions">
                 <a class="btn btn--ghost btn--sm" href="{% url 'journal:edit' log.pk %}">Edit</a>
                 <a class="btn btn--ghost btn--sm" href="{% url 'journal:delete' log.pk %}">Hapus</a>
@@ -68,3 +74,4 @@
   </div>
 {% endif %}
 {% endblock %}
+{% block extra_js %}{% if not visitor %}<script src="{% static 'journal/journal.js' %}" defer></script>{% endif %}{% endblock %}

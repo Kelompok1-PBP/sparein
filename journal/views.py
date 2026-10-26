@@ -1,7 +1,10 @@
+from datetime import date
+
 from django.contrib import messages
 from django.contrib.auth.views import redirect_to_login
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from .forms import RepairLogForm, StatusFilterForm
@@ -20,6 +23,16 @@ def denied(request):
     if wants_json(request) or request.headers.get("X-Requested-With"):
         return JsonResponse({"error": "Akses ditolak."}, status=403)
     return redirect_to_login(request.get_full_path())
+
+
+def serialize_impact(log):
+    impact = getattr(log, "impact", None)
+    if impact is None:
+        return None
+    return {
+        "waste_avoided_kg": float(impact.waste_avoided_kg),
+        "cost_avoided": impact.cost_avoided,
+    }
 
 
 def serialize_summary(summary):
@@ -88,7 +101,6 @@ def journal_create(request):
 def journal_edit(request, pk):
     if not can_use_journal(request.user):
         return denied(request)
-    # Milik user lain tidak ketemu di queryset, jadi hasilnya 404.
     log = get_object_or_404(logs_for(request.user), pk=pk)
     return editor(request, log)
 
@@ -103,6 +115,31 @@ def journal_delete(request, pk):
         messages.success(request, "Catatan perbaikan berhasil dihapus.")
         return redirect("journal:list")
     return render(request, "journal/delete.html", {"log": log})
+
+
+@require_http_methods(["POST"])
+def journal_status(request, pk):
+    if not can_use_journal(request.user):
+        return denied(request)
+    log = get_object_or_404(logs_for(request.user), pk=pk)
+    status = request.POST.get("status", "")
+    if status not in Status.values:
+        return JsonResponse({"errors": {"status": ["Status tidak valid."]}}, status=400)
+    log.status = status
+    if status in (Status.SUCCEEDED, Status.FAILED) and not log.repaired_at:
+        log.repaired_at = date.today()
+    log.save()
+    log = get_object_or_404(logs_for(request.user), pk=pk)
+    return JsonResponse(
+        {
+            "id": log.pk,
+            "status": log.status,
+            "status_label": log.get_status_display(),
+            "impact": serialize_impact(log),
+            "summary": serialize_summary(user_impact_summary(request.user)),
+            "url": reverse("journal:detail", args=[log.pk]),
+        }
+    )
 
 
 @require_http_methods(["GET"])
