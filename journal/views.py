@@ -22,6 +22,14 @@ def denied(request):
     return redirect_to_login(request.get_full_path())
 
 
+def serialize_summary(summary):
+    return {
+        "repairs": summary["repairs"],
+        "waste_avoided_kg": float(summary["waste_avoided_kg"]),
+        "cost_avoided": summary["cost_avoided"],
+    }
+
+
 @require_http_methods(["GET"])
 def journal_list(request):
     site = site_impact_totals()
@@ -80,6 +88,7 @@ def journal_create(request):
 def journal_edit(request, pk):
     if not can_use_journal(request.user):
         return denied(request)
+    # Milik user lain tidak ketemu di queryset, jadi hasilnya 404.
     log = get_object_or_404(logs_for(request.user), pk=pk)
     return editor(request, log)
 
@@ -94,3 +103,19 @@ def journal_delete(request, pk):
         messages.success(request, "Catatan perbaikan berhasil dihapus.")
         return redirect("journal:list")
     return render(request, "journal/delete.html", {"log": log})
+
+
+@require_http_methods(["GET"])
+def journal_summary_api(request):
+    if not can_use_journal(request.user):
+        return JsonResponse({"error": "Akses ditolak."}, status=403)
+    by_status = {value: 0 for value in Status.values}
+    for log in logs_for(request.user):
+        by_status[log.status] += 1
+    return JsonResponse(
+        {
+            "summary": serialize_summary(user_impact_summary(request.user)),
+            "site": serialize_summary(site_impact_totals()),
+            "by_status": by_status,
+        }
+    )
