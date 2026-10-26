@@ -216,10 +216,11 @@ Owner: Marsya Rizka Aulia (2506537606). Depends on: `core`, `guides`, optionally
 
 | Model | Key fields |
 |---|---|
+| `CategoryImpactProfile` | `category` OneToOne to `DeviceCategory`, `avg_mass_kg`, `replacement_cost` |
 | `RepairLog` | `user` FK, `guide` FK (nullable), `device` FK (nullable), `title`, `status` (`planned`, `in_progress`, `succeeded`, `failed`), `cost_spent`, `notes`, `repaired_at` |
 | `ImpactEstimate` | `log` OneToOne, `waste_avoided_kg`, `cost_avoided`, `computed_at` |
 
-`ImpactEstimate` is derived from the device category's average mass and replacement cost, then aggregated into a personal dashboard and a site-wide counter.
+`ImpactEstimate` is derived from the average mass and replacement cost defined in `CategoryImpactProfile`, which stores one profile per root device category. Child categories inherit the profile of their nearest ancestor with a defined profile. The resulting estimates are then aggregated into a personal dashboard and a site-wide counter.
 
 ### CRUD surface
 

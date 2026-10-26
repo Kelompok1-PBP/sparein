@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'devices',
     'guides',
     'diagnostics',
+    'parts',
+    'journal',
 ]
 
 MIDDLEWARE = [
