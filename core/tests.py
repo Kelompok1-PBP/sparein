@@ -234,3 +234,75 @@ class BaseLayoutTests(TestCase):
         with_action = render_to_string("partials/empty_state.html", {
             "message": "Kosong nih.", "action_url": "/devices/create/", "action_label": "Tambah"})
         self.assertIn('href="/devices/create/"', with_action)
+
+
+class DiagnosticsLinkTests(TestCase):
+    def test_header_links_to_diagnostics_by_url_name(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, f'href="{reverse("diagnostics:list")}"')
+
+    def test_create_menu_links_to_new_symptom_form(self):
+        user = User.objects.create_user("c", password="Sparein!2026")
+        user.profile.role = UserProfile.Role.CONTRIBUTOR
+        user.profile.save()
+        self.client.force_login(user)
+        self.assertContains(self.client.get(reverse("core:home")), reverse("diagnostics:create"))
+
+
+class ProfilePageTests(TestCase):
+    url = reverse("core:profile")
+
+    def login(self, name, role=UserProfile.Role.MEMBER, superuser=False):
+        make = User.objects.create_superuser if superuser else User.objects.create_user
+        user = make(name, password="Sparein!2026")
+        user.profile.role = role
+        user.profile.save()
+        self.client.force_login(user)
+        return user
+
+    def test_visitor_is_sent_to_login(self):
+        self.assertRedirects(self.client.get(self.url), f"{reverse('login')}?next={self.url}")
+
+    def test_identity_card_shows_username_role_and_join_date(self):
+        user = self.login("sari")
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "sari")
+        self.assertContains(resp, "badge--member")
+        self.assertContains(resp, f"Bergabung sejak {user.date_joined:%-d} ")
+
+    def test_shortcuts_link_to_personal_pages(self):
+        self.login("sari")
+        resp = self.client.get(self.url)
+        for href in ("/journal/", "/guides/saved/", reverse("diagnostics:history")):
+            self.assertContains(resp, f'href="{href}"')
+
+    def test_member_sees_contributor_invitation_only(self):
+        self.login("sari")
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Mau jadi Contributor?")
+        self.assertNotContains(resp, "Buka panel admin")
+
+    def test_contributor_card(self):
+        self.login("budi", UserProfile.Role.CONTRIBUTOR)
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Kamu Contributor")
+        self.assertNotContains(resp, "Mau jadi Contributor?")
+
+    def test_admin_card_has_admin_panel_link(self):
+        self.login("adm", UserProfile.Role.ADMIN)
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Kamu Admin")
+        self.assertContains(resp, "Buka panel admin")
+
+    def test_superuser_counts_as_admin(self):
+        self.login("root", superuser=True)
+        self.assertContains(self.client.get(self.url), "Kamu Admin")
+
+    def test_logout_is_a_post_form(self):
+        self.login("sari")
+        resp = self.client.get(self.url)
+        self.assertContains(resp, f'method="post" action="{reverse("logout")}"')
+
+    def test_menus_link_to_profile_by_url_name(self):
+        self.login("sari")
+        self.assertContains(self.client.get(reverse("core:home")), f'href="{self.url}"')
