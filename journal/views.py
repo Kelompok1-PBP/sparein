@@ -1,2 +1,96 @@
+from django.contrib import messages
+from django.contrib.auth.views import redirect_to_login
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_http_methods
 
-# Create your views here.
+from .forms import RepairLogForm, StatusFilterForm
+from .models import RepairLog
+from .permissions import can_use_journal
+from .selectors import logs_for, site_impact_totals, user_impact_summary
+
+Status = RepairLog.Status
+
+
+def wants_json(request):
+    return "application/json" in request.headers.get("Accept", "")
+
+
+def denied(request):
+    if wants_json(request) or request.headers.get("X-Requested-With"):
+        return JsonResponse({"error": "Akses ditolak."}, status=403)
+    return redirect_to_login(request.get_full_path())
+
+
+@require_http_methods(["GET"])
+def journal_list(request):
+    site = site_impact_totals()
+    if not can_use_journal(request.user):
+        return render(request, "journal/list.html", {"visitor": True, "site": site})
+    filters = StatusFilterForm(request.GET)
+    logs = logs_for(request.user)
+    if filters.is_valid() and filters.cleaned_data["status"]:
+        logs = logs.filter(status=filters.cleaned_data["status"])
+    return render(
+        request,
+        "journal/list.html",
+        {
+            "visitor": False,
+            "logs": logs[:100],
+            "filters": filters,
+            "summary": user_impact_summary(request.user),
+            "site": site,
+            "statuses": Status.choices,
+        },
+    )
+
+
+@require_http_methods(["GET"])
+def journal_detail(request, pk):
+    if not can_use_journal(request.user):
+        return denied(request)
+    log = get_object_or_404(logs_for(request.user), pk=pk)
+    return render(request, "journal/detail.html", {"log": log})
+
+
+def editor(request, log=None):
+    form = RepairLogForm(request.POST or None, instance=log, user=request.user)
+    if request.method == "POST" and form.is_valid():
+        obj = form.save(commit=False)
+        obj.user = request.user
+        obj.save()
+        messages.success(request, "Catatan perbaikan berhasil disimpan.")
+        return redirect("journal:detail", pk=obj.pk)
+    return render(
+        request,
+        "journal/form.html",
+        {"form": form, "editing": log is not None},
+        status=400 if request.method == "POST" else 200,
+    )
+
+
+@require_http_methods(["GET", "POST"])
+def journal_create(request):
+    if not can_use_journal(request.user):
+        return denied(request)
+    return editor(request)
+
+
+@require_http_methods(["GET", "POST"])
+def journal_edit(request, pk):
+    if not can_use_journal(request.user):
+        return denied(request)
+    log = get_object_or_404(logs_for(request.user), pk=pk)
+    return editor(request, log)
+
+
+@require_http_methods(["GET", "POST"])
+def journal_delete(request, pk):
+    if not can_use_journal(request.user):
+        return denied(request)
+    log = get_object_or_404(logs_for(request.user), pk=pk)
+    if request.method == "POST":
+        log.delete()
+        messages.success(request, "Catatan perbaikan berhasil dihapus.")
+        return redirect("journal:list")
+    return render(request, "journal/delete.html", {"log": log})

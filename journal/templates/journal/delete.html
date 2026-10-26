@@ -1,0 +1,15 @@
+{% extends 'journal/base.html' %}
+{% block title %}Hapus catatan · Sparein{% endblock %}
+{% block journal_content %}
+  <section class="narrow card">
+    <h1>Hapus catatan?</h1>
+    <p>“{{ log.title }}” beserta estimasi dampaknya akan dihapus. Tindakan ini tidak bisa dibatalkan.</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="journal-actions">
+        <button class="btn btn--primary btn--danger" type="submit">Hapus catatan</button>
+        <a class="btn btn--ghost" href="{% url 'journal:detail' log.pk %}">Batal</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}

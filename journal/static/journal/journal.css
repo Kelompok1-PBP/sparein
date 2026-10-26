@@ -1,0 +1,48 @@
+.journal { padding-block: 32px 64px; }
+.journal h1 { margin: 0 0 4px; font-size: 32px; line-height: 40px; letter-spacing: -0.5px; }
+.journal-section { margin: 24px 0 12px; font-size: 20px; line-height: 28px; }
+.muted { margin: 0; color: var(--muted); font-size: 14px; line-height: 20px; }
+.narrow { max-width: 640px; margin-top: 16px; }
+
+.journal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin: 16px 0 24px; flex-wrap: wrap; }
+.journal-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.journal-site { margin-top: 12px; }
+.journal-cta { margin-top: 24px; }
+.journal-cta .journal-actions { margin-top: 16px; }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.stat__label { margin: 0; color: var(--muted); font-size: 14px; line-height: 20px; }
+.stat__value { margin: 4px 0 0; font-size: 28px; line-height: 36px; font-weight: 700; color: var(--blue-800); }
+
+.journal-filter { display: flex; align-items: flex-end; gap: 12px; margin: 24px 0 16px; flex-wrap: wrap; }
+.journal-filter .field { min-width: 220px; }
+
+.log-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.log { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.log__main { flex: 1 1 320px; min-width: 0; }
+.log__main h3 { overflow-wrap: anywhere; }
+.log__impact { margin: 4px 0 0; color: var(--success); font-size: 14px; line-height: 20px; }
+.log__impact:empty { display: none; }
+.log__side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+.status-badge { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 12px; font-size: 14px; line-height: 20px; font-weight: 600; background: var(--blue-100); color: var(--blue-800); }
+.status-badge[data-status="in_progress"] { background: rgba(217, 119, 6, 0.15); color: #92400E; }
+.status-badge[data-status="succeeded"] { background: rgba(22, 163, 74, 0.15); color: #166534; }
+.status-badge[data-status="failed"] { background: rgba(220, 38, 38, 0.12); color: #991B1B; }
+
+.input--sm { height: 36px; font-size: 14px; line-height: 20px; }
+.journal-form { display: grid; gap: 16px; margin-top: 16px; }
+.journal-form textarea.input { height: auto; padding: 10px 12px; }
+.btn--danger { background: var(--danger); }
+
+.detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 0 0 16px; }
+.detail-grid dt { color: var(--muted); font-size: 14px; line-height: 20px; }
+.detail-grid dd { margin: 0; font-weight: 600; }
+.journal-impact { margin-top: 16px; background: var(--blue-50); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 720px) {
+  .stats, .detail-grid { grid-template-columns: 1fr; }
+  .log__side { align-items: flex-start; }
+}

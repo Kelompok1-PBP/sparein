@@ -1,0 +1,70 @@
+{% extends 'journal/base.html' %}{% load static %}
+{% block journal_content %}
+{% if visitor %}
+  <section class="journal-head">
+    <div>
+      <h1>Jurnal perbaikan</h1>
+      <p class="muted">Dampak nyata dari perbaikan yang dicatat komunitas Sparein.</p>
+    </div>
+  </section>
+  {% include 'journal/_impact_stats.html' with stats=site scope='site' %}
+  <section class="card journal-cta">
+    <h2 class="card__title">Catat perbaikanmu sendiri</h2>
+    <p class="card__text">Masuk untuk menyimpan riwayat perbaikan dan melihat berapa limbah elektronik yang kamu hindari.</p>
+    <div class="journal-actions">
+      <a class="btn btn--primary" href="{% url 'login' %}?next={% url 'journal:list' %}">Masuk</a>
+      <a class="btn btn--secondary" href="{% url 'core:register' %}">Daftar</a>
+    </div>
+  </section>
+{% else %}
+  <div>
+    <section class="journal-head">
+      <div>
+        <h1>Jurnal perbaikan</h1>
+        <p class="muted">Riwayat perbaikanmu dan dampaknya.</p>
+      </div>
+      <a class="btn btn--primary" href="{% url 'journal:create' %}"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="20" height="20">Catat perbaikan</a>
+    </section>
+
+    <h2 class="journal-section">Dampak kamu</h2>
+    {% include 'journal/_impact_stats.html' with stats=summary scope='me' %}
+    <p class="muted journal-site">Seluruh komunitas: {{ site.repairs }} perbaikan berhasil, {{ site.waste_avoided_kg|floatformat:"2g" }} kg limbah terhindar.</p>
+
+    <form class="journal-filter" method="get" action="{% url 'journal:list' %}">
+      <div class="field">
+        <label class="field__label" for="{{ filters.status.id_for_label }}">Status</label>
+        {{ filters.status }}
+      </div>
+      <button class="btn btn--secondary" type="submit">Terapkan</button>
+    </form>
+
+    {% if logs %}
+      <ul class="log-list">
+        {% for log in logs %}
+          <li class="card log" data-log="{{ log.pk }}">
+            <div class="log__main">
+              <h3 class="card__title"><a href="{% url 'journal:detail' log.pk %}">{{ log.title }}</a></h3>
+              <p class="muted">
+                {% if log.device %}{{ log.device }}{% elif log.guide %}{{ log.guide.device }}{% else %}Perangkat tidak dipilih{% endif %}
+                {% if log.repaired_at %} · {{ log.repaired_at|date:"j F Y" }}{% endif %}
+                · Biaya Rp{{ log.cost_spent|floatformat:"0g" }}
+              </p>
+              <p class="log__impact">{% if log.impact %}Menghindari {{ log.impact.waste_avoided_kg|floatformat:"2g" }} kg limbah, menghemat Rp{{ log.impact.cost_avoided|floatformat:"0g" }}{% endif %}</p>
+            </div>
+            <div class="log__side">
+              <span class="status-badge" data-status="{{ log.status }}">{{ log.get_status_display }}</span>
+              <div class="journal-actions">
+                <a class="btn btn--ghost btn--sm" href="{% url 'journal:edit' log.pk %}">Edit</a>
+                <a class="btn btn--ghost btn--sm" href="{% url 'journal:delete' log.pk %}">Hapus</a>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      {% url 'journal:create' as create_url %}
+      {% include 'partials/empty_state.html' with message='Belum ada catatan perbaikan. Mulai dengan mencatat perbaikan pertamamu.' action_url=create_url action_label='Catat perbaikan' %}
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

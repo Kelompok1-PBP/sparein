@@ -1,4 +1,5 @@
 from datetime import date
+
 from django import forms
 
 from devices.selectors import get_device_qs

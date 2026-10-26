@@ -5,6 +5,7 @@ from guides.views import guide_api
 
 urlpatterns = [
     path("guides/", include("guides.urls")),
+    path("journal/", include("journal.urls")),
     path("api/guides/", guide_api, name="guide-api"),
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),

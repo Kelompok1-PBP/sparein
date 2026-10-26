@@ -1,0 +1,34 @@
+{% extends 'journal/base.html' %}{% load static %}
+{% block title %}{{ log.title }} · Jurnal Sparein{% endblock %}
+{% block journal_content %}
+  <a class="link" href="{% url 'journal:list' %}">← Semua catatan</a>
+  <section class="journal-head">
+    <div>
+      <h1>{{ log.title }}</h1>
+      <span class="status-badge" data-status="{{ log.status }}">{{ log.get_status_display }}</span>
+    </div>
+    <div class="journal-actions">
+      <a class="btn btn--secondary" href="{% url 'journal:edit' log.pk %}">Edit</a>
+      <a class="btn btn--secondary" href="{% url 'journal:delete' log.pk %}">Hapus</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <dl class="detail-grid">
+      <div><dt>Perangkat</dt><dd>{% if log.device %}{{ log.device }}{% elif log.guide %}{{ log.guide.device }}{% else %}-{% endif %}</dd></div>
+      <div><dt>Panduan</dt><dd>{% if log.guide %}<a href="{% url 'guides:detail' log.guide.slug %}">{{ log.guide.title }}</a>{% else %}-{% endif %}</dd></div>
+      <div><dt>Tanggal perbaikan</dt><dd>{% if log.repaired_at %}{{ log.repaired_at|date:"j F Y" }}{% else %}-{% endif %}</dd></div>
+      <div><dt>Biaya</dt><dd>Rp{{ log.cost_spent|floatformat:"0g" }}</dd></div>
+    </dl>
+    {% if log.notes %}<h2 class="card__title">Catatan</h2><p>{{ log.notes|linebreaksbr }}</p>{% endif %}
+  </section>
+
+  {% if log.impact %}
+    <section class="card journal-impact">
+      <h2 class="card__title">Dampak perbaikan ini</h2>
+      <p>Menghindari <strong>{{ log.impact.waste_avoided_kg|floatformat:"2g" }} kg</strong> limbah elektronik dan menghemat <strong>Rp{{ log.impact.cost_avoided|floatformat:"0g" }}</strong> dibanding membeli baru.</p>
+    </section>
+  {% else %}
+    <p class="muted">Estimasi dampak muncul setelah perbaikan berstatus Berhasil dan perangkatnya dipilih.</p>
+  {% endif %}
+{% endblock %}
