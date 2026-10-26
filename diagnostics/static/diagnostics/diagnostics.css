@@ -175,6 +175,10 @@
 .form-page textarea.input { height: auto; padding-block: 10px; }
 .form-page__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
 
+@media (max-width: 639px) {
+  .form-page__actions { flex-direction: column-reverse; }
+}
+
 .sev-cards { display: grid; gap: 8px; }
 
 .sev-card {
