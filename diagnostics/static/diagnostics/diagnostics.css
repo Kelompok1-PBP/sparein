@@ -59,11 +59,14 @@
 
 .device-row {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 8px 16px;
+  gap: 16px;
   margin-bottom: 24px;
 }
+
+.device-row__thumb { display: grid; place-items: center; flex: none; width: 64px; height: 64px; border-radius: 10px; background: var(--blue-50); }
+.device-row__text { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.device-row__text .meta { margin: 0; }
 
 .device-row:hover { border-color: var(--blue-200); }
 
@@ -256,6 +259,7 @@
 
 /* ---------- riwayat ---------- */
 .history__head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline; }
+.history p { margin: 0 0 8px; }
 .history__device { margin: 0 0 4px; font-size: 20px; line-height: 28px; }
 .page-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
 .page-head__sub { flex-basis: 100%; }

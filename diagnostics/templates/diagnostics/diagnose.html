@@ -34,7 +34,11 @@
   {% endif %}
 {% else %}
   <div class="device-row card">
-    <strong>{{ device.name }}</strong>{% if device.brand %} · {{ device.brand }}{% endif %}
+    <span class="device-row__thumb"><img src="{% static 'core/icons/package-muted.svg' %}" alt="" width="32" height="32"></span>
+    <div class="device-row__text">
+      <strong>{{ device.name }}</strong>
+      {% if device.brand %}<span class="meta">{{ device.brand }}</span>{% endif %}
+    </div>
     <a class="link" href="{% url 'diagnostics:list' %}">Ganti perangkat</a>
   </div>
 
