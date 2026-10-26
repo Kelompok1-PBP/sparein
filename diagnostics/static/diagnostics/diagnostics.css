@@ -154,11 +154,15 @@
 
 /* ---------- form dan konfirmasi ---------- */
 .form-page { max-width: 720px; margin-inline: auto; }
-.form-page:hover { border-color: var(--blue-200); }
-.form-page h1 { font-size: 24px; line-height: 32px; }
+.form-page h1 { margin: 0 0 16px; font-size: 32px; line-height: 40px; }
+.form-page .alert { margin-bottom: 16px; }
+.form-page__card { padding: 24px; }
+.form-page__card:hover { border-color: var(--blue-200); }
+.form-page__card .field + .field { margin-top: 24px; }
 .form-page .input,
 .form-page :is(select, textarea) { width: 100%; }
-.form-page__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+.form-page textarea.input { height: auto; padding-block: 10px; }
+.form-page__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
 
 .form-page [id$="severity"] { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
 .form-page [id$="severity"] label {

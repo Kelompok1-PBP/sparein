@@ -256,6 +256,17 @@ class SymptomWriteTests(DiagnoseSetup):
         self.assertContains(resp, "field__msg--error")
         self.assertEqual(Symptom.objects.count(), 2)
 
+    def test_invalid_post_shows_error_summary_and_marks_field(self):
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.post(reverse("diagnostics:create"), self.payload(title=""))
+        self.assertContains(resp, "Ada 1 isian yang perlu dibenerin.")
+        self.assertContains(resp, 'aria-invalid="true"')
+
+    def test_form_has_breadcrumb_back_to_diagnose(self):
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("diagnostics:create"))
+        self.assertContains(resp, 'aria-label="Breadcrumb"')
+
     def test_owner_edits_and_slug_stays(self):
         owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
         self.panas.created_by = owner

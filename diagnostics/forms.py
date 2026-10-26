@@ -31,6 +31,8 @@ class SymptomForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        for name in ("device", "title", "description"):
+            self.fields[name].widget.attrs["class"] = "input"
         self.fields["device"].queryset = get_device_qs()
         self.fields["description"].required = True
         self.fields["severity"].choices = [
@@ -38,3 +40,8 @@ class SymptomForm(forms.ModelForm):
             for value, label in Symptom.Severity.choices
         ]
         self.fields["severity"].initial = Symptom.Severity.MEDIUM
+
+    def add_error(self, field, error):
+        super().add_error(field, error)
+        if field in self.fields:
+            self.fields[field].widget.attrs["aria-invalid"] = "true"
