@@ -226,9 +226,10 @@ Owner: Marsya Rizka Aulia (2506537606). Depends on: `core`, `guides`, optionally
 | Read | `GET /journal/`, `GET /journal/<id>/` | Member, own records only |
 | Update | `POST /journal/<id>/edit/` | Member, owner only |
 | Delete | `POST /journal/<id>/delete/` | Member, owner only |
+| AJAX | `POST /journal/<id>/status/` | Member, owner only |
 | JSON | `GET /api/journal/summary/` | Member |
 
-Auth filter: the entire module is login-only, and every queryset is filtered by `user=request.user`. A Visitor sees the aggregate site-wide impact counter and nothing else.
+Auth filter: the entire module is login-only, and every queryset is filtered by `user=request.user`, so another user's record returns 404. A Visitor who opens `GET /journal/` sees only the aggregate site-wide impact counter, every other route redirects to login.
 
 ---
 
