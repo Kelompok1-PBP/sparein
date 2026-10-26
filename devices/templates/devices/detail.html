@@ -1,16 +1,40 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}{{ device.name }} · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'devices/devices.css' %}">{% endblock %}
 {% block content %}
-<h1>{{ device.name }}</h1>
-{% if device.image_url %}<img src="{{ device.image_url }}" alt="{{ device.name }}" width="320">{% endif %}
-<dl>
-  <dt>Kategori</dt><dd>{{ device.category }}</dd>
-  <dt>Merek</dt><dd>{{ device.brand|default:"-" }}</dd>
-  <dt>Tahun rilis</dt><dd>{{ device.release_year|default:"-" }}</dd>
-  <dt>Skor perbaikan</dt><dd>{{ device.repairability_score|default:"-" }}</dd>
-</dl>
-<p>{{ device.summary|linebreaksbr }}</p>
-{% if can_edit %}<p><a href="{% url 'devices:edit' device.slug %}">Ubah</a></p>{% endif %}
-{% if can_delete %}<p><a href="{% url 'devices:delete' device.slug %}">Hapus</a></p>{% endif %}
-<p><a href="{% url 'devices:list' %}">Kembali</a></p>
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="{% url 'devices:list' %}">Perangkat</a>
+  <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+  <span>{{ device.name }}</span>
+</nav>
+
+<div class="detail">
+  <div class="detail__img card">
+    <img src="{% if device.image_url %}{{ device.image_url }}{% else %}{% static 'core/icons/package-muted.svg' %}{% endif %}" alt="{% if device.image_url %}{{ device.name }}{% endif %}">
+  </div>
+
+  <div class="detail__info">
+    <h1>{{ device.name }}</h1>
+    <dl class="facts">
+      <div><dt>Kategori</dt><dd>{{ device.category }}</dd></div>
+      <div><dt>Merek</dt><dd>{{ device.brand|default:"-" }}</dd></div>
+      <div><dt>Tahun rilis</dt><dd>{{ device.release_year|default:"-" }}</dd></div>
+    </dl>
+
+    {% if device.repairability_score %}
+    <div class="score">
+      <p class="score__label">Skor perbaikan <strong>{{ device.repairability_score }}/10</strong></p>
+      <div class="score__bar"><div class="score__fill" style="width: {% widthratio device.repairability_score 10 100 %}%"></div></div>
+    </div>
+    {% endif %}
+
+    {% if device.summary %}<p class="detail__summary">{{ device.summary|linebreaksbr }}</p>{% endif %}
+
+    <div class="detail__actions">
+      {% if can_edit %}<a class="btn btn--secondary" href="{% url 'devices:edit' device.slug %}">Ubah</a>{% endif %}
+      {% if can_delete %}<a class="btn btn--danger" href="{% url 'devices:delete' device.slug %}">Hapus</a>{% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}

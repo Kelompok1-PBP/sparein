@@ -119,6 +119,38 @@ class PageTests(TestCase):
         self.assertEqual(resp.status_code, 404)
 
 
+class DeviceUiTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.device = Device.objects.create(
+            name="iPhone 12", category=cat, brand="Apple", repairability_score=6)
+
+    def test_list_uses_device_card_and_css(self):
+        resp = self.client.get(reverse("devices:list"))
+        self.assertContains(resp, 'class="device-card"')
+        self.assertContains(resp, "devices/devices.css")
+
+    def test_list_hides_add_button_from_visitor(self):
+        self.assertNotContains(self.client.get(reverse("devices:list")), "Tambah perangkat")
+
+    def test_detail_shows_score_bar(self):
+        resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
+        self.assertContains(resp, "6/10")
+        self.assertContains(resp, "width: 60%")
+
+    def test_detail_without_score_has_no_bar(self):
+        self.device.repairability_score = None
+        self.device.save()
+        resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
+        self.assertNotContains(resp, "score__bar")
+
+    def test_form_shows_field_error(self):
+        user = make_user("sari", UserProfile.Role.CONTRIBUTOR)
+        self.client.force_login(user)
+        resp = self.client.post(reverse("devices:create"), {"name": ""})
+        self.assertContains(resp, "field__msg--error")
+
+
 def make_user(name, role=UserProfile.Role.MEMBER):
     user = User.objects.create_user(name, password="x")
     user.profile.role = role

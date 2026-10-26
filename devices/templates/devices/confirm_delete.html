@@ -1,8 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Hapus {{ device.name }}{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'devices/devices.css' %}">{% endblock %}
 {% block content %}
-<h1>Hapus {{ device.name }}?</h1>
-{% if blocked %}<p role="alert">Perangkat ini masih dipakai panduan atau suku cadang. Hapus atau pindahkan dulu data yang terhubung.</p>{% endif %}
-<form method="post">{% csrf_token %}<button type="submit">Hapus</button></form>
-<p><a href="{% url 'devices:detail' device.slug %}">Batal</a></p>
+<div class="form-page form-page--narrow card">
+  <h1>Hapus {{ device.name }}?</h1>
+  {% if blocked %}<div class="alert alert--error" role="alert"><p>Perangkat ini masih dipakai panduan atau suku cadang. Hapus atau pindahkan dulu data yang terhubung.</p></div>{% endif %}
+  <p>Perangkat ini bakal hilang dari katalog dan ngga bisa dikembalikan.</p>
+  <form method="post" class="form-page__actions">{% csrf_token %}
+    <a class="btn btn--ghost" href="{% url 'devices:detail' device.slug %}">Batal</a>
+    <button type="submit" class="btn btn--danger">Ya, hapus</button>
+  </form>
+</div>
 {% endblock %}
