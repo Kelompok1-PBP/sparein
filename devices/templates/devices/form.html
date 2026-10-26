@@ -1,6 +1,32 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}{% if form.instance.pk %}Ubah{% else %}Tambah{% endif %} perangkat{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'devices/devices.css' %}">{% endblock %}
 {% block content %}
-<h1>{% if form.instance.pk %}Ubah {{ form.instance.name }}{% else %}Tambah perangkat{% endif %}</h1>
-<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Simpan</button></form>
+<div class="form-page card">
+  <h1>{% if form.instance.pk %}Ubah {{ form.instance.name }}{% else %}Tambah perangkat{% endif %}</h1>
+  <form method="post" class="device-form" novalidate>{% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert--error"><p>{{ form.non_field_errors|join:" " }}</p></div>
+    {% endif %}
+    {% for field in form %}
+      <div class="field">
+        <label class="field__label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="field__req" aria-hidden="true">*</span>{% endif %}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="field__msg field__msg--error">
+            <img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="16" height="16">
+            <div>{% for error in field.errors %}<span>{{ error }}</span>{% endfor %}</div>
+          </div>
+        {% elif field.help_text %}
+          <p class="field__msg">{{ field.help_text }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <div class="form-page__actions">
+      <a class="btn btn--ghost" href="{% if form.instance.pk %}{% url 'devices:detail' form.instance.slug %}{% else %}{% url 'devices:list' %}{% endif %}">Batal</a>
+      <button type="submit" class="btn btn--primary">Simpan</button>
+    </div>
+  </form>
+</div>
 {% endblock %}
