@@ -10,6 +10,18 @@ SEVERITY_HINTS = {
 }
 
 
+class SeverityRadio(forms.RadioSelect):
+    """Radio keparahan yang tampil sebagai kartu: judul plus penjelasan singkat."""
+
+    template_name = "diagnostics/widgets/severity.html"
+    option_template_name = "diagnostics/widgets/severity_option.html"
+
+    def create_option(self, *args, **kwargs):
+        option = super().create_option(*args, **kwargs)
+        option["hint"] = SEVERITY_HINTS.get(option["value"], "")
+        return option
+
+
 class SymptomForm(forms.ModelForm):
     class Meta:
         model = Symptom
@@ -26,7 +38,7 @@ class SymptomForm(forms.ModelForm):
         }
         widgets = {
             "description": forms.Textarea(attrs={"rows": 4}),
-            "severity": forms.RadioSelect,
+            "severity": SeverityRadio,
         }
 
     def __init__(self, *args, **kwargs):
@@ -35,10 +47,6 @@ class SymptomForm(forms.ModelForm):
             self.fields[name].widget.attrs["class"] = "input"
         self.fields["device"].queryset = get_device_qs()
         self.fields["description"].required = True
-        self.fields["severity"].choices = [
-            (value, f"{label}. {SEVERITY_HINTS[value]}")
-            for value, label in Symptom.Severity.choices
-        ]
         self.fields["severity"].initial = Symptom.Severity.MEDIUM
 
     def add_error(self, field, error):

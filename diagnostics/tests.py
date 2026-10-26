@@ -267,6 +267,12 @@ class SymptomWriteTests(DiagnoseSetup):
         resp = self.client.get(reverse("diagnostics:create"))
         self.assertContains(resp, 'aria-label="Breadcrumb"')
 
+    def test_severity_options_show_their_hint(self):
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("diagnostics:create"))
+        self.assertContains(resp, "sev-card__hint", count=3)
+        self.assertContains(resp, "Masih bisa dipakai normal.")
+
     def test_owner_edits_and_slug_stays(self):
         owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
         self.panas.created_by = owner
