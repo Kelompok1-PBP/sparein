@@ -4,7 +4,15 @@
 .page-head h1 { margin: 0; }
 .page-head__sub { margin: 4px 0 0; color: var(--muted); }
 .meta { margin: 0 0 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
-.actions { display: flex; gap: 8px; margin-bottom: 24px; }
+.actions { display: flex; gap: 8px; }
+.page-head--split { margin-bottom: 8px; }
+.page-head__title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.symptom-desc { margin-bottom: 8px; }
+
+@media (max-width: 639px) {
+  .page-head--split .actions { flex-direction: column; width: 100%; }
+}
+.symptom-desc:hover { border-color: var(--blue-200); }
 .section { margin-block: 32px; }
 
 .breadcrumb { margin-bottom: 16px; font-size: 14px; line-height: 20px; color: var(--muted); }

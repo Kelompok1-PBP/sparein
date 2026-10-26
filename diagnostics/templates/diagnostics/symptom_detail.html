@@ -9,9 +9,17 @@
   <span aria-current="page">{{ symptom.title }}</span>
 </nav>
 
-<div class="page-head">
-  <h1>{{ symptom.title }}</h1>
-  <span class="sev sev--{{ symptom.severity }}">{{ symptom.get_severity_display }}</span>
+<div class="page-head page-head--split">
+  <div class="page-head__title">
+    <h1>{{ symptom.title }}</h1>
+    <span class="sev sev--{{ symptom.severity }}">{{ symptom.get_severity_display }}</span>
+  </div>
+  {% if can_edit or can_delete %}
+    <div class="actions">
+      {% if can_edit %}<a class="btn btn--secondary" href="{% url 'diagnostics:edit' symptom.slug %}">Ubah</a>{% endif %}
+      {% if can_delete %}<a class="btn btn--secondary btn--danger" href="{% url 'diagnostics:delete' symptom.slug %}">Hapus</a>{% endif %}
+    </div>
+  {% endif %}
 </div>
 
 <p class="meta">
@@ -19,14 +27,7 @@
   {% if symptom.created_by %}· Ditambahkan oleh {{ symptom.created_by.username }}{% endif %}
 </p>
 
-{% if symptom.description %}<p>{{ symptom.description|linebreaksbr }}</p>{% endif %}
-
-{% if can_edit or can_delete %}
-  <div class="actions">
-    {% if can_edit %}<a class="btn btn--secondary" href="{% url 'diagnostics:edit' symptom.slug %}">Ubah</a>{% endif %}
-    {% if can_delete %}<a class="btn btn--secondary btn--danger" href="{% url 'diagnostics:delete' symptom.slug %}">Hapus</a>{% endif %}
-  </div>
-{% endif %}
+{% if symptom.description %}<div class="card symptom-desc">{{ symptom.description|linebreaksbr }}</div>{% endif %}
 
 <section class="section">
   <h2>Panduan yang bisa membantu</h2>
