@@ -4,7 +4,7 @@ from io import StringIO
 
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 
 from devices.models import Device, DeviceCategory
@@ -359,3 +359,85 @@ class DeleteTests(ViewBase):
         self.assertEqual(self.client.get(url).status_code, 404)
         self.assertEqual(self.client.post(url).status_code, 404)
         self.assertTrue(RepairLog.objects.filter(pk=self.foreign.pk).exists())
+
+
+class AjaxAccessTests(ViewBase):
+    def setUp(self):
+        super().setUp()
+        self.client.logout()
+
+    def test_visitor_gets_json_403_from_ajax_and_api(self):
+        status = self.client.post(
+            reverse("journal:status", args=[self.foreign.pk]),
+            {"status": Status.FAILED},
+            HTTP_ACCEPT="application/json",
+        )
+        self.assertEqual(status.status_code, 403)
+        self.assertEqual(self.client.get("/api/journal/summary/").status_code, 403)
+        self.foreign.refresh_from_db()
+        self.assertEqual(self.foreign.status, Status.PLANNED)
+
+
+class StatusAjaxTests(ViewBase):
+    def setUp(self):
+        super().setUp()
+        self.log = self.make_log()
+        self.url = reverse("journal:status", args=[self.log.pk])
+
+    def test_status_change_returns_impact_and_summary(self):
+        response = self.client.post(self.url, {"status": Status.SUCCEEDED})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["status"], "succeeded")
+        self.assertEqual(data["status_label"], "Berhasil")
+        self.assertEqual(data["impact"]["waste_avoided_kg"], 0.2)
+        self.assertEqual(data["summary"]["repairs"], 1)
+        self.log.refresh_from_db()
+        self.assertEqual(self.log.repaired_at, date.today())
+
+    def test_leaving_succeeded_removes_impact(self):
+        self.client.post(self.url, {"status": Status.SUCCEEDED})
+        data = self.client.post(self.url, {"status": Status.FAILED}).json()
+        self.assertIsNone(data["impact"])
+        self.assertEqual(data["summary"]["repairs"], 0)
+
+    def test_invalid_status_is_rejected(self):
+        response = self.client.post(self.url, {"status": "hacked"})
+        self.assertEqual(response.status_code, 400)
+        self.log.refresh_from_db()
+        self.assertEqual(self.log.status, Status.PLANNED)
+
+    def test_only_post_is_allowed(self):
+        self.assertEqual(self.client.get(self.url).status_code, 405)
+
+    def test_cannot_change_status_of_someone_elses_log(self):
+        response = self.client.post(
+            reverse("journal:status", args=[self.foreign.pk]),
+            {"status": Status.SUCCEEDED},
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_csrf_token_is_required(self):
+        client = Client(enforce_csrf_checks=True)
+        client.login(username="mars", password=self.password)
+        response = client.post(self.url, {"status": Status.SUCCEEDED})
+        self.assertEqual(response.status_code, 403)
+
+
+class SummaryApiTests(ViewBase):
+    def test_member_gets_own_summary_and_site_totals(self):
+        self.make_log(status=Status.SUCCEEDED)
+        self.make_log(status=Status.PLANNED)
+        self.make_log(user=self.other, status=Status.SUCCEEDED)
+        response = self.client.get("/api/journal/summary/")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["summary"]["repairs"], 1)
+        self.assertEqual(data["site"]["repairs"], 2)
+        self.assertEqual(data["by_status"]["succeeded"], 1)
+        self.assertEqual(data["by_status"]["planned"], 1)
+        self.assertEqual(data["by_status"]["failed"], 0)
+
+    def test_summary_does_not_leak_other_users_logs(self):
+        data = self.client.get("/api/journal/summary/").json()
+        self.assertEqual(sum(data["by_status"].values()), 0)
