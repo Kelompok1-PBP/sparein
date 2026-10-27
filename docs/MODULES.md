@@ -103,23 +103,27 @@ Owner: Kevin Fauzan Arjuna (2506612266). Depends on: `core`, `devices`.
 
 | Model | Key fields |
 |---|---|
-| `Symptom` | `device` FK, `title`, `slug`, `description`, `severity`, `created_by` FK |
-| `DiagnosisSession` | `user` FK (nullable for anonymous), `device` FK, `created_at` |
-| `DiagnosisResult` | `session` FK, `symptom` FK, `likelihood`, `note` |
+| `Symptom` | `device` FK, `title`, `slug`, `description`, `severity` (`low`, `medium`, `high`), `created_by` FK |
+| `Cause` | `device` FK, `title`, `note`, `symptoms` M2M. Added to the original contract: the panel ranks causes, not symptoms. Admin-managed only |
+| `DiagnosisSession` | `user` FK (nullable for anonymous), `device` FK, `symptoms` M2M, `created_at` |
+| `DiagnosisResult` | `session` FK, `cause` FK, `likelihood` (`high`, `medium`, `low`), `note` |
 
-A session collects the symptoms a user ticks for one device and returns ranked likely causes.
+A session collects the symptoms a user ticks for one device and returns ranked likely causes. A cause ranks by the share of its symptoms that were ticked: at least 2/3 is `high`, at least 1/3 is `medium`, anything else is `low`. A session is written only when the user presses "Simpan hasil"; ticking symptoms never writes.
 
 ### CRUD surface
 
 | Operation | Route | Access |
 |---|---|---|
 | Create | `POST /diagnostics/symptoms/create/` | Contributor |
-| Read | `GET /diagnostics/?device=`, `GET /diagnostics/<slug>/` | Visitor |
+| Read | `GET /diagnostics/?device=<slug>`, `GET /diagnostics/<slug>/` | Visitor |
 | Update | `POST /diagnostics/<slug>/edit/` | Contributor, owner or Admin |
 | Delete | `POST /diagnostics/<slug>/delete/` | Admin |
 | JSON | `GET /api/symptoms/?device=&severity=` | Visitor |
+| JSON | `GET /api/diagnose/?device=<slug>&symptom=<id>&symptom=<id>` | Visitor, compute only |
+| JSON | `POST /api/diagnose/save/` | Visitor, saves a session |
+| Read | `GET /diagnostics/my/sessions/` | Member, own sessions only |
 
-AJAX: ticking a symptom updates the ranked result list without a page reload.
+AJAX: ticking a symptom updates the ranked result list without a page reload. The page also renders the result from `?symptom=` on the server, so it works without JavaScript.
 
 ### Exported contract
 

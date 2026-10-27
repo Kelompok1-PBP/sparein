@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'core',
     'devices',
     'guides',
+    'diagnostics',
+    'parts',
     'journal',
 ]
 

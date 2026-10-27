@@ -1,11 +1,11 @@
-/* Halaman login dan daftar: layout dua panel. Token, tombol, field, dan kotak info ada di base.css */
+/* Halaman login dan daftar */
 body {
   display: block;
   min-height: 0;
   background: var(--blue-950);
 }
 
-/* ---------- layout, mobile dulu ---------- */
+/* ---------- layout ---------- */
 .auth {
   display: flex;
   flex-direction: column;
@@ -116,7 +116,7 @@ body {
   color: var(--muted);
 }
 
-/* ---------- layout desktop: dua panel selebar sama ---------- */
+/* ---------- layout desktop ---------- */
 @media (min-width: 768px) {
   .auth {
     flex-direction: row;
@@ -209,10 +209,7 @@ body {
   outline-offset: 2px;
 }
 
-/* ---------- efek geser waktu pindah login <-> daftar ----------
-   Dua panel dikasih nama yang sama di kedua halaman. Browser yang dukung View Transitions
-   (Chrome, Edge, Safari baru) otomatis ngegeser panel dari posisi lama ke posisi baru.
-   Browser lain tetap pindah halaman biasa. Tanpa JS. */
+/* ---------- efek geser waktu pindah login <-> daftar ---------- */
 @view-transition { navigation: auto; }
 
 .auth__art { view-transition-name: auth-art; }

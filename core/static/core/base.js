@@ -1,4 +1,4 @@
-// JS buat kerangka halaman. Cuma tiga hal kecil, sisanya urusan HTML dan CSS.
+// JS buat kerangka komponen halaman.
 
 // 1. header dapet garis bawah setelah halaman di-scroll
 var header = document.querySelector("[data-site-header]");

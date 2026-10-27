@@ -120,7 +120,7 @@ M1 memblokir tiga modul sekaligus, jadi urutannya bukan sekadar saran. Supaya La
 | Module | Django app | Main models | Depends on | Exported to other modules |
 |---|---|---|---|---|
 | M1 Device Catalog | `devices` | `DeviceCategory`, `Device` | tidak ada | `Device` FK, `get_device_qs()`, `GET /api/devices/` |
-| M2 Problem Diagnosis | `diagnostics` | `Symptom`, `DiagnosisSession`, `DiagnosisResult` | M1 | `Symptom` FK, `GET /api/symptoms/?device=` |
+| M2 Problem Diagnosis | `diagnostics` | `Symptom`, `Cause`, `DiagnosisSession`, `DiagnosisResult` | M1 | `Symptom` FK, `GET /api/symptoms/?device=` |
 | M3 Repair Guide | `guides` | `RepairGuide`, `GuideStep`, `SafetyWarning` | M1, M2 (opsional) | `RepairGuide` FK, `GET /api/guides/` |
 | M4 Spare Part Directory | `parts` | `SparePart`, `PartCompatibility`, `PartSource` | M1 | `GET /api/parts/?device=` |
 | M5 Repair Journal & Impact | `journal` | `RepairLog`, `ImpactEstimate` | M3, M1 (opsional) | konsumen akhir, tidak diekspor |

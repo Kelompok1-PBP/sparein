@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Riwayat diagnosa · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'diagnostics/diagnostics.css' %}">{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Riwayat diagnosa</h1>
+  <p class="page-head__sub">Hasil diagnosa yang pernah kamu simpan.</p>
+</div>
+
+{% for s in sessions %}
+  <article class="card history">
+    <div class="history__head">
+      <h2 class="history__device">{{ s.device.name }}</h2>
+      <time class="meta" datetime="{{ s.created_at|date:'c' }}">{{ s.created_at|date:"j M Y, H:i" }}</time>
+    </div>
+    <p class="meta">Gejala: {% for sym in s.symptoms.all %}{{ sym.title }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+    {% with top=s.results.all|first %}
+      {% if top %}<p>Paling mungkin: <strong>{{ top.cause.title }}</strong> (kemungkinan {{ top.get_likelihood_display|lower }})</p>{% endif %}
+    {% endwith %}
+    <a class="link" href="{% url 'diagnostics:list' %}?device={{ s.device.slug }}{% for sym in s.symptoms.all %}&amp;symptom={{ sym.pk }}{% endfor %}">Diagnosa lagi</a>
+  </article>
+{% empty %}
+  {% include "partials/empty_state.html" with message="Belum ada riwayat diagnosa." action_url=diagnose_url action_label="Mulai diagnosa" %}
+{% endfor %}
+{% endblock %}

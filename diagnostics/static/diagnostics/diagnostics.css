@@ -1,0 +1,269 @@
+/* Halaman diagnosa: pilih perangkat, centang gejala, detail, form */
+
+.page-head { margin-bottom: 24px; }
+.page-head h1 { margin: 0; }
+.page-head__sub { margin: 4px 0 0; color: var(--muted); }
+.meta { margin: 0 0 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.actions { display: flex; gap: 8px; }
+.page-head--split { margin-bottom: 8px; }
+.page-head__title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.symptom-desc { margin-bottom: 8px; }
+
+@media (max-width: 639px) {
+  .page-head--split .actions { flex-direction: column; width: 100%; }
+}
+.symptom-desc:hover { border-color: var(--blue-200); }
+.section { margin-block: 32px; }
+
+.breadcrumb { margin-bottom: 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.breadcrumb a { color: var(--muted); }
+
+/* tombol bahaya, dipakai buat hapus */
+.btn--danger { color: var(--danger); border-color: var(--danger); }
+.btn--danger:hover { background: rgba(220, 38, 38, 0.1); }
+.btn--primary.btn--danger { background: var(--danger); color: var(--white); }
+.btn--primary.btn--danger:hover { background: #B91C1C; }
+
+/* ---------- badge keparahan: warna + teks ---------- */
+.sev {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sev--low { background: rgba(22, 163, 74, 0.1); color: var(--success); }
+.sev--medium { background: rgba(217, 119, 6, 0.1); color: var(--warning); }
+.sev--high { background: rgba(220, 38, 38, 0.1); color: var(--danger); }
+
+/* ---------- pilih perangkat ---------- */
+.picker { max-width: 720px; margin-inline: auto; }
+.picker:hover { border-color: var(--blue-200); }
+.picker .input { margin-top: 8px; }
+.picker__list { margin: 12px 0 0; padding: 0; list-style: none; }
+.picker__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 10px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.picker__item:hover { background: var(--blue-50); }
+.picker__item:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.picker__brand { color: var(--muted); }
+
+.device-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.device-row__thumb { display: grid; place-items: center; flex: none; width: 64px; height: 64px; border-radius: 10px; background: var(--blue-50); }
+.device-row__text { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.device-row__text .meta { margin: 0; }
+
+.device-row:hover { border-color: var(--blue-200); }
+
+/* ---------- gejala dan hasil ---------- */
+.diagnose { display: grid; gap: 32px; }
+
+.symptom-list { margin: 0 0 16px; padding: 0; list-style: none; }
+.symptom-list li { position: relative; margin-bottom: 8px; }
+
+.symptom {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 44px;
+  padding: 12px 64px 12px 12px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--white);
+  cursor: pointer;
+}
+
+.symptom:hover { border-color: var(--blue-400); }
+.symptom:has(input:checked) { border-color: var(--blue-500); background: var(--blue-50); }
+.symptom:has(input:focus-visible) { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.symptom input { flex: none; width: 20px; height: 20px; margin-top: 3px; accent-color: var(--blue-500); }
+.symptom__text { flex: 1; display: flex; flex-direction: column; }
+.symptom__title { font-weight: 600; }
+.symptom__desc { font-size: 14px; line-height: 20px; color: var(--muted); }
+.symptom__more { position: absolute; right: 12px; bottom: 10px; font-size: 14px; }
+.symptom .sev { align-self: flex-start; }
+
+.result-count { margin: 0 0 12px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.results { margin: 0 0 16px; padding: 0; list-style: none; }
+
+.result {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--white);
+}
+
+.result + .result { margin-top: 8px; }
+
+.result__rank {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--blue-100);
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 14px;
+}
+
+.result__body { flex: 1; }
+.result__title { margin: 0 0 8px; font-size: 16px; line-height: 26px; }
+.result__likelihood,
+.result__note { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--muted); }
+.result__body .link { display: inline-block; margin-top: 8px; font-size: 14px; }
+
+/* bar kemungkinan: panjang ikut level, teks tetap ada di bawahnya */
+.bar { display: block; height: 8px; border-radius: 999px; background: var(--blue-100); overflow: hidden; }
+.bar span { display: block; height: 100%; border-radius: 999px; background: var(--blue-500); }
+.bar--high span { width: 100%; }
+.bar--medium span { width: 60%; }
+.bar--low span { width: 30%; }
+
+.skeleton {
+  height: 96px;
+  border-radius: 14px;
+  background: var(--blue-100);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.skeleton + .skeleton { margin-top: 8px; }
+@keyframes pulse { 50% { opacity: 0.5; } }
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+
+.save-result { margin-bottom: 16px; }
+
+/* ---------- konfirmasi hapus ---------- */
+.confirm { max-width: 480px; margin: 32px auto 0; padding: 32px; }
+.confirm:hover { border-color: var(--blue-200); }
+.confirm__icon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 16px; border-radius: 50%; background: rgba(220, 38, 38, 0.1); }
+.confirm h1 { margin: 0; font-size: 24px; line-height: 32px; }
+.confirm__text { margin: 12px 0 24px; color: var(--muted); }
+.confirm__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 639px) {
+  .confirm { padding: 24px; }
+  .confirm__actions { flex-direction: column-reverse; }
+}
+
+/* ---------- form dan konfirmasi ---------- */
+.form-page { max-width: 720px; margin-inline: auto; }
+.form-page h1 { margin: 0 0 16px; font-size: 32px; line-height: 40px; }
+.form-page .alert { margin-bottom: 16px; }
+.form-page__card { padding: 24px; }
+.form-page__card:hover { border-color: var(--blue-200); }
+.form-page__card .field + .field { margin-top: 24px; }
+.form-page .input,
+.form-page :is(select, textarea) { width: 100%; }
+.form-page textarea.input { height: auto; padding-block: 10px; }
+.form-page__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+@media (max-width: 639px) {
+  .form-page__actions { flex-direction: column-reverse; }
+}
+
+.sev-cards { display: grid; gap: 8px; }
+
+.sev-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--white);
+  cursor: pointer;
+}
+
+.sev-card:hover { border-color: var(--blue-400); }
+.sev-card:has(input:checked) { border-color: var(--blue-500); background: var(--blue-50); }
+.sev-card:has(input:focus-visible) { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.sev-card input { width: 20px; height: 20px; margin: 0; accent-color: var(--blue-500); }
+.sev-card__hint { grid-column: 2; font-size: 14px; line-height: 20px; color: var(--muted); }
+
+@media (min-width: 640px) {
+  .sev-cards { grid-template-columns: repeat(3, 1fr); }
+  .sev-card { align-content: start; }
+}
+
+@media (min-width: 768px) {
+  .diagnose { grid-template-columns: 7fr 5fr; align-items: start; }
+  .diagnose__results { position: sticky; top: 88px; }
+}
+
+/* ---------- ubin kategori ---------- */
+.tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 16px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--white);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.tile:hover { border-color: var(--blue-400); }
+.tile:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.tile__name { font-weight: 600; }
+.tile__count { font-size: 14px; line-height: 20px; color: var(--muted); }
+
+@media (min-width: 768px) {
+  .tiles { grid-template-columns: repeat(4, 1fr); }
+}
+
+.device-filter { margin-bottom: 8px; }
+
+/* ---------- bar hasil, cuma di mobile ---------- */
+.result-bar {
+  position: fixed;
+  inset: auto 16px 16px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: var(--blue-500);
+  color: var(--white);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.result-bar:hover { background: var(--blue-600); }
+.result-bar:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.result-bar[hidden] { display: none; }
+
+@media (min-width: 768px) {
+  .result-bar { display: none; }
+}
+
+/* ---------- riwayat ---------- */
+.history__head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline; }
+.history p { margin: 0 0 8px; }
+.history__device { margin: 0 0 4px; font-size: 20px; line-height: 28px; }
+.page-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+.page-head__sub { flex-basis: 100%; }
