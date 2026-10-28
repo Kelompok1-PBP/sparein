@@ -6,7 +6,7 @@
   var results = root.querySelector("[data-results]");
   var live = root.querySelector("[data-live]");
 
-  // ---------- penjelasan dampak ----------
+  // penjelasan dampak
   var how = root.querySelector("[data-how]");
   var info = document.getElementById("impact-info");
   if (how && info) {
@@ -17,7 +17,7 @@
     });
   }
 
-  // ---------- tab dan halaman ----------
+  // tab dan halaman
   function currentStatus() {
     return new URL(window.location.href).searchParams.get("status") || "";
   }
@@ -75,7 +75,7 @@
     load(window.location.href, false);
   });
 
-  // ---------- menu kartu ----------
+  // menu kartu 
   document.addEventListener("click", function (event) {
     document.querySelectorAll("details.log-menu[open]").forEach(function (menu) {
       if (!menu.contains(event.target)) menu.removeAttribute("open");
@@ -90,7 +90,7 @@
     });
   });
 
-  // ---------- ubah status ----------
+  // ubah status
   function updateTiles(tiles) {
     Object.keys(tiles).forEach(function (key) {
       var target = root.querySelector('[data-tile-value="' + key + '"]');

@@ -7,7 +7,7 @@
 
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-/* ---------- kartu angka ---------- */
+/* kartu angka */
 .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .tiles--3 { grid-template-columns: repeat(3, 1fr); }
 .tile { display: flex; flex-direction: column; gap: 8px; padding: 16px; border: 1px solid var(--blue-200); border-radius: 14px; background: var(--white); }
@@ -28,21 +28,21 @@
 .j-cta { margin-top: 24px; }
 .j-cta__text { margin: 8px 0 16px; color: var(--muted); }
 
-/* ---------- tab status ---------- */
+/* tab status */
 .tabs { display: flex; gap: 24px; margin: 24px 0 16px; border-bottom: 1px solid var(--blue-200); overflow-x: auto; }
 .tab { flex: none; padding: 10px 0; border-bottom: 2px solid transparent; font-size: 14px; line-height: 20px; color: var(--ink); text-decoration: none; white-space: nowrap; }
 .tab:hover { color: var(--blue-700); }
 .tab:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; border-radius: 4px; }
 .tab[aria-current="page"] { border-bottom-color: var(--blue-500); font-weight: 600; color: var(--blue-700); }
 
-/* ---------- status ---------- */
+/* status */
 .badge-status { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 10px; border-radius: 12px; font-size: 13px; line-height: 20px; font-weight: 600; white-space: nowrap; }
 .badge-status--planned { background: rgba(91, 100, 114, 0.12); color: var(--muted); }
 .badge-status--in_progress { background: rgba(21, 129, 238, 0.12); color: var(--blue-700); }
 .badge-status--succeeded { background: rgba(22, 163, 74, 0.12); color: var(--j-success-text); }
 .badge-status--failed { background: rgba(220, 38, 38, 0.1); color: #B91C1C; }
 
-/* ---------- kartu catatan ---------- */
+/* kartu catatan */
 .log-list { display: grid; gap: 12px; }
 .log-card { position: relative; padding: 16px; border: 1px solid var(--blue-200); border-radius: 14px; background: var(--white); }
 .log-card:hover { border-color: var(--blue-400); }
@@ -59,7 +59,7 @@
 .log-card__impact { color: var(--j-success-text); }
 .log-card__impact[hidden] { display: none; }
 
-/* ---------- menu kartu ---------- */
+/* menu kartu */
 .log-menu { position: relative; }
 .log-menu > summary { list-style: none; }
 .log-menu > summary::-webkit-details-marker { display: none; }
@@ -80,7 +80,7 @@
 .log-menu__option[aria-current="true"] { font-weight: 600; color: var(--blue-700); }
 .log-menu__option:disabled { opacity: 0.5; cursor: progress; }
 
-/* ---------- halaman, kosong, muat ulang ---------- */
+/* halaman, kosong, muat ulang */
 .pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; }
 .pager__info { font-size: 14px; line-height: 20px; color: var(--muted); }
 .j-empty-tab { margin: 0; padding: 32px 0; text-align: center; color: var(--muted); }

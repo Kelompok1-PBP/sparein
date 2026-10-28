@@ -754,7 +754,7 @@ class DeleteTests(ViewBase):
 
     def test_get_shows_confirmation_and_deletes_nothing(self):
         response = self.client.get(reverse("journal:delete", args=[self.log.pk]))
-        self.assertContains(response, "Hapus catatan?")
+        self.assertContains(response, "Hapus catatan ini?")
         self.assertTrue(RepairLog.objects.filter(pk=self.log.pk).exists())
 
     def test_owner_can_delete_and_estimate_goes_with_it(self):
@@ -763,6 +763,21 @@ class DeleteTests(ViewBase):
         self.assertFalse(RepairLog.objects.filter(pk=self.log.pk).exists())
         self.assertEqual(ImpactEstimate.objects.count(), 0)
 
+
+    def test_confirmation_page_uses_the_shared_pattern(self):
+        response = self.client.get(reverse("journal:delete", args=[self.log.pk]))
+        self.assertTemplateUsed(response, "journal/confirm_delete.html")
+        self.assertContains(response, self.log.title)
+        self.assertContains(response, "Dampaknya juga ikut dikurangi dari total kamu.")
+        self.assertContains(response, "Ya, hapus")
+        self.assertContains(response, reverse("journal:detail", args=[self.log.pk]))
+
+    def test_deleting_shows_a_message_and_lowers_the_totals(self):
+        before = user_impact_summary(self.user)["repairs"]
+        response = self.client.post(reverse("journal:delete", args=[self.log.pk]))
+        message = next(str(m) for m in get_messages(response.wsgi_request))
+        self.assertEqual(message, "Catatan dihapus.")
+        self.assertEqual(user_impact_summary(self.user)["repairs"], before - 1)
     def test_cannot_delete_someone_elses_log(self):
         url = reverse("journal:delete", args=[self.foreign.pk])
         self.assertEqual(self.client.get(url).status_code, 404)

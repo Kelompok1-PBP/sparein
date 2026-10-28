@@ -80,6 +80,7 @@ def build_tiles(succeeded, waste, cost, total=None):
             "label": "biaya ganti baru yang dihemat",
         },
     ]
+
     if total is not None:
         tiles.append(
             {
@@ -90,6 +91,7 @@ def build_tiles(succeeded, waste, cost, total=None):
                 "label": "total catatan",
             }
         )
+
     return tiles
 
 
@@ -119,7 +121,6 @@ def is_ajax(request):
 @require_http_methods(["GET"])
 def journal_list(request):
     if not can_use_journal(request.user):
-        # Visitor hanya boleh melihat angka agregat seluruh situs.
         site = site_impact_totals()
         tiles = build_tiles(site["repairs"], site["waste_avoided_kg"], site["cost_avoided"])
         return render(request, "journal/list.html", {"visitor": True, "tiles": tiles})

@@ -7,14 +7,12 @@ DEFAULT_REPLACEMENT_COST = 2_000_000
 
 
 def log_device(log):
-    """Perangkat catatan ini: yang dipilih langsung, atau perangkat milik panduannya."""
     return log.device or (log.guide.device if log.guide_id else None)
 
 
 def find_profile(device):
-    """Profil dampak terdekat: kategori perangkat, lalu naik lewat parent. None kalau tidak ada."""
     category = device.category
-    for _ in range(10):  # batas aman kalau parent membentuk lingkaran
+    for _ in range(10):  
         if category is None:
             break
         profile = CategoryImpactProfile.objects.filter(category=category).first()
@@ -32,7 +30,6 @@ def profile_values(device):
 
 
 def impact_basis(device):
-    """Nama kategori yang dipakai sebagai dasar hitungan, untuk keterangan di panel dampak."""
     profile = find_profile(device) if device else None
     return profile.category.name if profile else None
 

@@ -2,7 +2,7 @@
   var page = document.querySelector("[data-journal-form]");
   if (!page) return;
 
-  // ---------- cari di select panduan dan perangkat ----------
+  // cari di select panduan dan perangkat 
   page.querySelectorAll("[data-filter-for]").forEach(function (box) {
     var select = document.getElementById(box.dataset.filterFor);
     if (!select) return;
@@ -20,7 +20,7 @@
     });
   });
 
-  // ---------- panduan mengisi perangkat ----------
+  // panduan mengisi perangkat 
   var guide = document.getElementById("id_guide");
   var device = document.getElementById("id_device");
   if (guide && device) {
@@ -35,7 +35,7 @@
     });
   }
 
-  // ---------- petunjuk untuk status Berhasil ----------
+  // petunjuk untuk status Berhasil 
   var hint = page.querySelector("[data-succeeded-hint]");
   var statuses = page.querySelectorAll('input[name="status"]');
   function syncHint() {

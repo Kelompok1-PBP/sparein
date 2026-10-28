@@ -10,7 +10,6 @@ def logs_for(user):
 
 
 def status_counts(user):
-    """Jumlah catatan per status, plus kunci "all" untuk semuanya. Dipakai tab dan kartu angka."""
     counts = {value: 0 for value in RepairLog.Status.values}
     rows = logs_for(user).order_by().values("status").annotate(total=Count("pk"))
     for row in rows:
