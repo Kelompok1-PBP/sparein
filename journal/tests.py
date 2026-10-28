@@ -229,10 +229,11 @@ class AccessTests(ViewBase):
         response = self.client.get(reverse("journal:list"))
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context["visitor"])
-        self.assertEqual(response.context["site"]["repairs"], 1)
+        values = {t["key"]: t["value"] for t in response.context["tiles"]}
+        self.assertEqual(values["succeeded"], "1")
+        self.assertNotIn("total", values)
         self.assertNotContains(response, "Rahasia orang lain")
-        self.assertNotIn("logs", response.context)
-
+        self.assertNotIn("page", response.context)
     def test_visitor_is_redirected_to_login_on_every_other_page(self):
         pk = self.foreign.pk
         for name, args in [
@@ -328,8 +329,7 @@ class ReadTests(ViewBase):
         response = self.client.get(reverse("journal:list"))
         self.assertContains(response, "Punya saya")
         self.assertNotContains(response, "Rahasia orang lain")
-        self.assertEqual(list(response.context["logs"]), [mine])
-
+        self.assertEqual(list(response.context["page"]), [mine])
     def test_list_filters_by_status(self):
         self.make_log(title="Rencana", status=Status.PLANNED)
         self.make_log(title="Beres", status=Status.SUCCEEDED)
@@ -337,19 +337,21 @@ class ReadTests(ViewBase):
         self.assertContains(response, "Beres")
         self.assertNotContains(response, "Rencana")
 
-    def test_list_shows_personal_and_site_impact(self):
+    def test_list_tiles_show_personal_impact_only(self):
         self.make_log(status=Status.SUCCEEDED)
+        self.make_log(status=Status.PLANNED)
         self.make_log(user=self.other, status=Status.SUCCEEDED)
         response = self.client.get(reverse("journal:list"))
-        self.assertEqual(response.context["summary"]["repairs"], 1)
-        self.assertEqual(response.context["site"]["repairs"], 2)
-
-    def test_empty_list_shows_empty_state(self):
-        RepairLog.objects.filter(user=self.user).delete()
-        self.assertContains(
-            self.client.get(reverse("journal:list")), "Belum ada catatan perbaikan"
+        values = {t["key"]: t["value"] for t in response.context["tiles"]}
+        self.assertEqual(
+            values,
+            {"succeeded": "1", "waste": "0,2 kg", "cost": "Rp 3 juta", "total": "2"},
         )
-
+    def test_empty_list_shows_empty_state_without_tabs(self):
+        RepairLog.objects.filter(user=self.user).delete()
+        response = self.client.get(reverse("journal:list"))
+        self.assertContains(response, "Jurnalmu masih kosong")
+        self.assertNotContains(response, 'data-tabs')
     def test_detail_of_own_log(self):
         log = self.make_log(status=Status.SUCCEEDED, notes="baris satu")
         response = self.client.get(reverse("journal:detail", args=[log.pk]))
@@ -365,6 +367,103 @@ class ReadTests(ViewBase):
         response = self.client.get(reverse("journal:list"))
         self.assertNotContains(response, "<script>alert(1)</script>")
         self.assertContains(response, "&lt;script&gt;")
+
+
+class ListPageTests(ViewBase):
+    def test_tabs_show_counts_and_mark_the_active_one(self):
+        self.make_log(status=Status.PLANNED)
+        self.make_log(status=Status.SUCCEEDED)
+        self.make_log(status=Status.SUCCEEDED)
+        response = self.client.get(reverse("journal:list"), {"status": "succeeded"})
+        tabs = {t["key"]: t for t in response.context["tabs"]}
+        self.assertEqual(tabs["all"]["count"], 3)
+        self.assertEqual(tabs["succeeded"]["count"], 2)
+        self.assertEqual(tabs["failed"]["count"], 0)
+        self.assertTrue(tabs["succeeded"]["active"])
+        self.assertFalse(tabs["all"]["active"])
+
+    def test_unknown_status_filter_is_ignored(self):
+        self.make_log()
+        response = self.client.get(reverse("journal:list"), {"status": "hacked"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["status"], "")
+        self.assertEqual(len(response.context["page"]), 1)
+
+    def test_filter_without_matches_shows_message_but_keeps_tabs(self):
+        self.make_log(status=Status.PLANNED)
+        response = self.client.get(reverse("journal:list"), {"status": "failed"})
+        self.assertContains(response, "Belum ada catatan dengan status ini.")
+        self.assertContains(response, "data-tabs")
+
+    def test_list_is_paginated_by_twelve(self):
+        for i in range(13):
+            self.make_log(title=f"Catatan {i}")
+        first = self.client.get(reverse("journal:list"))
+        self.assertEqual(len(first.context["page"]), 12)
+        self.assertContains(first, "Halaman 1 dari 2")
+        second = self.client.get(reverse("journal:list"), {"page": 2})
+        self.assertEqual(len(second.context["page"]), 1)
+
+    def test_page_beyond_the_end_falls_back_to_the_last_page(self):
+        self.make_log()
+        response = self.client.get(reverse("journal:list"), {"page": 99})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["page"].number, 1)
+
+    def test_pager_links_keep_the_status_filter(self):
+        for i in range(13):
+            self.make_log(title=f"Catatan {i}", status=Status.PLANNED)
+        response = self.client.get(reverse("journal:list"), {"status": "planned"})
+        self.assertContains(response, "?status=planned&amp;page=2")
+
+    def test_ajax_request_gets_only_the_results_fragment(self):
+        self.make_log(title="Hanya hasil")
+        response = self.client.get(
+            reverse("journal:list"), HTTP_X_REQUESTED_WITH="XMLHttpRequest"
+        )
+        self.assertContains(response, "Hanya hasil")
+        self.assertNotContains(response, "<html")
+        self.assertNotContains(response, "Jurnal Perbaikan")
+
+    def test_card_shows_device_guide_cost_date_and_impact(self):
+        guide = RepairGuide.objects.create(
+            device=self.device, author=self.other, title="Ganti baterai",
+            slug="ganti-baterai", summary="s", difficulty="Easy",
+            time_required_minutes=5, published=True,
+        )
+        self.make_log(
+            title="Baterai adik", guide=guide, status=Status.SUCCEEDED,
+            cost_spent=210_000, repaired_at=date(2026, 9, 20),
+        )
+        response = self.client.get(reverse("journal:list"))
+        self.assertContains(response, "iPhone 12 · Ganti baterai")
+        self.assertContains(response, "20 Sep 2026")
+        self.assertContains(response, "Rp 210.000")
+        self.assertContains(response, "0,2 kg limbah terhindar")
+
+    def test_card_without_device_or_guide_has_fallback_texts(self):
+        self.make_log(device=None)
+        response = self.client.get(reverse("journal:list"))
+        self.assertContains(response, "Perangkat tidak diisi · Tanpa panduan")
+
+    def test_card_menu_has_status_options_edit_and_delete(self):
+        log = self.make_log()
+        response = self.client.get(reverse("journal:list"))
+        self.assertContains(response, reverse("journal:edit", args=[log.pk]))
+        self.assertContains(response, reverse("journal:delete", args=[log.pk]))
+        self.assertContains(response, reverse("journal:status", args=[log.pk]))
+        self.assertContains(response, 'data-set-status="succeeded"')
+        self.assertNotContains(response, reverse("journal:edit", args=[self.foreign.pk]))
+
+    def test_tiles_have_the_four_labels_from_the_design(self):
+        response = self.client.get(reverse("journal:list"))
+        for label in (
+            "perbaikan berhasil",
+            "limbah elektronik terhindar",
+            "biaya ganti baru yang dihemat",
+            "total catatan",
+        ):
+            self.assertContains(response, label)
 
 
 class UpdateTests(ViewBase):
@@ -466,6 +565,16 @@ class StatusAjaxTests(ViewBase):
         self.assertEqual(data["summary"]["repairs"], 1)
         self.log.refresh_from_db()
         self.assertEqual(self.log.repaired_at, date.today())
+
+    def test_response_carries_rendered_badge_tiles_and_counts(self):
+        data = self.client.post(self.url, {"status": Status.SUCCEEDED}).json()
+        self.assertIn("badge-status--succeeded", data["badge_html"])
+        self.assertIn("Berhasil", data["badge_html"])
+        self.assertEqual(data["card_impact"], "0,2 kg limbah terhindar")
+        self.assertEqual(data["tiles"]["succeeded"], "1")
+        self.assertEqual(data["tiles"]["waste"], "0,2 kg")
+        self.assertEqual(data["counts"]["succeeded"], 1)
+        self.assertEqual(data["counts"]["all"], 1)
 
     def test_leaving_succeeded_removes_impact(self):
         self.client.post(self.url, {"status": Status.SUCCEEDED})

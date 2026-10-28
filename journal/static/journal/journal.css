@@ -1,5 +1,3 @@
-/* Modul journal. Token warna, tombol, kartu, field, alert dan toast dari core/base.css. */
-
 .journal { --j-success-text: #15803D; }
 
 .j-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }

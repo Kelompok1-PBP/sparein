@@ -1,4 +1,3 @@
-// Daftar jurnal: tab dan halaman tanpa reload, menu kartu, ubah status, penjelasan dampak.
 (function () {
   var root = document.querySelector("[data-journal]");
   var api = window.SpareinJournal;

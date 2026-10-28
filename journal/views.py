@@ -53,7 +53,6 @@ def serialize_summary(summary):
 
 
 def build_tiles(succeeded, waste, cost, total=None):
-    """Kartu angka di atas daftar. Kunci dipakai JavaScript untuk memperbarui nilainya."""
     tiles = [
         {
             "key": "succeeded",

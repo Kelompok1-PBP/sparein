@@ -1,5 +1,3 @@
-// Bantuan bersama untuk halaman journal: toast dan kirim perubahan status.
-// Semua teks dimasukkan lewat textContent, tidak pernah innerHTML.
 (function () {
   var root = document.querySelector("[data-journal]");
   if (!root) return;
