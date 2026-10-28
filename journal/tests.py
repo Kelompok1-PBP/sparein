@@ -114,7 +114,7 @@ class SelectorTests(JournalBase):
         self.assertEqual(totals["cost_avoided"], 6_000_000)
 
 
-class SeedCommandTests(TestCase):
+class SeedCommandTests(TestCase): # f
     def test_seed_creates_profiles_for_root_categories_only(self):
         root = DeviceCategory.objects.create(name="Mac Laptop")
         DeviceCategory.objects.create(name="MacBook Air", parent=root)

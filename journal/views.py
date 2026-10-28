@@ -14,28 +14,28 @@ from .selectors import logs_for, site_impact_totals, user_impact_summary
 
 Status = RepairLog.Status
 
-
+# helper function 1: memeriksa apakah diperlukan response JSON dengan header Accept 'application/json'
 def wants_json(request):
     return "application/json" in request.headers.get("Accept", "")
 
-
+# helper function 2: menentukan response ketika pemeriksaan kelayakan akses di can_use_journal() gagal
 def denied(request):
-    if wants_json(request) or request.headers.get("X-Requested-With"):
+    if wants_json(request) or request.headers.get("X-Requested-With"): # request terindikasi sebagai request JSON/AJAX
         return JsonResponse({"error": "Akses ditolak."}, status=403)
     return redirect_to_login(request.get_full_path())
 
 
-def serialize_impact(log):
-    impact = getattr(log, "impact", None)
-    if impact is None:
+def serialize_impact(log): # merubah objek menjadi data JSON, merupakan fungsi yang krusial untuk konsep fetch()
+    impact = getattr(log, "impact", None) # mencoba mengambil relasi impact dari objek log, jika tidak ada kembalikan nilai default None
+    if impact is None: # mengecek apakah tidak terdapat estimasi dampak
         return None
     return {
-        "waste_avoided_kg": float(impact.waste_avoided_kg),
+        "waste_avoided_kg": float(impact.waste_avoided_kg), # float() mengubah menjadi angka desimal Python agar dapat diserialisasi menjadi JSON
         "cost_avoided": impact.cost_avoided,
     }
 
 
-def serialize_summary(summary):
+def serialize_summary(summary): # mengubah ringkasan statistik menjadi 3 buah informasi
     return {
         "repairs": summary["repairs"],
         "waste_avoided_kg": float(summary["waste_avoided_kg"]),
@@ -45,13 +45,13 @@ def serialize_summary(summary):
 
 @require_http_methods(["GET"])
 def journal_list(request):
-    site = site_impact_totals()
-    if not can_use_journal(request.user):
-        return render(request, "journal/list.html", {"visitor": True, "site": site})
-    filters = StatusFilterForm(request.GET)
-    logs = logs_for(request.user)
-    if filters.is_valid() and filters.cleaned_data["status"]:
-        logs = logs.filter(status=filters.cleaned_data["status"])
+    site = site_impact_totals() # fungsi selector yang menyediakan ringkasan untuk keseluruhan situs
+    if not can_use_journal(request.user): # fungsi permission untuk mengecek apakah pengguna merupakan user yang telah login (member) dan mempunyai data jurnalnya sendiri
+        return render(request, "journal/list.html", {"visitor": True, "site": site}) # halaman akan tetap dirender, namun data jurnal tidak akan diberikan 
+    filters = StatusFilterForm(request.GET) # menerapkan filter untuk data status jurnal tertentu
+    logs = logs_for(request.user) # ambil jurnal terfilter milik pengguna
+    if filters.is_valid() and filters.cleaned_data["status"]: # menerapkan filter untuk data status jurnal tertentu, sehingga query dipersempit ke status tersebut
+        logs = logs.filter(status=filters.cleaned_data["status"]) # filters.cleaned_data adalah data form yang sudah lolos validasi
     return render(
         request,
         "journal/list.html",
@@ -74,47 +74,11 @@ def journal_detail(request, pk):
     return render(request, "journal/detail.html", {"log": log})
 
 
-def editor(request, log=None):
-    form = RepairLogForm(request.POST or None, instance=log, user=request.user)
-    if request.method == "POST" and form.is_valid():
-        obj = form.save(commit=False)
-        obj.user = request.user
-        obj.save()
-        messages.success(request, "Catatan perbaikan berhasil disimpan.")
-        return redirect("journal:detail", pk=obj.pk)
-    return render(
-        request,
-        "journal/form.html",
-        {"form": form, "editing": log is not None},
-        status=400 if request.method == "POST" else 200,
-    )
-
-
 @require_http_methods(["GET", "POST"])
 def journal_create(request):
     if not can_use_journal(request.user):
         return denied(request)
     return editor(request)
-
-
-@require_http_methods(["GET", "POST"])
-def journal_edit(request, pk):
-    if not can_use_journal(request.user):
-        return denied(request)
-    log = get_object_or_404(logs_for(request.user), pk=pk)
-    return editor(request, log)
-
-
-@require_http_methods(["GET", "POST"])
-def journal_delete(request, pk):
-    if not can_use_journal(request.user):
-        return denied(request)
-    log = get_object_or_404(logs_for(request.user), pk=pk)
-    if request.method == "POST":
-        log.delete()
-        messages.success(request, "Catatan perbaikan berhasil dihapus.")
-        return redirect("journal:list")
-    return render(request, "journal/delete.html", {"log": log})
 
 
 @require_http_methods(["POST"])
@@ -156,3 +120,39 @@ def journal_summary_api(request):
             "by_status": by_status,
         }
     )
+
+
+def editor(request, log=None): 
+    form = RepairLogForm(request.POST or None, instance=log, user=request.user)
+    if request.method == "POST" and form.is_valid():
+        obj = form.save(commit=False) 
+        obj.user = request.user
+        obj.save() 
+        messages.success(request, "Catatan perbaikan berhasil disimpan.")
+        return redirect("journal:detail", pk=obj.pk)
+    return render(
+        request,
+        "journal/form.html",
+        {"form": form, "editing": log is not None},
+        status=400 if request.method == "POST" else 200,
+    )
+
+
+@require_http_methods(["GET", "POST"])
+def journal_edit(request, pk):
+    if not can_use_journal(request.user):
+        return denied(request)
+    log = get_object_or_404(logs_for(request.user), pk=pk)
+    return editor(request, log)
+
+
+@require_http_methods(["GET", "POST"])
+def journal_delete(request, pk):
+    if not can_use_journal(request.user):
+        return denied(request)
+    log = get_object_or_404(logs_for(request.user), pk=pk)
+    if request.method == "POST":
+        log.delete()
+        messages.success(request, "Catatan perbaikan berhasil dihapus.")
+        return redirect("journal:list")
+    return render(request, "journal/delete.html", {"log": log})

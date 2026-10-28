@@ -2,8 +2,8 @@ from datetime import date
 
 from django import forms
 
-from devices.selectors import get_device_qs
-from guides.selectors import visible_guides
+from devices.selectors import get_device_qs  # daftar perangkat
+from guides.selectors import visible_guides  # panduan yang boleh dilihat user
 
 from .models import RepairLog
 
@@ -12,13 +12,13 @@ class RepairLogForm(forms.ModelForm):
     class Meta:
         model = RepairLog
         fields = [
-            "title",
-            "device",
-            "guide",
-            "status",
-            "cost_spent",
-            "repaired_at",
-            "notes",
+            "title",  
+            "device", 
+            "guide",  
+            "status", 
+            "cost_spent",  
+            "repaired_at", 
+            "notes",       
         ]
         labels = {
             "title": "Judul perbaikan",
@@ -29,15 +29,15 @@ class RepairLogForm(forms.ModelForm):
             "repaired_at": "Tanggal perbaikan",
             "notes": "Catatan",
         }
-        widgets = {
+        widgets = { # cara field digambar menjadi HTML
             "repaired_at": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
             "notes": forms.Textarea(attrs={"rows": 4}),
         }
 
-    def __init__(self, *args, user, **kwargs):
+    def __init__(self, *args, user, **kwargs): # penyesuaikan form untuk user yang sedang membuka
         super().__init__(*args, **kwargs)
         self.fields["device"].queryset = get_device_qs()
-        # Panduan draf milik orang lain tidak boleh bisa dipilih.
+        # Panduan draf milik orang lain tidak boleh bisa dipilih, jadi keseluruhan ini intinya menentukan pilihan apa yang boleh muncul dan boleh diterima 
         self.fields["guide"].queryset = visible_guides(user)
         self.fields["device"].empty_label = "Pilih perangkat (opsional)"
         self.fields["guide"].empty_label = "Tanpa panduan"
