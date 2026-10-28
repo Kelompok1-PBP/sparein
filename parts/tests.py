@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import AnonymousUser, User
 from django.db import IntegrityError
 from django.db.models import ProtectedError
 from django.http import Http404
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from core.models import UserProfile
 from devices.models import Device, DeviceCategory
@@ -14,6 +17,7 @@ from parts.selectors import (
     get_sources_for,
     visible_part_qs,
 )
+from parts.templatetags.parts_tags import days_ago, rupiah
 
 
 def make_user(name, role=UserProfile.Role.MEMBER):
@@ -137,3 +141,117 @@ class DeviceDeleteTests(TestCase):
         resp = self.client.post(reverse("devices:delete", args=[device.slug]))
         self.assertContains(resp, "masih dipakai")
         self.assertTrue(Device.objects.filter(pk=device.pk).exists())
+
+
+class FilterTagTests(TestCase):
+    def test_rupiah(self):
+        self.assertEqual(rupiah(1850000), "Rp 1.850.000")
+        self.assertEqual(rupiah(None), "")
+
+    def test_days_ago(self):
+        today = timezone.localdate()
+        self.assertEqual(days_ago(today), "hari ini")
+        self.assertEqual(days_ago(today - timedelta(days=1)), "kemarin")
+        self.assertEqual(days_ago(today - timedelta(days=12)), "12 hari lalu")
+
+
+class ListPageTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.iphone = Device.objects.create(name="iPhone 11", category=cat, brand="Apple")
+        self.pixel = Device.objects.create(name="Pixel 7", category=cat, brand="Google")
+        make_part("Baterai iPhone 11", self.iphone, prices=[185000, 320000])
+        make_part("Layar iPhone 11", self.iphone, category="screen", prices=[900000])
+        make_part("Kabel USB-C", category="cable")
+        self.url = reverse("parts:list")
+
+    def test_visitor_sees_parts_without_price(self):
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Baterai iPhone 11")
+        self.assertContains(resp, "Masuk untuk lihat harga")
+        self.assertNotContains(resp, "185.000")
+        self.assertNotContains(resp, 'name="max_price"')
+
+    def test_member_sees_lowest_price_and_price_filter(self):
+        self.client.force_login(make_user("m"))
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Rp 185.000")
+        self.assertContains(resp, 'name="max_price"')
+        self.assertNotContains(resp, "Masuk untuk lihat harga")
+
+    def test_part_without_source_says_price_unavailable(self):
+        self.assertContains(self.client.get(self.url, {"q": "kabel"}), "Harga belum tersedia")
+
+    def test_filter_by_device_and_category(self):
+        resp = self.client.get(self.url, {"device": "iphone-11", "category": "screen"})
+        self.assertContains(resp, "Layar iPhone 11")
+        self.assertNotContains(resp, "Baterai iPhone 11")
+
+    def test_visitor_max_price_is_ignored(self):
+        resp = self.client.get(self.url, {"max_price": "1"})
+        self.assertEqual(len(resp.context["parts"]), 3)
+
+    def test_member_max_price_filters(self):
+        self.client.force_login(make_user("m"))
+        resp = self.client.get(self.url, {"max_price": "200000"})
+        self.assertEqual([p.name for p in resp.context["parts"]], ["Baterai iPhone 11"])
+
+    def test_bad_filter_values_are_dropped(self):
+        self.client.force_login(make_user("m"))
+        resp = self.client.get(self.url, {"max_price": "abc", "category": "nope"})
+        self.assertEqual(len(resp.context["parts"]), 3)
+
+    def test_empty_result_offers_reset(self):
+        resp = self.client.get(self.url, {"q": "galaxy"})
+        self.assertContains(resp, "Belum ada suku cadang yang cocok.")
+        self.assertContains(resp, "Reset filter")
+
+    def test_device_without_parts_has_own_message(self):
+        resp = self.client.get(self.url, {"device": "pixel-7"})
+        self.assertContains(resp, "Belum ada suku cadang terdaftar buat Pixel 7.")
+
+    def test_device_dropdown_only_lists_devices_with_parts(self):
+        devices = self.client.get(self.url).context["devices"]
+        self.assertEqual([d.slug for d in devices], ["iphone-11"])
+
+
+class DetailPageTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.device = Device.objects.create(name="iPhone 11", category=cat, brand="Apple")
+        self.part = make_part(
+            "Baterai iPhone 11", self.device, prices=[320000, 185000], part_number="616-00644"
+        )
+        self.url = reverse("parts:detail", args=[self.part.slug])
+
+    def test_visitor_sees_shops_but_not_price_or_contact(self):
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Toko Baterai iPhone 11 0")
+        self.assertContains(resp, "https://toko.example/item")
+        self.assertContains(resp, "Harga dan kontak penjual cuma buat member.")
+        self.assertNotContains(resp, "185.000")
+        self.assertNotContains(resp, "0812-0000-")
+
+    def test_member_sees_price_range_and_contact(self):
+        self.client.force_login(make_user("m"))
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Kisaran Rp 185.000 sampai Rp 320.000 dari 2 toko")
+        self.assertContains(resp, "0812-0000-0001")
+        self.assertNotContains(resp, "cuma buat member")
+
+    def test_lists_compatible_device_with_link(self):
+        resp = self.client.get(self.url)
+        self.assertContains(resp, reverse("devices:detail", args=[self.device.slug]))
+        self.assertContains(resp, "616-00644")
+
+    def test_old_source_is_flagged(self):
+        PartSource.objects.update(last_checked=timezone.localdate() - timedelta(days=40))
+        self.assertContains(self.client.get(self.url), "Data lebih dari 30 hari")
+
+    def test_part_without_source_shows_empty_state(self):
+        part = make_part("Kabel USB-C", category="cable")
+        resp = self.client.get(reverse("parts:detail", args=[part.slug]))
+        self.assertContains(resp, "Belum ada toko yang terdaftar buat suku cadang ini.")
+
+    def test_missing_slug_is_404(self):
+        self.assertEqual(self.client.get(reverse("parts:detail", args=["nope"])).status_code, 404)
