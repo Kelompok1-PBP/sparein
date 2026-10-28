@@ -1,0 +1,9 @@
+{% load static %}<div class="tiles{% if tiles|length == 3 %} tiles--3{% endif %}" data-tiles="{{ scope }}">
+  {% for tile in tiles %}
+    <article class="tile">
+      <span class="tile__icon tile__icon--{{ tile.tone }}"><img src="{% static tile.icon %}" alt="" width="20" height="20"></span>
+      <p class="tile__value" data-tile-value="{{ tile.key }}">{{ tile.value }}</p>
+      <p class="tile__label">{{ tile.label }}</p>
+    </article>
+  {% endfor %}
+</div>

@@ -1,69 +1,50 @@
+// Bantuan bersama untuk halaman journal: toast dan kirim perubahan status.
+// Semua teks dimasukkan lewat textContent, tidak pernah innerHTML.
 (function () {
   var root = document.querySelector("[data-journal]");
   if (!root) return;
 
-  var csrf = root.dataset.csrf;
-  var live = root.querySelector("[data-live]");
-  var number = new Intl.NumberFormat("id-ID");
-  var kg = new Intl.NumberFormat("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-  function announce(text) {
-    live.textContent = text;
+  function toast(message, kind) {
+    var container = document.querySelector(".toasts");
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "toasts";
+      container.setAttribute("role", "status");
+      container.setAttribute("aria-live", "polite");
+      document.body.appendChild(container);
+    }
+    var item = document.createElement("div");
+    item.className = "toast";
+    var icon = document.createElement("img");
+    icon.src = kind === "error" ? root.dataset.iconError : root.dataset.iconSuccess;
+    icon.alt = "";
+    icon.width = 20;
+    icon.height = 20;
+    var text = document.createElement("p");
+    text.textContent = message;
+    item.appendChild(icon);
+    item.appendChild(text);
+    container.appendChild(item);
+    setTimeout(function () {
+      item.remove();
+    }, 5000);
   }
 
-  function updateStats(summary) {
-    var scope = root.querySelector('[data-stats="me"]');
-    if (!scope) return;
-    scope.querySelector('[data-stat="repairs"]').textContent = summary.repairs;
-    scope.querySelector('[data-stat="waste"]').textContent = kg.format(summary.waste_avoided_kg);
-    scope.querySelector('[data-stat="cost"]').textContent = number.format(summary.cost_avoided);
-  }
-
-  function updateCard(card, data) {
-    var badge = card.querySelector("[data-badge]");
-    badge.textContent = data.status_label;
-    badge.dataset.status = data.status;
-    var impact = card.querySelector("[data-impact]");
-    impact.textContent = data.impact
-      ? "Menghindari " + kg.format(data.impact.waste_avoided_kg) + " kg limbah, menghemat Rp" + number.format(data.impact.cost_avoided)
-      : "";
-  }
-
-  root.addEventListener("change", function (event) {
-    var select = event.target.closest("[data-status-select]");
-    if (!select) return;
-
-    var card = select.closest("[data-log]");
-    var previous = select.dataset.current;
-    select.disabled = true;
-    announce("Menyimpan status…");
-
-    fetch(select.dataset.url, {
+  function postStatus(url, status) {
+    return fetch(url, {
       method: "POST",
       headers: {
-        "X-CSRFToken": csrf,
+        "X-CSRFToken": root.dataset.csrf,
         "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: new URLSearchParams({ status: select.value }),
-    })
-      .then(function (response) {
-        if (!response.ok) throw new Error("gagal");
-        return response.json();
-      })
-      .then(function (data) {
-        select.dataset.current = data.status;
-        updateCard(card, data);
-        updateStats(data.summary);
-        announce("Status diubah menjadi " + data.status_label + ".");
-      })
-      .catch(function () {
-        select.value = previous;
-        announce("Status gagal diubah. Coba lagi.");
-      })
-      .finally(function () {
-        select.disabled = false;
-      });
-  });
+      body: new URLSearchParams({ status: status }),
+    }).then(function (response) {
+      if (!response.ok) throw new Error("gagal");
+      return response.json();
+    });
+  }
+
+  window.SpareinJournal = { toast: toast, postStatus: postStatus };
 })();

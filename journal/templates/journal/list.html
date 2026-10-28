@@ -1,77 +1,52 @@
 {% extends 'journal/base.html' %}{% load static %}
 {% block journal_content %}
 {% if visitor %}
-  <section class="journal-head">
+  <header class="j-head">
     <div>
-      <h1>Jurnal perbaikan</h1>
-      <p class="muted">Dampak nyata dari perbaikan yang dicatat komunitas Sparein.</p>
+      <h1>Jurnal Perbaikan</h1>
+      <p class="j-head__sub">Dampak nyata dari perbaikan yang dicatat komunitas Sparein.</p>
     </div>
-  </section>
-  {% include 'journal/_impact_stats.html' with stats=site scope='site' %}
-  <section class="card journal-cta">
+  </header>
+  {% include 'journal/_stat_tiles.html' with tiles=tiles scope='site' %}
+  <section class="card j-cta">
     <h2 class="card__title">Catat perbaikanmu sendiri</h2>
-    <p class="card__text">Masuk untuk menyimpan riwayat perbaikan dan melihat berapa limbah elektronik yang kamu hindari.</p>
-    <div class="journal-actions">
+    <p class="j-cta__text">Masuk untuk menyimpan riwayat perbaikan dan melihat berapa limbah elektronik yang kamu hindari.</p>
+    <div class="j-actions">
       <a class="btn btn--primary" href="{% url 'login' %}?next={% url 'journal:list' %}">Masuk</a>
       <a class="btn btn--secondary" href="{% url 'core:register' %}">Daftar</a>
     </div>
   </section>
 {% else %}
-  <div data-journal data-csrf="{{ csrf_token }}">
-    <section class="journal-head">
+  <div data-journal data-csrf="{{ csrf_token }}"
+       data-icon-success="{% static 'core/icons/circle-check-success.svg' %}"
+       data-icon-error="{% static 'core/icons/circle-alert-danger.svg' %}">
+    <header class="j-head">
       <div>
-        <h1>Jurnal perbaikan</h1>
-        <p class="muted">Riwayat perbaikanmu dan dampaknya.</p>
+        <h1>Jurnal Perbaikan</h1>
+        <p class="j-head__sub">Catatan semua perbaikan yang kamu kerjakan.</p>
       </div>
-      <a class="btn btn--primary" href="{% url 'journal:create' %}"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="20" height="20">Catat perbaikan</a>
-    </section>
+      <a class="btn btn--primary j-head__action" href="{% url 'journal:create' %}"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="20" height="20">Tambah catatan</a>
+    </header>
 
-    <h2 class="journal-section">Dampak kamu</h2>
-    {% include 'journal/_impact_stats.html' with stats=summary scope='me' %}
-    <p class="muted journal-site">Seluruh komunitas: {{ site.repairs }} perbaikan berhasil, {{ site.waste_avoided_kg|floatformat:"2g" }} kg limbah terhindar.</p>
+    {% include 'journal/_stat_tiles.html' with tiles=tiles scope='me' %}
 
-    <form class="journal-filter" method="get" action="{% url 'journal:list' %}">
-      <div class="field">
-        <label class="field__label" for="{{ filters.status.id_for_label }}">Status</label>
-        {{ filters.status }}
-      </div>
-      <button class="btn btn--secondary" type="submit">Terapkan</button>
-    </form>
+    <p class="j-how"><button type="button" class="j-how__button" aria-expanded="false" aria-controls="impact-info" data-how>Gimana dampak dihitung?</button></p>
+    <div class="alert alert--info" id="impact-info" hidden>
+      <img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20">
+      <p>Dampak dihitung otomatis setiap catatan berstatus Berhasil. Berat limbah dan harga ganti baru diambil dari rata-rata kategori perangkatnya, lalu biaya perbaikanmu dikurangkan dari harga ganti baru untuk mendapat biaya yang dihemat.</p>
+    </div>
+
+    {% if total %}
+      <nav class="tabs" aria-label="Filter status" data-tabs>
+        {% for tab in tabs %}<a class="tab" href="{% if tab.value %}?status={{ tab.value }}{% else %}{% url 'journal:list' %}{% endif %}" data-tab="{{ tab.value }}" data-count-key="{{ tab.key }}"{% if tab.active %} aria-current="page"{% endif %}>{{ tab.label }} (<span data-tab-count>{{ tab.count }}</span>)</a>{% endfor %}
+      </nav>
+    {% endif %}
 
     <p class="sr-only" role="status" aria-live="polite" data-live></p>
+    <div data-results>{% include 'journal/_list_results.html' %}</div>
 
-    {% if logs %}
-      <ul class="log-list">
-        {% for log in logs %}
-          <li class="card log" data-log="{{ log.pk }}">
-            <div class="log__main">
-              <h3 class="card__title"><a href="{% url 'journal:detail' log.pk %}">{{ log.title }}</a></h3>
-              <p class="muted">
-                {% if log.device %}{{ log.device }}{% elif log.guide %}{{ log.guide.device }}{% else %}Perangkat tidak dipilih{% endif %}
-                {% if log.repaired_at %} · {{ log.repaired_at|date:"j F Y" }}{% endif %}
-                · Biaya Rp{{ log.cost_spent|floatformat:"0g" }}
-              </p>
-              <p class="log__impact" data-impact>{% if log.impact %}Menghindari {{ log.impact.waste_avoided_kg|floatformat:"2g" }} kg limbah, menghemat Rp{{ log.impact.cost_avoided|floatformat:"0g" }}{% endif %}</p>
-            </div>
-            <div class="log__side">
-              <span class="status-badge" data-badge data-status="{{ log.status }}">{{ log.get_status_display }}</span>
-              <label class="sr-only" for="status-{{ log.pk }}">Ubah status {{ log.title }}</label>
-              <select class="input input--sm" id="status-{{ log.pk }}" data-status-select data-url="{% url 'journal:status' log.pk %}" data-current="{{ log.status }}">
-                {% for value, label in statuses %}<option value="{{ value }}"{% if value == log.status %} selected{% endif %}>{{ label }}</option>{% endfor %}
-              </select>
-              <div class="journal-actions">
-                <a class="btn btn--ghost btn--sm" href="{% url 'journal:edit' log.pk %}">Edit</a>
-                <a class="btn btn--ghost btn--sm" href="{% url 'journal:delete' log.pk %}">Hapus</a>
-              </div>
-            </div>
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      {% url 'journal:create' as create_url %}
-      {% include 'partials/empty_state.html' with message='Belum ada catatan perbaikan. Mulai dengan mencatat perbaikan pertamamu.' action_url=create_url action_label='Catat perbaikan' %}
-    {% endif %}
+    <a class="fab" href="{% url 'journal:create' %}" aria-label="Tambah catatan"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="24" height="24"></a>
   </div>
 {% endif %}
 {% endblock %}
-{% block extra_js %}{% if not visitor %}<script src="{% static 'journal/journal.js' %}" defer></script>{% endif %}{% endblock %}
+{% block extra_js %}{% if not visitor %}<script src="{% static 'journal/journal.js' %}" defer></script><script src="{% static 'journal/list.js' %}" defer></script>{% endif %}{% endblock %}
