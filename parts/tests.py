@@ -255,3 +255,239 @@ class DetailPageTests(TestCase):
 
     def test_missing_slug_is_404(self):
         self.assertEqual(self.client.get(reverse("parts:detail", args=["nope"])).status_code, 404)
+
+
+def part_data(devices=(), sources=(), initial=(0, 0), **fields):
+    """POST data form suku cadang.
+
+    devices: list perangkat atau (perangkat, note, hapus). initial: jumlah baris
+    perangkat dan toko yang udah ada, kayak yang dikirim browser waktu edit.
+    """
+    data = {
+        "name": "Baterai Galaxy A52",
+        "part_number": "",
+        "category": "battery",
+        "description": "",
+        "image_url": "",
+        "compat-TOTAL_FORMS": len(devices),
+        "compat-INITIAL_FORMS": initial[0],
+        "sources-TOTAL_FORMS": len(sources),
+        "sources-INITIAL_FORMS": initial[1],
+        **fields,
+    }
+    for i, row in enumerate(devices):
+        device, note, delete = row if isinstance(row, tuple) else (row, "", False)
+        data[f"compat-{i}-device"] = device.pk
+        data[f"compat-{i}-note"] = note
+        if delete:
+            data[f"compat-{i}-DELETE"] = "on"
+    for i, source in enumerate(sources):
+        for key, value in source.items():
+            data[f"sources-{i}-{key}"] = value
+    return data
+
+
+SHOP = {
+    "vendor_name": "Toko Contoh",
+    "city": "Depok",
+    "price": "185000",
+    "url": "https://toko.example/baterai",
+    "contact": "",
+}
+
+
+class CreateTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.a52 = Device.objects.create(name="Galaxy A52", category=cat, brand="Samsung")
+        self.a72 = Device.objects.create(name="Galaxy A72", category=cat, brand="Samsung")
+        self.contributor = make_user("c", UserProfile.Role.CONTRIBUTOR)
+        self.url = reverse("parts:create")
+
+    def test_visitor_redirected_to_login(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 302)
+        self.assertIn(reverse("login"), resp.url)
+
+    def test_member_forbidden(self):
+        self.client.force_login(make_user("m"))
+        self.assertEqual(self.client.get(self.url).status_code, 403)
+
+    def test_contributor_sees_form(self):
+        self.client.force_login(self.contributor)
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Tambah suku cadang")
+        self.assertContains(resp, 'id="compat-template"')
+
+    def test_create_with_devices_and_source(self):
+        self.client.force_login(self.contributor)
+        resp = self.client.post(
+            self.url, part_data([self.a52, (self.a72, "Cuma versi global", False)], [SHOP])
+        )
+        part = SparePart.objects.get()
+        self.assertRedirects(
+            resp, reverse("parts:detail", args=[part.slug]), fetch_redirect_response=False
+        )
+        self.assertEqual(part.created_by, self.contributor)
+        self.assertEqual(part.compatibilities.get(device=self.a72).note, "Cuma versi global")
+        self.assertEqual(part.sources.get().price, 185000)
+        self.assertContains(self.client.get(resp.url), "Suku cadang tersimpan.")
+
+    def test_same_device_twice_rejected(self):
+        self.client.force_login(self.contributor)
+        resp = self.client.post(self.url, part_data([self.a52, self.a52]))
+        self.assertContains(resp, "Perangkat ini sudah ada di daftar.", status_code=400)
+        self.assertFalse(SparePart.objects.exists())
+
+    def test_needs_at_least_one_device(self):
+        self.client.force_login(self.contributor)
+        resp = self.client.post(self.url, part_data([(self.a52, "", True)]))
+        self.assertContains(resp, "Pilih minimal satu perangkat.", status_code=400)
+
+    def test_blank_device_row_has_one_message(self):
+        self.client.force_login(self.contributor)
+        data = part_data(**{"compat-TOTAL_FORMS": 1, "compat-0-device": ""})
+        resp = self.client.post(self.url, data)
+        self.assertContains(resp, "Pilih perangkatnya.", status_code=400)
+        self.assertNotContains(resp, "Pilih minimal satu perangkat.", status_code=400)
+
+    def test_source_link_must_be_https_and_price_positive(self):
+        self.client.force_login(self.contributor)
+        shop = {**SHOP, "url": "http://toko.example/baterai", "price": "0"}
+        resp = self.client.post(self.url, part_data([self.a52], [shop]))
+        self.assertContains(resp, "Link toko harus pakai https://.", status_code=400)
+        self.assertContains(resp, "Harga minimal Rp 1.", status_code=400)
+
+    def test_slug_never_takes_route_name(self):
+        self.client.force_login(self.contributor)
+        self.client.post(self.url, part_data([self.a52], name="Create"))
+        self.assertEqual(SparePart.objects.get().slug, "create-2")
+
+    def test_json_create_and_errors(self):
+        self.client.force_login(self.contributor)
+        resp = self.client.post(self.url, part_data([self.a52]), HTTP_ACCEPT="application/json")
+        self.assertEqual(resp.status_code, 201)
+        self.assertEqual(resp.json()["url"], reverse("parts:detail", args=["baterai-galaxy-a52"]))
+        resp = self.client.post(
+            self.url, part_data([self.a52], name=""), HTTP_ACCEPT="application/json"
+        )
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("name", resp.json()["errors"]["part"])
+
+    def test_json_visitor_gets_401(self):
+        resp = self.client.post(self.url, part_data([self.a52]), HTTP_ACCEPT="application/json")
+        self.assertEqual(resp.status_code, 401)
+
+
+class EditTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.a52 = Device.objects.create(name="Galaxy A52", category=cat, brand="Samsung")
+        self.a72 = Device.objects.create(name="Galaxy A72", category=cat, brand="Samsung")
+        self.owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
+        self.part = make_part(
+            "Baterai Galaxy A52", self.a52, prices=[200000], created_by=self.owner
+        )
+        self.source = self.part.sources.get()
+        PartSource.objects.update(last_checked=timezone.localdate() - timedelta(days=60))
+        self.url = reverse("parts:edit", args=[self.part.slug])
+
+    def existing_source(self, **changes):
+        return {**SHOP, "id": self.source.pk, "part": self.part.pk, **changes}
+
+    def test_owner_sees_filled_form(self):
+        self.client.force_login(self.owner)
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "Edit Baterai Galaxy A52")
+        self.assertContains(resp, f'<option value="{self.a52.pk}" selected>')
+
+    def test_other_contributor_forbidden_admin_allowed(self):
+        self.client.force_login(make_user("other", UserProfile.Role.CONTRIBUTOR))
+        self.assertEqual(self.client.get(self.url).status_code, 403)
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+        self.assertEqual(self.client.get(self.url).status_code, 200)
+
+    def test_edit_swaps_device_and_updates_source(self):
+        self.client.force_login(self.owner)
+        data = part_data(
+            [(self.a52, "", True), self.a72],
+            [self.existing_source(price="150000")],
+            initial=(1, 1),
+            name="Baterai Galaxy A52/A72",
+        )
+        resp = self.client.post(self.url, data)
+        self.assertRedirects(resp, reverse("parts:detail", args=[self.part.slug]))
+        self.part.refresh_from_db()
+        self.assertEqual(self.part.name, "Baterai Galaxy A52/A72")
+        self.assertEqual([c.device for c in self.part.compatibilities.all()], [self.a72])
+        self.source.refresh_from_db()
+        self.assertEqual(self.source.price, 150000)
+        self.assertEqual(self.source.last_checked, timezone.localdate())
+
+    def test_delete_and_readd_same_device(self):
+        self.client.force_login(self.owner)
+        data = part_data([(self.a52, "", True), (self.a52, "Versi global", False)], initial=(1, 0))
+        self.client.post(self.url, data)
+        self.assertEqual(self.part.compatibilities.get().note, "Versi global")
+
+    def test_remove_source_row(self):
+        self.client.force_login(self.owner)
+        data = part_data([self.a52], [self.existing_source(DELETE="on")], initial=(1, 1))
+        self.client.post(self.url, data)
+        self.assertFalse(self.part.sources.exists())
+
+    def test_invalid_edit_keeps_old_title(self):
+        self.client.force_login(self.owner)
+        resp = self.client.post(self.url, part_data([self.a52], name=""))
+        self.assertContains(resp, "Edit Baterai Galaxy A52", status_code=400)
+
+    def test_detail_buttons_follow_role(self):
+        detail = reverse("parts:detail", args=[self.part.slug])
+        delete = reverse("parts:delete", args=[self.part.slug])
+        self.client.force_login(self.owner)
+        resp = self.client.get(detail)
+        self.assertContains(resp, self.url)
+        self.assertNotContains(resp, delete)
+        self.client.force_login(make_user("m"))
+        self.assertNotContains(self.client.get(detail), self.url)
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+        self.assertContains(self.client.get(detail), delete)
+
+
+class DeleteTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        device = Device.objects.create(name="Galaxy A52", category=cat, brand="Samsung")
+        self.owner = make_user("owner", UserProfile.Role.CONTRIBUTOR)
+        self.part = make_part(
+            "Baterai Galaxy A52", device, prices=[200000], created_by=self.owner
+        )
+        self.url = reverse("parts:delete", args=[self.part.slug])
+
+    def test_contributor_owner_cannot_delete(self):
+        self.client.force_login(self.owner)
+        self.assertEqual(self.client.post(self.url).status_code, 403)
+        self.assertTrue(SparePart.objects.exists())
+
+    def test_admin_confirms_then_deletes(self):
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+        self.assertContains(self.client.get(self.url), "Hapus suku cadang ini?")
+        resp = self.client.post(self.url)
+        self.assertRedirects(resp, reverse("parts:list"))
+        self.assertFalse(SparePart.objects.exists())
+        self.assertFalse(PartSource.objects.exists())
+
+    def test_admin_json_delete(self):
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+        resp = self.client.post(self.url, HTTP_ACCEPT="application/json")
+        self.assertEqual(resp.json(), {"deleted": True})
+
+
+class ListCreateButtonTests(TestCase):
+    def test_button_only_for_contributor(self):
+        # menu "+ Buat" di header juga ngelink ke create, jadi yang dicek teks tombolnya
+        url = reverse("parts:list")
+        self.client.force_login(make_user("m"))
+        self.assertNotContains(self.client.get(url), "Tambah suku cadang")
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        self.assertContains(self.client.get(url), "Tambah suku cadang")

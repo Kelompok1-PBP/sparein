@@ -36,6 +36,12 @@
       {% elif lowest_price == highest_price %}Harga {{ lowest_price|rupiah }} dari {{ sources|length }} toko
       {% else %}Kisaran {{ lowest_price|rupiah }} sampai {{ highest_price|rupiah }} dari {{ sources|length }} toko{% endif %}
     </p>
+    {% if can_edit or can_delete %}
+      <div class="part-actions">
+        {% if can_edit %}<a class="btn btn--secondary btn--sm" href="{% url 'parts:edit' part.slug %}">Edit</a>{% endif %}
+        {% if can_delete %}<a class="btn btn--secondary btn--sm parts-danger-text" href="{% url 'parts:delete' part.slug %}">Hapus</a>{% endif %}
+      </div>
+    {% endif %}
   </div>
 </div>
 

@@ -1,13 +1,39 @@
+from django.contrib import messages
+from django.contrib.auth.views import redirect_to_login
+from django.core.exceptions import PermissionDenied
+from django.db import transaction
 from django.db.models import Q
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils import timezone
+from django.views.decorators.http import require_http_methods
 
-from core.permissions import is_member
+from core.permissions import is_admin, is_contributor, is_member
 from devices.selectors import get_device_qs
-from parts.models import SparePart
+from parts.forms import MAX_PRICE, CompatibilityFormSet, SourceFormSet, SparePartForm
+from parts.models import PartCompatibility, SparePart
 from parts.selectors import get_part_or_404, get_sources_for, visible_part_qs
 
 STALE_DAYS = 30
+
+
+def wants_json(request):
+    return "application/json" in request.headers.get("Accept", "")
+
+
+def _deny(request):
+    """Visitor diarahin ke halaman masuk, yang udah login tapi ga punya izin dapet 403."""
+    if wants_json(request):
+        status = 403 if request.user.is_authenticated else 401
+        return JsonResponse({"error": "Akses ditolak."}, status=status)
+    if not request.user.is_authenticated:
+        return redirect_to_login(request.get_full_path())
+    raise PermissionDenied
+
+
+def _can_edit(user, part):
+    return is_admin(user) or (is_contributor(user) and part.created_by_id == user.id)
 
 
 def _price(value):
@@ -16,7 +42,7 @@ def _price(value):
     except ValueError:
         return None
     # dibatasi biar angka kepanjangan ga bikin query error
-    return min(price, 1_000_000_000) if price > 0 else None
+    return min(price, MAX_PRICE) if price > 0 else None
 
 
 def _filters(request, *, with_price):
@@ -58,6 +84,7 @@ def part_list(request):
         "show_price": show_price,
         "empty_message": None if parts else _empty_message(filters, device),
         "show_reset": any(filters.values()),
+        "can_create": is_contributor(request.user),
     })
 
 
@@ -75,4 +102,90 @@ def part_detail(request, slug):
         "show_price": is_member(request.user),
         "lowest_price": min(prices, default=None),
         "highest_price": max(prices, default=None),
+        "can_edit": _can_edit(request.user, part),
+        "can_delete": is_admin(request.user),
     })
+
+
+def _editor(request, part=None):
+    """Form tambah dan edit, isinya suku cadang + perangkat yang cocok + toko."""
+    creating = part is None
+    # judul diambil sebelum validasi, soalnya form ngubah part.name waktu is_valid()
+    title = "Tambah suku cadang" if creating else f"Edit {part.name}"
+    cancel_url = reverse("parts:list") if creating else reverse("parts:detail", args=[part.slug])
+    data = request.POST if request.method == "POST" else None
+    form = SparePartForm(data, instance=part)
+    initial = [
+        {"device": c.device_id, "note": c.note}
+        for c in (part.compatibilities.order_by("device__name") if part else [])
+    ]
+    compat = CompatibilityFormSet(data, initial=initial, prefix="compat")
+    sources = SourceFormSet(data, instance=form.instance, prefix="sources")
+
+    if data is not None and all([form.is_valid(), compat.is_valid(), sources.is_valid()]):
+        with transaction.atomic():
+            part = form.save(commit=False)
+            if creating:
+                part.created_by = request.user
+            part.save()
+            part.compatibilities.all().delete()
+            PartCompatibility.objects.bulk_create(
+                PartCompatibility(part=part, **row) for row in compat.rows()
+            )
+            today = timezone.localdate()
+            for row in sources.forms:
+                if row.has_changed():
+                    row.instance.last_checked = today  # baru diisi orang, anggap baru dicek
+            sources.save()
+        if wants_json(request):
+            return JsonResponse(
+                {"id": part.pk, "slug": part.slug, "url": reverse("parts:detail", args=[part.slug])},
+                status=201 if creating else 200,
+            )
+        messages.success(request, "Suku cadang tersimpan.")
+        return redirect("parts:detail", slug=part.slug)
+
+    if data is not None and wants_json(request):
+        return JsonResponse({"errors": {
+            "part": form.errors.get_json_data(),
+            "compat": [f.errors.get_json_data() for f in compat.forms],
+            "compat_errors": compat.non_form_errors().get_json_data(),
+            "sources": [f.errors.get_json_data() for f in sources.forms],
+            "source_errors": sources.non_form_errors().get_json_data(),
+        }}, status=400)
+    return render(request, "parts/part_form.html", {
+        "form": form,
+        "compat": compat,
+        "sources": sources,
+        "title": title,
+        "cancel_url": cancel_url,
+    }, status=400 if data is not None else 200)
+
+
+@require_http_methods(["GET", "POST"])
+def part_create(request):
+    if not is_contributor(request.user):
+        return _deny(request)
+    return _editor(request)
+
+
+@require_http_methods(["GET", "POST"])
+def part_edit(request, slug):
+    part = get_part_or_404(slug)
+    if not _can_edit(request.user, part):
+        return _deny(request)
+    return _editor(request, part)
+
+
+@require_http_methods(["GET", "POST"])
+def part_delete(request, slug):
+    part = get_part_or_404(slug)
+    if not is_admin(request.user):
+        return _deny(request)
+    if request.method == "POST":
+        part.delete()  # toko dan kecocokan ikut kehapus (CASCADE)
+        if wants_json(request):
+            return JsonResponse({"deleted": True})
+        messages.success(request, "Suku cadang dihapus.")
+        return redirect("parts:list")
+    return render(request, "parts/part_confirm_delete.html", {"part": part})

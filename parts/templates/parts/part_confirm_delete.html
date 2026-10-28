@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Hapus {{ part.name }} · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'parts/parts.css' %}">{% endblock %}
+{% block content %}
+<section class="card parts-confirm" aria-labelledby="confirm-title">
+  <span class="parts-confirm__icon"><img src="{% static 'parts/icons/triangle-alert-danger.svg' %}" alt="" width="24" height="24"></span>
+  <h1 class="parts-confirm__title" id="confirm-title">Hapus suku cadang ini?</h1>
+  <p>Suku cadang <strong>{{ part.name }}</strong> beserta data toko dan kecocokannya akan dihapus.</p>
+  <form class="parts-confirm__actions" method="post">
+    {% csrf_token %}
+    <a class="btn btn--secondary" href="{% url 'parts:detail' part.slug %}">Batal</a>
+    <button class="btn parts-btn-danger" type="submit">Ya, hapus</button>
+  </form>
+</section>
+{% endblock %}
