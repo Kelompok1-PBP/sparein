@@ -466,6 +466,96 @@ class ListPageTests(ViewBase):
             self.assertContains(response, label)
 
 
+class DetailPageTests(ViewBase):
+    def guide(self):
+        return RepairGuide.objects.create(
+            device=self.device, author=self.other, title="Ganti baterai",
+            slug="ganti-baterai", summary="s", difficulty="Easy",
+            time_required_minutes=5, published=True,
+        )
+
+    def test_info_card_links_to_device_and_guide(self):
+        guide = self.guide()
+        log = self.make_log(
+            guide=guide, cost_spent=210_000, repaired_at=date(2026, 9, 20)
+        )
+        response = self.client.get(reverse("journal:detail", args=[log.pk]))
+        self.assertContains(response, "20 Sep 2026")
+        self.assertContains(response, "Rp 210.000")
+        self.assertContains(response, reverse("devices:detail", args=[self.device.slug]))
+        self.assertContains(response, reverse("guides:detail", args=[guide.slug]))
+
+    def test_device_comes_from_the_guide_when_the_log_has_none(self):
+        log = self.make_log(device=None, guide=self.guide())
+        response = self.client.get(reverse("journal:detail", args=[log.pk]))
+        self.assertContains(response, reverse("devices:detail", args=[self.device.slug]))
+
+    def test_empty_fields_show_fallback_texts(self):
+        log = self.make_log(device=None)
+        response = self.client.get(reverse("journal:detail", args=[log.pk]))
+        self.assertContains(response, "Tidak diisi")
+        self.assertContains(response, "Tanpa panduan")
+        self.assertContains(response, "Tidak ada catatan.")
+
+    def test_notes_are_shown_and_escaped(self):
+        log = self.make_log(notes="<b>tebal</b>")
+        response = self.client.get(reverse("journal:detail", args=[log.pk]))
+        self.assertContains(response, "&lt;b&gt;tebal&lt;/b&gt;")
+
+    def test_succeeded_log_shows_the_impact_panel(self):
+        log = self.make_log(status=Status.SUCCEEDED, cost_spent=210_000)
+        response = self.client.get(reverse("journal:detail", args=[log.pk]))
+        self.assertContains(response, "Dampak perbaikan ini")
+        self.assertContains(response, "0,2 kg")
+        self.assertContains(response, "Rp 2,8 juta")
+        self.assertContains(response, "kategori Phone")
+        self.assertContains(response, "dikurangi biaya perbaikanmu")
+        self.assertNotContains(response, "Tandai berhasil")
+
+    def test_panel_explains_when_default_values_were_used(self):
+        CategoryImpactProfile.objects.all().delete()
+        log = self.make_log(status=Status.SUCCEEDED)
+        response = self.client.get(reverse("journal:detail", args=[log.pk]))
+        self.assertContains(response, "perkiraan standar")
+
+    def test_succeeded_log_without_device_cannot_be_calculated(self):
+        log = self.make_log(device=None, status=Status.SUCCEEDED)
+        response = self.client.get(reverse("journal:detail", args=[log.pk]))
+        self.assertContains(response, "Dampak belum bisa dihitung")
+        self.assertContains(response, reverse("journal:edit", args=[log.pk]))
+        self.assertNotContains(response, "Dampak perbaikan ini")
+
+    def test_unfinished_log_offers_to_mark_it_succeeded(self):
+        for status in (Status.PLANNED, Status.IN_PROGRESS, Status.FAILED):
+            log = self.make_log(status=status)
+            response = self.client.get(reverse("journal:detail", args=[log.pk]))
+            self.assertContains(response, "Dampak dihitung otomatis kalau status")
+            self.assertContains(response, "Tandai berhasil")
+            self.assertContains(response, reverse("journal:status", args=[log.pk]))
+
+    def test_actions_point_to_edit_and_delete(self):
+        log = self.make_log()
+        response = self.client.get(reverse("journal:detail", args=[log.pk]))
+        self.assertContains(response, reverse("journal:edit", args=[log.pk]))
+        self.assertContains(response, reverse("journal:delete", args=[log.pk]))
+
+    def test_marking_succeeded_returns_the_rendered_impact_box(self):
+        log = self.make_log(cost_spent=210_000)
+        data = self.client.post(
+            reverse("journal:status", args=[log.pk]), {"status": Status.SUCCEEDED}
+        ).json()
+        self.assertIn("Dampak perbaikan ini", data["impact_html"])
+        self.assertNotIn("Tandai berhasil", data["impact_html"])
+        self.assertEqual(data["repaired_at"], short_date(date.today()))
+
+    def test_leaving_succeeded_brings_the_button_back(self):
+        log = self.make_log(status=Status.SUCCEEDED)
+        data = self.client.post(
+            reverse("journal:status", args=[log.pk]), {"status": Status.FAILED}
+        ).json()
+        self.assertIn("Tandai berhasil", data["impact_html"])
+
+
 class UpdateTests(ViewBase):
     def setUp(self):
         super().setUp()
