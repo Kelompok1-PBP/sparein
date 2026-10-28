@@ -1,34 +1,43 @@
-{% extends 'journal/base.html' %}{% load static %}
+{% extends 'journal/base.html' %}{% load static journal_format %}
 {% block title %}{{ log.title }} · Jurnal Sparein{% endblock %}
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'journal/detail.css' %}">{% endblock %}
 {% block journal_content %}
-  <a class="link" href="{% url 'journal:list' %}">← Semua catatan</a>
-  <section class="journal-head">
-    <div>
+<div data-journal data-csrf="{{ csrf_token }}"
+     data-icon-success="{% static 'core/icons/circle-check-success.svg' %}"
+     data-icon-error="{% static 'core/icons/circle-alert-danger.svg' %}">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="{% url 'journal:list' %}">Jurnal</a>
+    <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+    <span aria-current="page">{{ log.title }}</span>
+  </nav>
+
+  <header class="j-head">
+    <div class="detail-title">
       <h1>{{ log.title }}</h1>
-      <span class="status-badge" data-status="{{ log.status }}">{{ log.get_status_display }}</span>
+      {% include 'journal/_status_badge.html' with status=log.status label=log.get_status_display %}
     </div>
-    <div class="journal-actions">
-      <a class="btn btn--secondary" href="{% url 'journal:edit' log.pk %}">Edit</a>
-      <a class="btn btn--secondary" href="{% url 'journal:delete' log.pk %}">Hapus</a>
+    <div class="j-actions">
+      <a class="btn btn--secondary" href="{% url 'journal:edit' log.pk %}"><img src="{% static 'journal/icons/pencil-blue.svg' %}" alt="" width="20" height="20">Ubah</a>
+      <a class="btn btn--danger-outline" href="{% url 'journal:delete' log.pk %}"><img src="{% static 'journal/icons/trash-danger.svg' %}" alt="" width="20" height="20">Hapus</a>
     </div>
-  </section>
+  </header>
 
-  <section class="card">
+  <section class="card detail-info">
     <dl class="detail-grid">
-      <div><dt>Perangkat</dt><dd>{% if log.device %}{{ log.device }}{% elif log.guide %}{{ log.guide.device }}{% else %}-{% endif %}</dd></div>
-      <div><dt>Panduan</dt><dd>{% if log.guide %}<a href="{% url 'guides:detail' log.guide.slug %}">{{ log.guide.title }}</a>{% else %}-{% endif %}</dd></div>
-      <div><dt>Tanggal perbaikan</dt><dd>{% if log.repaired_at %}{{ log.repaired_at|date:"j F Y" }}{% else %}-{% endif %}</dd></div>
-      <div><dt>Biaya</dt><dd>Rp{{ log.cost_spent|floatformat:"0g" }}</dd></div>
+      <div><dt>Tanggal perbaikan</dt><dd data-detail-date>{{ log.repaired_at|short_date|default:"-" }}</dd></div>
+      <div><dt>Biaya yang dikeluarkan</dt><dd>{{ log.cost_spent|rupiah }}</dd></div>
+      <div><dt>Perangkat</dt><dd>{% if device %}<a class="link" href="{% url 'devices:detail' device.slug %}">{{ device }}</a>{% else %}Tidak diisi{% endif %}</dd></div>
+      <div><dt>Panduan yang dipakai</dt><dd>{% if log.guide %}<a class="link" href="{% url 'guides:detail' log.guide.slug %}">{{ log.guide.title }}</a>{% else %}Tanpa panduan{% endif %}</dd></div>
     </dl>
-    {% if log.notes %}<h2 class="card__title">Catatan</h2><p>{{ log.notes|linebreaksbr }}</p>{% endif %}
   </section>
 
-  {% if log.impact %}
-    <section class="card journal-impact">
-      <h2 class="card__title">Dampak perbaikan ini</h2>
-      <p>Menghindari <strong>{{ log.impact.waste_avoided_kg|floatformat:"2g" }} kg</strong> limbah elektronik dan menghemat <strong>Rp{{ log.impact.cost_avoided|floatformat:"0g" }}</strong> dibanding membeli baru.</p>
-    </section>
-  {% else %}
-    <p class="muted">Estimasi dampak muncul setelah perbaikan berstatus Berhasil dan perangkatnya dipilih.</p>
-  {% endif %}
+  <section class="detail-notes">
+    <h2 class="detail-notes__label">Catatan</h2>
+    <div class="card">{% if log.notes %}<p>{{ log.notes|linebreaksbr }}</p>{% else %}<p class="muted">Tidak ada catatan.</p>{% endif %}</div>
+  </section>
+
+  <p class="sr-only" role="status" aria-live="polite" data-live></p>
+  <div class="detail-impact" data-impact-box>{% include 'journal/_impact_box.html' %}</div>
+</div>
 {% endblock %}
+{% block extra_js %}<script src="{% static 'journal/journal.js' %}" defer></script><script src="{% static 'journal/detail.js' %}" defer></script>{% endblock %}

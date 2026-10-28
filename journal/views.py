@@ -9,8 +9,9 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from .formatting import kg, rupiah_short
+from .formatting import kg, rupiah_short, short_date
 from .forms import RepairLogForm, StatusFilterForm
+from .impact import impact_basis, log_device
 from .models import RepairLog
 from .permissions import can_use_journal
 from .selectors import (
@@ -140,12 +141,23 @@ def journal_list(request):
     return render(request, "journal/list.html", context)
 
 
+def detail_context(log):
+    device = log_device(log)
+    impact = getattr(log, "impact", None)
+    return {
+        "log": log,
+        "device": device,
+        "impact": impact,
+        "basis": impact_basis(device) if impact else None,
+    }
+
+
 @require_http_methods(["GET"])
 def journal_detail(request, pk):
     if not can_use_journal(request.user):
         return denied(request)
     log = get_object_or_404(logs_for(request.user), pk=pk)
-    return render(request, "journal/detail.html", {"log": log})
+    return render(request, "journal/detail.html", detail_context(log))
 
 
 def editor(request, log=None):
@@ -215,6 +227,10 @@ def journal_status(request, pk):
                 "journal/_status_badge.html",
                 {"status": log.status, "label": log.get_status_display()},
             ),
+            "impact_html": render_to_string(
+                "journal/_impact_box.html", detail_context(log)
+            ),
+            "repaired_at": short_date(log.repaired_at),
             "card_impact": f"{kg(impact['waste_avoided_kg'])} limbah terhindar" if impact else "",
             "impact": impact,
             "summary": serialize_summary(user_impact_summary(request.user)),
