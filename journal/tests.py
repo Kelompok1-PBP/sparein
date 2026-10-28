@@ -10,9 +10,20 @@ from django.urls import reverse
 from devices.models import Device, DeviceCategory
 from guides.models import RepairGuide
 
-from .impact import DEFAULT_MASS_KG, DEFAULT_REPLACEMENT_COST
+from .formatting import kg, rupiah, rupiah_short, short_date
+from .impact import (
+    DEFAULT_MASS_KG,
+    DEFAULT_REPLACEMENT_COST,
+    impact_basis,
+    log_device,
+)
 from .models import CategoryImpactProfile, ImpactEstimate, RepairLog
-from .selectors import logs_for, site_impact_totals, user_impact_summary
+from .selectors import (
+    logs_for,
+    site_impact_totals,
+    status_counts,
+    user_impact_summary,
+)
 
 Status = RepairLog.Status
 
@@ -114,7 +125,68 @@ class SelectorTests(JournalBase):
         self.assertEqual(totals["cost_avoided"], 6_000_000)
 
 
-class SeedCommandTests(TestCase): # f
+class StatusCountsTests(JournalBase):
+    def test_counts_every_status_and_the_total(self):
+        self.make_log(status=Status.PLANNED)
+        self.make_log(status=Status.SUCCEEDED)
+        self.make_log(status=Status.SUCCEEDED)
+        counts = status_counts(self.user)
+        self.assertEqual(counts["planned"], 1)
+        self.assertEqual(counts["succeeded"], 2)
+        self.assertEqual(counts["in_progress"], 0)
+        self.assertEqual(counts["failed"], 0)
+        self.assertEqual(counts["all"], 3)
+
+    def test_counts_ignore_other_users(self):
+        self.make_log(user=self.other, status=Status.SUCCEEDED)
+        self.assertEqual(status_counts(self.user)["all"], 0)
+
+
+class ImpactBasisTests(JournalBase):
+    def test_basis_is_the_category_that_holds_the_profile(self):
+        self.assertEqual(impact_basis(self.device), "Phone")
+
+    def test_basis_is_none_without_any_profile(self):
+        CategoryImpactProfile.objects.all().delete()
+        self.assertIsNone(impact_basis(self.device))
+        self.assertIsNone(impact_basis(None))
+
+    def test_log_device_falls_back_to_the_guide_device(self):
+        guide = RepairGuide.objects.create(
+            device=self.device, author=self.user, title="G", slug="g",
+            summary="s", difficulty="Easy", time_required_minutes=5, published=True,
+        )
+        log = self.make_log(device=None, guide=guide)
+        self.assertEqual(log_device(log), self.device)
+        self.assertIsNone(log_device(self.make_log(device=None)))
+
+
+class FormattingTests(TestCase):
+    def test_rupiah_is_written_in_full_with_dots(self):
+        self.assertEqual(rupiah(210_000), "Rp 210.000")
+        self.assertEqual(rupiah(0), "Rp 0")
+        self.assertEqual(rupiah(None), "Rp 0")
+
+    def test_short_rupiah_switches_to_juta_and_miliar(self):
+        self.assertEqual(rupiah_short(210_000), "Rp 210.000")
+        self.assertEqual(rupiah_short(2_100_000), "Rp 2,1 juta")
+        self.assertEqual(rupiah_short(3_500_000), "Rp 3,5 juta")
+        self.assertEqual(rupiah_short(2_000_000), "Rp 2 juta")
+        self.assertEqual(rupiah_short(1_250_000_000), "Rp 1,3 miliar")
+
+    def test_kg_uses_comma_and_drops_trailing_zeros(self):
+        self.assertEqual(kg(Decimal("0.20")), "0,2 kg")
+        self.assertEqual(kg(Decimal("0.25")), "0,25 kg")
+        self.assertEqual(kg(Decimal(12)), "12 kg")
+        self.assertEqual(kg(0), "0 kg")
+
+    def test_short_date_uses_indonesian_month_abbreviation(self):
+        self.assertEqual(short_date(date(2026, 9, 20)), "20 Sep 2026")
+        self.assertEqual(short_date(date(2026, 8, 3)), "3 Agu 2026")
+        self.assertEqual(short_date(None), "")
+
+
+class SeedCommandTests(TestCase):
     def test_seed_creates_profiles_for_root_categories_only(self):
         root = DeviceCategory.objects.create(name="Mac Laptop")
         DeviceCategory.objects.create(name="MacBook Air", parent=root)
