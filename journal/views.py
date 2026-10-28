@@ -232,9 +232,9 @@ def journal_delete(request, pk):
     log = get_object_or_404(logs_for(request.user), pk=pk)
     if request.method == "POST":
         log.delete()
-        messages.success(request, "Catatan perbaikan berhasil dihapus.")
+        messages.success(request, "Catatan dihapus.")
         return redirect("journal:list")
-    return render(request, "journal/delete.html", {"log": log})
+    return render(request, "journal/confirm_delete.html", {"log": log})
 
 
 @require_http_methods(["POST"])

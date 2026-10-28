@@ -1,3 +1,5 @@
+/* Form catat dan ubah perbaikan */
+
 .form-page { max-width: 640px; margin-inline: auto; }
 .form-page h1 { margin: 0 0 16px; font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.5px; }
 .form-page .alert { margin-bottom: 16px; }
@@ -38,3 +40,9 @@
   .form-actions { flex-direction: column-reverse; }
   .form-actions .btn { width: 100%; }
 }
+
+/* ---------- konfirmasi hapus ---------- */
+.form-page--narrow { max-width: 480px; padding: 24px; }
+.form-page--narrow:hover { border-color: var(--blue-200); }
+.form-page--narrow h1 { font-size: 24px; line-height: 32px; letter-spacing: -0.25px; }
+.confirm-text { margin: 0 0 8px; overflow-wrap: anywhere; }
