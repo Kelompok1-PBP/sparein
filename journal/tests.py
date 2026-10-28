@@ -1,8 +1,9 @@
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 from io import StringIO
 
 from django.contrib.auth import get_user_model
+from django.contrib.messages import get_messages
 from django.core.management import call_command
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -285,12 +286,10 @@ class CreateTests(ViewBase):
         )
         self.assertEqual(response.status_code, 400)
 
-    def test_finished_log_without_date_gets_today(self):
-        self.client.post(reverse("journal:create"), self.payload(repaired_at=""))
-        self.assertEqual(
-            RepairLog.objects.get(title="Ganti layar").repaired_at, date.today()
-        )
-
+    def test_date_is_required(self):
+        response = self.client.post(reverse("journal:create"), self.payload(repaired_at=""))
+        self.assertEqual(response.status_code, 400)
+        self.assertContains(response, "Tanggal perbaikan wajib diisi.", status_code=400)
     def test_guide_must_match_selected_device(self):
         other_device = Device.objects.create(name="iPad", category=self.iphone_cat)
         guide = RepairGuide.objects.create(
@@ -554,6 +553,155 @@ class DetailPageTests(ViewBase):
             reverse("journal:status", args=[log.pk]), {"status": Status.FAILED}
         ).json()
         self.assertIn("Tandai berhasil", data["impact_html"])
+
+
+class FormTests(ViewBase):
+    def guide(self, **kwargs):
+        data = {
+            "device": self.device,
+            "author": self.other,
+            "title": "Ganti baterai",
+            "slug": "ganti-baterai",
+            "summary": "s",
+            "difficulty": "Easy",
+            "time_required_minutes": 5,
+            "published": True,
+        }
+        data.update(kwargs)
+        return RepairGuide.objects.create(**data)
+
+    def post(self, **overrides):
+        return self.client.post(reverse("journal:create"), self.payload(**overrides))
+
+    def test_form_needs_a_guide_or_a_device(self):
+        response = self.post(device="", guide="")
+        self.assertEqual(response.status_code, 400)
+        self.assertContains(
+            response, "Isi panduan atau perangkat biar dampaknya bisa dihitung.",
+            status_code=400,
+        )
+
+    def test_a_guide_alone_is_enough(self):
+        response = self.post(device="", guide=self.guide().pk)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(RepairLog.objects.get(title="Ganti layar").impact.cost_avoided, 2_500_000)
+
+    def test_title_is_limited_to_120_characters(self):
+        self.assertEqual(self.post(title="a" * 121).status_code, 400)
+        response = self.post(title="a" * 121)
+        self.assertContains(response, "Judul maksimal 120 karakter.", status_code=400)
+        self.assertEqual(self.post(title="b" * 120).status_code, 302)
+
+    def test_notes_are_limited_to_2000_characters(self):
+        response = self.post(notes="x" * 2001)
+        self.assertContains(response, "Catatan maksimal 2000 karakter.", status_code=400)
+
+    def test_negative_cost_has_a_friendly_message(self):
+        response = self.post(cost_spent=-5)
+        self.assertContains(response, "Biaya tidak bisa minus.", status_code=400)
+
+    def test_cost_must_be_a_number(self):
+        response = self.post(cost_spent="abc")
+        self.assertContains(response, "Biaya harus berupa angka.", status_code=400)
+
+    def test_unknown_status_is_rejected(self):
+        response = self.post(status="hacked")
+        self.assertContains(response, "Pilih salah satu status.", status_code=400)
+
+    def test_succeeded_cannot_be_dated_in_the_future(self):
+        future = (date.today() + timedelta(days=3)).isoformat()
+        response = self.post(status=Status.SUCCEEDED, repaired_at=future)
+        self.assertContains(
+            response, "Tanggal perbaikan yang berhasil tidak bisa di masa depan.",
+            status_code=400,
+        )
+
+    def test_planned_repair_may_be_dated_in_the_future(self):
+        future = (date.today() + timedelta(days=3)).isoformat()
+        response = self.post(status=Status.PLANNED, repaired_at=future)
+        self.assertEqual(response.status_code, 302)
+
+    def test_error_banner_counts_the_problems(self):
+        response = self.post(title="", cost_spent=-1)
+        self.assertContains(response, "Ada 2 isian yang perlu dibenerin.", status_code=400)
+
+    def test_blank_form_defaults_to_today_and_planned(self):
+        response = self.client.get(reverse("journal:create"))
+        form = response.context["form"]
+        self.assertEqual(form.initial["repaired_at"], date.today())
+        self.assertContains(response, date.today().isoformat())
+
+    def test_form_shows_the_design_texts(self):
+        response = self.client.get(reverse("journal:create"))
+        self.assertContains(response, "Contoh: Ganti baterai HP adik.")
+        self.assertContains(response, "Terisi otomatis dari panduan.")
+        self.assertContains(response, "Kosongkan kalau tidak pakai panduan Sparein.")
+        self.assertContains(response, "Isi 0 kalau gratis.")
+        self.assertContains(response, "(opsional)")
+        self.assertContains(response, "Simpan catatan")
+
+    def test_status_is_rendered_as_four_cards(self):
+        response = self.client.get(reverse("journal:create"))
+        self.assertContains(response, 'class="status-card"', count=4)
+        for label in ("Direncanakan", "Sedang dikerjakan", "Berhasil", "Gagal"):
+            self.assertContains(response, label)
+
+    def test_guide_options_carry_their_device_id(self):
+        guide = self.guide()
+        response = self.client.get(reverse("journal:create"))
+        self.assertContains(response, f'data-device="{self.device.pk}"')
+        self.assertContains(response, f'value="{guide.pk}"')
+
+    def test_create_prefills_from_a_guide(self):
+        guide = self.guide()
+        response = self.client.get(reverse("journal:create"), {"guide": guide.slug})
+        form = response.context["form"]
+        self.assertEqual(form.initial["guide"], guide.pk)
+        self.assertEqual(form.initial["device"], self.device.pk)
+        self.assertEqual(form.initial["title"], "Perbaikan: Ganti baterai")
+        self.assertEqual(form.initial["status"], Status.IN_PROGRESS)
+        self.assertContains(response, "Dari panduan: Ganti baterai")
+
+    def test_long_guide_title_is_cut_to_fit_the_title_field(self):
+        guide = self.guide(title="x" * 200, slug="panjang")
+        response = self.client.get(reverse("journal:create"), {"guide": guide.slug})
+        self.assertLessEqual(len(response.context["form"].initial["title"]), 120)
+
+    def test_unknown_guide_slug_is_ignored(self):
+        response = self.client.get(reverse("journal:create"), {"guide": "tidak-ada"})
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Dari panduan")
+        self.assertNotIn("guide", response.context["form"].initial)
+
+    def test_draft_guide_of_someone_else_is_not_prefilled(self):
+        draft = self.guide(slug="draf", published=False)
+        response = self.client.get(reverse("journal:create"), {"guide": draft.slug})
+        self.assertNotContains(response, "Dari panduan")
+
+    def test_banner_survives_a_failed_submit(self):
+        guide = self.guide()
+        url = f'{reverse("journal:create")}?guide={guide.slug}'
+        response = self.client.post(url, self.payload(title=""))
+        self.assertEqual(response.status_code, 400)
+        self.assertContains(response, "Dari panduan: Ganti baterai", status_code=400)
+
+    def test_saving_a_succeeded_repair_celebrates_the_waste_avoided(self):
+        response = self.post()
+        message = next(str(m) for m in get_messages(response.wsgi_request))
+        self.assertEqual(
+            message, "Catatan tersimpan. Kamu baru saja menyelamatkan 0,2 kg limbah!"
+        )
+
+    def test_saving_a_planned_repair_has_a_plain_message(self):
+        response = self.post(status=Status.PLANNED)
+        message = next(str(m) for m in get_messages(response.wsgi_request))
+        self.assertEqual(message, "Catatan tersimpan.")
+
+    def test_edit_page_has_its_own_title_and_cancel_goes_to_detail(self):
+        log = self.make_log()
+        response = self.client.get(reverse("journal:edit", args=[log.pk]))
+        self.assertContains(response, "Ubah catatan")
+        self.assertContains(response, f'href="{reverse("journal:detail", args=[log.pk])}"')
 
 
 class UpdateTests(ViewBase):
