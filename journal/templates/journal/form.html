@@ -1,23 +1,63 @@
-{% extends 'journal/base.html' %}
-{% block title %}{% if editing %}Edit{% else %}Catat{% endif %} perbaikan · Sparein{% endblock %}
+{% extends 'journal/base.html' %}{% load static %}
+{% block title %}{% if editing %}Ubah catatan{% else %}Catat perbaikan{% endif %} · Sparein{% endblock %}
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'journal/detail.css' %}"><link rel="stylesheet" href="{% static 'journal/form.css' %}">{% endblock %}
 {% block journal_content %}
-  <a class="link" href="{% url 'journal:list' %}">← Semua catatan</a>
-  <section class="narrow">
-    <h1>{% if editing %}Edit{% else %}Catat{% endif %} perbaikan</h1>
-    <form class="journal-form" method="post" novalidate>
-      {% csrf_token %}
-      {% if form.non_field_errors %}<div class="alert alert--error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+<div class="form-page" data-journal-form>
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="{% url 'journal:list' %}">Jurnal</a>
+    <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+    <span aria-current="page">{% if editing %}Ubah{% else %}Catat{% endif %}</span>
+  </nav>
+  <h1>{% if editing %}Ubah catatan{% else %}Catat perbaikan{% endif %}</h1>
+
+  {% if from_guide %}
+    {% include 'partials/alert.html' with kind='info' message='Dari panduan: '|add:from_guide.title %}
+  {% endif %}
+  {% if form.errors %}
+    {% with count=form.errors|length|stringformat:"d" %}
+      {% include 'partials/alert.html' with kind='error' message='Ada '|add:count|add:' isian yang perlu dibenerin.' %}
+    {% endwith %}
+  {% endif %}
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="card form-card">
       {% for field in form %}
         <div class="field">
-          <label class="field__label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field }}
-          {% for error in field.errors %}<div class="field__msg field__msg--error"><span>{{ error }}</span></div>{% endfor %}
+          {% if field.name == 'status' %}
+            <span class="field__label" id="{{ field.id_for_label }}-label">{{ field.label }}</span>
+          {% else %}
+            <label class="field__label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="field__req" aria-hidden="true">*</span>{% else %}<span class="field__opt">(opsional)</span>{% endif %}</label>
+          {% endif %}
+
+          {% if field.name == 'guide' or field.name == 'device' %}
+            <input class="input select-filter" type="search" placeholder="Cari {% if field.name == 'guide' %}panduan{% else %}perangkat{% endif %}" aria-label="Cari {% if field.name == 'guide' %}panduan{% else %}perangkat{% endif %}" data-filter-for="{{ field.id_for_label }}" hidden>
+          {% endif %}
+
+          {% if field.name == 'cost_spent' %}
+            <div class="money"><span class="money__prefix" aria-hidden="true">Rp</span>{{ field }}</div>
+          {% else %}
+            {{ field }}
+          {% endif %}
+
+          {% if field.name == 'status' %}<p class="field__msg status-hint" data-succeeded-hint hidden>Dampak perbaikan ini akan dihitung setelah kamu simpan.</p>{% endif %}
+
+          {% if field.errors %}
+            <div class="field__msg field__msg--error" role="alert">
+              <img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="16" height="16">
+              <div>{% for error in field.errors %}<span>{{ error }}</span>{% endfor %}</div>
+            </div>
+          {% elif field.help_text %}
+            <p class="field__msg">{{ field.help_text }}</p>
+          {% endif %}
         </div>
       {% endfor %}
-      <div class="journal-actions">
-        <button class="btn btn--primary" type="submit">Simpan</button>
-        <a class="btn btn--ghost" href="{% url 'journal:list' %}">Batal</a>
-      </div>
-    </form>
-  </section>
+    </div>
+    <div class="form-actions">
+      <a class="btn btn--secondary" href="{% if editing %}{% url 'journal:detail' log.pk %}{% else %}{% url 'journal:list' %}{% endif %}">Batal</a>
+      <button class="btn btn--primary" type="submit">Simpan catatan</button>
+    </div>
+  </form>
+</div>
 {% endblock %}
+{% block extra_js %}<script src="{% static 'journal/form.js' %}" defer></script>{% endblock %}

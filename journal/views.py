@@ -7,7 +7,10 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.http import require_http_methods
+
+from guides.selectors import visible_guides
 
 from .formatting import kg, rupiah_short, short_date
 from .forms import RepairLogForm, StatusFilterForm
@@ -160,27 +163,58 @@ def journal_detail(request, pk):
     return render(request, "journal/detail.html", detail_context(log))
 
 
-def editor(request, log=None):
-    form = RepairLogForm(request.POST or None, instance=log, user=request.user)
+def saved_message(log):
+    text = "Catatan tersimpan."
+    impact = getattr(log, "impact", None)
+    if impact:
+        text += f" Kamu baru saja menyelamatkan {kg(impact.waste_avoided_kg)} limbah!"
+    return text
+
+
+def editor(request, log=None, initial=None, from_guide=None):
+    form = RepairLogForm(
+        request.POST or None, instance=log, user=request.user, initial=initial
+    )
     if request.method == "POST" and form.is_valid():
         obj = form.save(commit=False)
         obj.user = request.user
         obj.save()
-        messages.success(request, "Catatan perbaikan berhasil disimpan.")
+        messages.success(request, saved_message(obj))
         return redirect("journal:detail", pk=obj.pk)
     return render(
         request,
         "journal/form.html",
-        {"form": form, "editing": log is not None},
+        {
+            "form": form,
+            "editing": log is not None,
+            "log": log,
+            "from_guide": from_guide,
+        },
         status=400 if request.method == "POST" else 200,
     )
+
+
+def guide_from_query(request):
+    slug = request.GET.get("guide", "")
+    if not slug:
+        return None
+    return visible_guides(request.user).filter(slug=slug).select_related("device").first()
 
 
 @require_http_methods(["GET", "POST"])
 def journal_create(request):
     if not can_use_journal(request.user):
         return denied(request)
-    return editor(request)
+    guide = guide_from_query(request)
+    initial = {"repaired_at": timezone.localdate()}
+    if guide:
+        initial.update(
+            guide=guide.pk,
+            device=guide.device_id,
+            title=f"Perbaikan: {guide.title}"[:120],
+            status=Status.IN_PROGRESS,
+        )
+    return editor(request, initial=initial, from_guide=guide)
 
 
 @require_http_methods(["GET", "POST"])

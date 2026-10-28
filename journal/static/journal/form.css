@@ -1,0 +1,40 @@
+.form-page { max-width: 640px; margin-inline: auto; }
+.form-page h1 { margin: 0 0 16px; font-size: 32px; line-height: 40px; font-weight: 700; letter-spacing: -0.5px; }
+.form-page .alert { margin-bottom: 16px; }
+
+.form-card { display: grid; gap: 20px; padding: 24px; }
+.form-card:hover { border-color: var(--blue-200); }
+.field__opt { margin-left: 4px; font-weight: 400; color: var(--muted); }
+.field__msg--error { display: flex; align-items: flex-start; gap: 8px; color: var(--danger); }
+.field__msg--error img { flex: none; margin-top: 2px; }
+.field__msg--error span + span { margin-left: 8px; }
+.status-hint { color: var(--j-success-text); }
+.status-hint[hidden] { display: none; }
+.form-card textarea.input { height: auto; min-height: 112px; padding: 10px 12px; resize: vertical; }
+
+/* ---------- status sebagai kartu ---------- */
+.status-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.status-card { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 72px; padding: 12px 8px; border: 1px solid var(--blue-200); border-radius: 14px; background: var(--white); text-align: center; cursor: pointer; }
+.status-card:hover { border-color: var(--blue-400); }
+.status-card:has(input:checked) { border-color: var(--blue-500); background: var(--blue-50); }
+.status-card:has(input:focus-visible) { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.status-card input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; inset: 0; cursor: pointer; }
+.status-card__label { font-size: 14px; line-height: 20px; font-weight: 600; }
+
+/* ---------- biaya ---------- */
+.money { display: flex; align-items: stretch; }
+.money__prefix { display: inline-flex; align-items: center; padding: 0 12px; border: 1px solid var(--blue-200); border-right: 0; border-radius: 10px 0 0 10px; background: var(--blue-50); font-size: 16px; color: var(--muted); }
+.money .input { border-radius: 0 10px 10px 0; }
+
+.select-filter { margin-bottom: 0; }
+.select-filter[hidden] { display: none; }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+@media (max-width: 720px) {
+  .form-page h1 { font-size: 28px; line-height: 36px; }
+  .form-card { padding: 16px; }
+  .status-cards { grid-template-columns: repeat(2, 1fr); }
+  .form-actions { flex-direction: column-reverse; }
+  .form-actions .btn { width: 100%; }
+}
