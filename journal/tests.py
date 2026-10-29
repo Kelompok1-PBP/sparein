@@ -648,6 +648,13 @@ class FormTests(ViewBase):
         self.assertContains(response, 'id="id_guide"')
         self.assertContains(response, 'id="id_device"')
 
+    def test_device_select_offers_every_device(self):
+        for i in range(30):
+            Device.objects.create(name=f"Perangkat uji {i}", category=self.iphone_cat)
+        response = self.client.get(reverse("journal:create"))
+        self.assertContains(response, "Perangkat uji 0")
+        self.assertContains(response, "Perangkat uji 29")
+
     def test_status_is_rendered_as_four_cards(self):
         response = self.client.get(reverse("journal:create"))
         self.assertContains(response, 'class="status-card"', count=4)
