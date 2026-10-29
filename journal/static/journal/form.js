@@ -12,6 +12,20 @@
 
     if (!input || !list || !select) return;
 
+    list.tabIndex = -1;
+
+    var items = []; 
+    var active = -1; 
+
+    function setActive(index) {
+      if (items[active]) items[active].classList.remove("autocomplete__option--active");
+      active = Math.max(0, Math.min(index, items.length - 1));
+      if (items[active]) {
+        items[active].classList.add("autocomplete__option--active");
+        items[active].scrollIntoView({ block: "nearest" });
+      }
+    }
+
     function getOptions() {
       return Array.prototype.filter.call(select.options, function (option) {
         return option.value !== "";
@@ -23,20 +37,31 @@
       input.value = selected && selected.value ? selected.text : "";
     }
 
-    function openList() {
-      var query = input.value.trim().toLowerCase();
+    function openList(filterByText) {
+      var query = filterByText === true ? input.value.trim().toLowerCase() : "";
       var options = getOptions().filter(function (option) {
         return option.text.toLowerCase().indexOf(query) !== -1;
       });
+      var selectedItem = null;
 
+      items = [];
+      active = -1;
       list.replaceChildren();
 
-      options.slice(0, 8).forEach(function (option) {
+      options.forEach(function (option) {
         var item = document.createElement("button");
         item.type = "button";
         item.className = "autocomplete__option";
         item.textContent = option.text;
         item.setAttribute("role", "option");
+        item.tabIndex = -1; 
+
+        var isSelected = option.value === select.value;
+        item.setAttribute("aria-selected", String(isSelected));
+        if (isSelected) {
+          item.classList.add("autocomplete__option--selected");
+          selectedItem = item;
+        }
 
         item.addEventListener("click", function () {
           select.value = option.value;
@@ -46,6 +71,7 @@
         });
 
         list.appendChild(item);
+        items.push(item);
       });
 
       if (options.length === 0) {
@@ -57,6 +83,7 @@
 
       list.hidden = false;
       input.setAttribute("aria-expanded", "true");
+      if (selectedItem) selectedItem.scrollIntoView({ block: "nearest" });
     }
 
     function closeList() {
@@ -71,12 +98,35 @@
 
     widget.closeAutocomplete = closeList;
 
-    input.addEventListener("input", openList);
-    input.addEventListener("click", openList); 
+    input.addEventListener("input", function () {
+      openList(true);
+    });
+    input.addEventListener("click", function () {
+      if (list.hidden) openList(false);
+    });
+
+    list.addEventListener("mousedown", function (event) {
+      event.preventDefault();
+    });
 
     input.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") closeList();
-      if (event.key === "ArrowDown" && list.hidden) openList();
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeList();
+      } else if (event.key === "ArrowDown") {
+        event.preventDefault();
+        if (list.hidden) openList(false);
+        else setActive(active + 1);
+      } else if (event.key === "ArrowUp" && !list.hidden) {
+        event.preventDefault();
+        setActive(active - 1);
+      } else if (event.key === "Enter" && !list.hidden) {
+        var target = items[active] || (items.length === 1 ? items[0] : null);
+        if (target) {
+          event.preventDefault();
+          target.click();
+        }
+      }
     });
 
     widget.addEventListener("focusout", function (event) {
@@ -98,7 +148,7 @@
     true
   );
 
-  // panduan mengisi perangkat
+  // panduan mengisi perangkat 
   var guide = document.getElementById("id_guide");
   var device = document.getElementById("id_device");
   if (guide && device) {
