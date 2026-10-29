@@ -633,12 +633,20 @@ class FormTests(ViewBase):
 
     def test_form_shows_the_design_texts(self):
         response = self.client.get(reverse("journal:create"))
-        self.assertContains(response, "Contoh: Ganti baterai HP adik.")
+        self.assertContains(response, "Contoh: Mengganti LCD HP Marsya yang rusak.")
         self.assertContains(response, "Terisi otomatis dari panduan.")
         self.assertContains(response, "Kosongkan kalau tidak pakai panduan Sparein.")
         self.assertContains(response, "Isi 0 kalau gratis.")
         self.assertContains(response, "(opsional)")
         self.assertContains(response, "Simpan catatan")
+
+    def test_guide_and_device_use_the_autocomplete_widget(self):
+        response = self.client.get(reverse("journal:create"))
+        self.assertContains(response, "data-autocomplete-input", count=2)
+        self.assertContains(response, 'id="id_guide_search"')
+        self.assertContains(response, 'for="id_device_search"')
+        self.assertContains(response, 'id="id_guide"')
+        self.assertContains(response, 'id="id_device"')
 
     def test_status_is_rendered_as_four_cards(self):
         response = self.client.get(reverse("journal:create"))
