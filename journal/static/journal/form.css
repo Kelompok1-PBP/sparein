@@ -26,8 +26,14 @@
 .money__prefix { display: inline-flex; align-items: center; padding: 0 12px; border: 1px solid var(--blue-200); border-right: 0; border-radius: 10px 0 0 10px; background: var(--blue-50); font-size: 16px; color: var(--muted); }
 .money .input { border-radius: 0 10px 10px 0; }
 
-.select-filter { margin-bottom: 0; }
-.select-filter[hidden] { display: none; }
+/* autocomplete untuk panduan dan perangkat */
+.autocomplete { position: relative; }
+.autocomplete__input { width: 100%; }
+.autocomplete__list { position: absolute; z-index: 20; top: calc(100% + 4px); left: 0; right: 0; max-height: 240px; overflow-y: auto; padding: 6px; border: 1px solid var(--blue-200); border-radius: 10px; background: var(--white); box-shadow: 0 8px 20px rgb(0 0 0 / 10%); }
+.autocomplete__list[hidden] { display: none; }
+.autocomplete__option { display: block; width: 100%; padding: 10px 12px; border: 0; border-radius: 6px; background: transparent; color: var(--text, #171717); font: inherit; text-align: left; cursor: pointer; }
+.autocomplete__option:hover, .autocomplete__option:focus-visible { background: var(--blue-50); outline: none; }
+.autocomplete__empty { margin: 0; padding: 12px; color: var(--muted); font-size: 14px; }
 
 .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
 

@@ -30,7 +30,18 @@
 
     {% include 'journal/_stat_tiles.html' with tiles=tiles scope='me' %}
 
-    <p class="j-how"><button type="button" class="j-how__button" aria-expanded="false" aria-controls="impact-info" data-how>Gimana dampak dihitung?</button></p>
+    <p class="j-how">
+      <button
+        type="button"
+        class="j-how__button"
+        aria-expanded="false"
+        aria-controls="impact-info"
+        data-how
+      >
+        Gimana dampak dihitung?
+      </button>
+    </p>
+
     <div class="alert alert--info" id="impact-info" hidden>
       <img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20">
       <p>Dampak dihitung otomatis setiap catatan berstatus Berhasil. Berat limbah dan harga ganti baru diambil dari rata-rata kategori perangkatnya, lalu biaya perbaikanmu dikurangkan dari harga ganti baru untuk mendapat biaya yang dihemat.</p>

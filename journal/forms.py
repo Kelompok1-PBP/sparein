@@ -61,7 +61,7 @@ class RepairLogForm(forms.ModelForm):
             "notes": "Catatan",
         }
         help_texts = {
-            "title": "Contoh: Ganti baterai HP adik.",
+            "title": "Contoh: Mengganti LCD HP Marsya yang rusak.",
             "guide": "Kosongkan kalau tidak pakai panduan Sparein.",
             "device": "Terisi otomatis dari panduan.",
             "cost_spent": "Total beli suku cadang dan alat. Isi 0 kalau gratis.",

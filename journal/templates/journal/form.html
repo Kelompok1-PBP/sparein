@@ -27,14 +27,30 @@
           {% if field.name == 'status' %}
             <span class="field__label" id="{{ field.id_for_label }}-label">{{ field.label }}</span>
           {% else %}
-            <label class="field__label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="field__req" aria-hidden="true">*</span>{% else %}<span class="field__opt">(opsional)</span>{% endif %}</label>
+            <label class="field__label" for="{{ field.id_for_label }}{% if field.name == 'guide' or field.name == 'device' %}_search{% endif %}">{{ field.label }}{% if field.field.required %}<span class="field__req" aria-hidden="true">*</span>{% else %}<span class="field__opt">(opsional)</span>{% endif %}</label>
           {% endif %}
 
           {% if field.name == 'guide' or field.name == 'device' %}
-            <input class="input select-filter" type="search" placeholder="Cari {% if field.name == 'guide' %}panduan{% else %}perangkat{% endif %}" aria-label="Cari {% if field.name == 'guide' %}panduan{% else %}perangkat{% endif %}" data-filter-for="{{ field.id_for_label }}" hidden>
-          {% endif %}
-
-          {% if field.name == 'cost_spent' %}
+            <div class="autocomplete" data-autocomplete>
+              <input
+                class="input autocomplete__input"
+                id="{{ field.id_for_label }}_search"
+                type="search"
+                placeholder="Cari {% if field.name == 'guide' %}panduan{% else %}perangkat{% endif %}"
+                aria-label="Cari {% if field.name == 'guide' %}panduan{% else %}perangkat{% endif %}"
+                aria-expanded="false"
+                autocomplete="off"
+                data-autocomplete-input
+              >
+              <div
+                class="autocomplete__list"
+                role="listbox"
+                hidden
+                data-autocomplete-list
+              ></div>
+            </div>
+            <div hidden>{{ field }}</div>
+          {% elif field.name == 'cost_spent' %}
             <div class="money"><span class="money__prefix" aria-hidden="true">Rp</span>{{ field }}</div>
           {% else %}
             {{ field }}
