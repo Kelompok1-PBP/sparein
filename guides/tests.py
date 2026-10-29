@@ -2,7 +2,9 @@ from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.db import connection
 from django.test import Client, TestCase
+from django.test.utils import CaptureQueriesContext
 from requests import Timeout
 
 from core.models import UserProfile
@@ -65,6 +67,25 @@ class GuideTests(TestCase):
         self.assertNotContains(response, "PRIVATE STEP TEXT")
         self.assertNotIn("detail", response.json()["results"][0]["steps"][0])
         self.assertContains(response, "PUBLIC WARNING")
+
+    def test_visitor_queries_exclude_step_detail(self):
+        for url in ("/guides/test-repair/", "/api/guides/"):
+            with self.subTest(url=url):
+                with CaptureQueriesContext(connection) as queries:
+                    response = self.client.get(url)
+                self.assertEqual(response.status_code, 200)
+                step_queries = [
+                    query["sql"]
+                    for query in queries.captured_queries
+                    if GuideStep._meta.db_table in query["sql"]
+                    and query["sql"].lstrip().upper().startswith("SELECT")
+                ]
+                # Require a real step read so an empty response cannot pass.
+                self.assertTrue(step_queries, "Expected a query for guide steps")
+                for sql in step_queries:
+                    projection = sql.upper().split(" FROM ", 1)[0]
+                    self.assertNotIn('"DETAIL"', projection, sql)
+                    self.assertNotIn("*", projection, sql)
 
     def test_member_reads_but_cannot_write(self):
         self.client.force_login(self.other)
