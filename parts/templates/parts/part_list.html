@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static parts_tags %}
 {% block title %}Suku Cadang · Sparein{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'parts/parts.css' %}">{% endblock %}
 {% block content %}
@@ -15,7 +15,7 @@
 {% include "partials/alert.html" with kind="info" message="Sparein tidak menjual barang. Kami cuma menunjukkan toko yang menjual." %}
 
 <div class="parts-layout">
-  <form class="card parts-filter" method="get" id="part-filter" aria-label="Filter suku cadang">
+  <form class="card parts-filter" method="get" id="part-filter" aria-label="Filter suku cadang" data-api="{% url 'parts:api' %}">
     <div class="field">
       <label class="field__label" for="f-q">Cari</label>
       <input class="input" type="search" id="f-q" name="q" value="{{ filters.q }}" placeholder="Nama atau nomor part">
@@ -38,6 +38,10 @@
       <div class="field">
         <label class="field__label" for="f-max-price">Harga maksimal (Rp)</label>
         <input class="input" type="number" id="f-max-price" name="max_price" min="1" inputmode="numeric" placeholder="Contoh: 250000" value="{{ filters.max_price|default_if_none:'' }}">
+        {# dimunculin list.js, tanpa JS tombolnya ga bisa ngisi #}
+        <div class="parts-quick" role="group" aria-label="Pilihan cepat harga maksimal" data-quick-price hidden>
+          {% for price in quick_prices %}<button class="btn btn--secondary btn--sm" type="button" data-price="{{ price }}">{{ price|rupiah }}</button>{% endfor %}
+        </div>
       </div>
     {% endif %}
     <div class="parts-filter__actions">
@@ -48,18 +52,22 @@
 
   <section aria-label="Hasil pencarian suku cadang">
     <p class="parts-count" id="part-count" role="status" aria-live="polite">{{ parts|length }} suku cadang</p>
-    {% if parts %}
-      <div class="part-grid" id="part-results">
-        {% for part in parts %}{% include "parts/_part_card.html" %}{% endfor %}
-      </div>
-    {% else %}
-      {% url 'parts:list' as reset_url %}
-      {% if show_reset %}
-        {% include "partials/empty_state.html" with message=empty_message action_url=reset_url action_label="Reset filter" %}
+    {# isi div ini diganti list.js tiap filter berubah, data-* dipakai buat bikin kartunya #}
+    <div id="part-results" data-login="{% url 'login' %}" data-placeholder="{% static 'core/icons/package-muted.svg' %}" data-empty-icon="{% static 'core/icons/inbox-sky.svg' %}">
+      {% if parts %}
+        <div class="part-grid">
+          {% for part in parts %}{% include "parts/_part_card.html" %}{% endfor %}
+        </div>
       {% else %}
-        {% include "partials/empty_state.html" with message=empty_message %}
+        {% url 'parts:list' as reset_url %}
+        {% if show_reset %}
+          {% include "partials/empty_state.html" with message=empty_message action_url=reset_url action_label="Reset filter" %}
+        {% else %}
+          {% include "partials/empty_state.html" with message=empty_message %}
+        {% endif %}
       {% endif %}
-    {% endif %}
+    </div>
   </section>
 </div>
 {% endblock %}
+{% block extra_js %}<script src="{% static 'parts/list.js' %}" defer></script>{% endblock %}
