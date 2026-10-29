@@ -60,6 +60,7 @@
 .log-card__impact[hidden] { display: none; }
 
 /* menu kartu */
+.log-card:has(.log-menu[open]) { z-index: 10; }
 .log-menu { position: relative; }
 .log-menu > summary { list-style: none; }
 .log-menu > summary::-webkit-details-marker { display: none; }
