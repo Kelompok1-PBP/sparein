@@ -1,0 +1,8 @@
+<label class="status-card"{% if widget.attrs.id %} for="{{ widget.attrs.id }}"{% endif %}>
+    {% include "django/forms/widgets/input.html" %}{% if widget.icon %}
+    <img src="{{ widget.icon }}" alt="" width="20" height="20">
+    {% endif %}
+    <span class="status-card__label">
+        {{ widget.label }}
+    </span>
+</label>

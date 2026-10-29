@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Jurnal perbaikan · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'journal/journal.css' %}">{% endblock %}
+{% block content %}
+<div class="journal">
+  {% block journal_content %}{% endblock %}
+</div>
+{% endblock %}
