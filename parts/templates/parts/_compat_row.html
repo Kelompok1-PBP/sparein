@@ -1,0 +1,11 @@
+{# Satu baris perangkat di form. Parameter: row, number (kosong di <template>, diisi form.js) #}
+<div class="part-row">
+  <div class="part-row__head">
+    <h3 class="part-row__title">Perangkat <span data-row-number>{{ number }}</span></h3>
+    <label class="parts-check">{{ row.DELETE }}Hapus baris ini</label>
+  </div>
+  <div class="part-row__fields">
+    {% include "parts/_field.html" with field=row.device %}
+    {% include "parts/_field.html" with field=row.note %}
+  </div>
+</div>
