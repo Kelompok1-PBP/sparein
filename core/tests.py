@@ -323,9 +323,10 @@ class HomeData(TestCase):
         cls.macbook = Device.objects.create(name="MacBook Air", category=cls.laptop)
 
     def guide(self, title, device, **extra):
+        fields = {"difficulty": "Easy", "time_required_minutes": 10, **extra}
         return RepairGuide.objects.create(
-            title=title, slug=title.lower().replace(" ", "-"), summary="x", difficulty="Easy",
-            time_required_minutes=10, device=device, author=self.author, **extra)
+            title=title, slug=title.lower().replace(" ", "-"), summary="x",
+            device=device, author=self.author, **fields)
 
 
 class HomeSelectorTests(HomeData):
@@ -386,3 +387,17 @@ class HomePageTests(HomeData):
     def test_categories_section_hidden_without_devices(self):
         Device.objects.all().delete()
         self.assertNotContains(self.client.get(reverse("core:home")), "Jelajahi kategori")
+
+    def test_latest_guides_show_label_time_and_steps(self):
+        guide = self.guide("Ganti baterai", self.iphone, published=True, difficulty="Moderate")
+        GuideStep.objects.create(guide=guide, order=1, title="Buka", detail="x")
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, reverse("guides:detail", args=[guide.slug]))
+        self.assertContains(resp, "level--moderate")
+        self.assertContains(resp, ">Sedang<")
+        self.assertContains(resp, "10 menit")
+        self.assertContains(resp, "1 langkah")
+
+    def test_guides_section_hidden_without_published_guides(self):
+        self.guide("Draf", self.iphone)
+        self.assertNotContains(self.client.get(reverse("core:home")), "Panduan terbaru")

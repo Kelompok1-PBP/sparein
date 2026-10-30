@@ -90,5 +90,37 @@
     </div>
   </section>
   {% endif %}
+  {% if guides %}
+  <section class="band band--surface" aria-labelledby="guides-title">
+    <div class="container">
+      <div class="band__head">
+        <h2 class="band__title" id="guides-title">Panduan terbaru</h2>
+        <a class="band__more" href="{% url 'guides:list' %}">Lihat semua panduan</a>
+      </div>
+      <ul class="guide-cards">
+        {% for guide in guides %}
+          <li>
+            <a class="guide-card" href="{% url 'guides:detail' guide.slug %}">
+              <span class="guide-card__cover">
+                {% if guide.device.image_url %}
+                  <img class="guide-card__photo" src="{{ guide.device.image_url }}" alt="" loading="lazy">
+                {% else %}
+                  <img src="{% static 'core/icons/book-open-blue.svg' %}" alt="" width="40" height="40">
+                {% endif %}
+                <span class="level level--{{ guide.difficulty|slugify }}">{% if guide.difficulty == "Very easy" or guide.difficulty == "Easy" %}Mudah{% elif guide.difficulty == "Moderate" %}Sedang{% else %}Sulit{% endif %}</span>
+              </span>
+              <span class="guide-card__title">{{ guide.title }}</span>
+              <span class="guide-card__device">{{ guide.device.name }}</span>
+              <span class="guide-card__meta">
+                <span><img src="{% static 'core/icons/clock-muted.svg' %}" alt="" width="16" height="16">{{ guide.time_required_minutes }} menit</span>
+                <span><img src="{% static 'core/icons/list-checks-muted.svg' %}" alt="" width="16" height="16">{{ guide.step_total }} langkah</span>
+              </span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
 </div>
 {% endblock %}
