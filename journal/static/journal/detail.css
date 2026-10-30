@@ -1,0 +1,35 @@
+.crumbs { display: flex; align-items: center; gap: 4px; margin-bottom: 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.crumbs a { color: var(--muted); text-decoration: none; }
+.crumbs a:hover { color: var(--blue-700); text-decoration: underline; text-underline-offset: 2px; }
+.crumbs [aria-current="page"] { font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+
+.detail-title { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; min-width: 0; }
+.detail-title h1 { overflow-wrap: anywhere; }
+
+.btn--danger-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--danger); border-radius: 10px; background: var(--white); font: inherit; font-size: 16px; line-height: 26px; font-weight: 600; color: var(--danger); text-decoration: none; cursor: pointer; }
+.btn--danger-outline:hover { background: rgba(220, 38, 38, 0.06); }
+.btn--danger-outline:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+
+.detail-info:hover { border-color: var(--blue-200); }
+.detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 24px; margin: 0; }
+.detail-grid dt { font-size: 14px; line-height: 20px; color: var(--muted); }
+.detail-grid dd { margin: 2px 0 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.detail-notes { margin-top: 24px; }
+.detail-notes__label { margin: 0 0 8px; font-size: 14px; line-height: 20px; font-weight: 600; }
+.detail-notes .card:hover { border-color: var(--blue-200); }
+.detail-notes p { margin: 0; overflow-wrap: anywhere; }
+.muted { color: var(--muted); }
+
+.detail-impact { margin-top: 16px; }
+.impact-action { margin-top: 12px; }
+.impact-panel { padding: 16px; border: 1px solid var(--j-success-text); border-radius: 14px; background: rgba(22, 163, 74, 0.07); }
+.impact-panel__title { margin: 0 0 12px; font-size: 16px; line-height: 26px; font-weight: 600; }
+.impact-panel__tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.impact-panel__note { margin: 12px 0 0; font-size: 14px; line-height: 20px; color: var(--muted); }
+
+@media (max-width: 720px) {
+  .detail-grid, .impact-panel__tiles { grid-template-columns: 1fr; }
+  .j-actions { width: 100%; }
+  .j-actions .btn, .j-actions .btn--danger-outline { flex: 1; }
+}

@@ -1,0 +1,63 @@
+{% extends 'journal/base.html' %}{% load static %}
+{% block journal_content %}
+{% if visitor %}
+  <header class="j-head">
+    <div>
+      <h1>Jurnal Perbaikan</h1>
+      <p class="j-head__sub">Dampak nyata dari perbaikan yang dicatat komunitas Sparein.</p>
+    </div>
+  </header>
+  {% include 'journal/_stat_tiles.html' with tiles=tiles scope='site' %}
+  <section class="card j-cta">
+    <h2 class="card__title">Catat perbaikanmu sendiri</h2>
+    <p class="j-cta__text">Masuk untuk menyimpan riwayat perbaikan dan melihat berapa limbah elektronik yang kamu hindari.</p>
+    <div class="j-actions">
+      <a class="btn btn--primary" href="{% url 'login' %}?next={% url 'journal:list' %}">Masuk</a>
+      <a class="btn btn--secondary" href="{% url 'core:register' %}">Daftar</a>
+    </div>
+  </section>
+{% else %}
+  <div data-journal data-csrf="{{ csrf_token }}"
+       data-icon-success="{% static 'core/icons/circle-check-success.svg' %}"
+       data-icon-error="{% static 'core/icons/circle-alert-danger.svg' %}">
+    <header class="j-head">
+      <div>
+        <h1>Jurnal Perbaikan</h1>
+        <p class="j-head__sub">Catatan semua perbaikan yang kamu kerjakan.</p>
+      </div>
+      <a class="btn btn--primary j-head__action" href="{% url 'journal:create' %}"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="20" height="20">Tambah catatan</a>
+    </header>
+
+    {% include 'journal/_stat_tiles.html' with tiles=tiles scope='me' %}
+
+    <p class="j-how">
+      <button
+        type="button"
+        class="j-how__button"
+        aria-expanded="false"
+        aria-controls="impact-info"
+        data-how
+      >
+        Gimana dampak dihitung?
+      </button>
+    </p>
+
+    <div class="alert alert--info" id="impact-info" hidden>
+      <img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20">
+      <p>Dampak dihitung otomatis setiap catatan berstatus Berhasil. Berat limbah dan harga ganti baru diambil dari rata-rata kategori perangkatnya, lalu biaya perbaikanmu dikurangkan dari harga ganti baru untuk mendapat biaya yang dihemat.</p>
+    </div>
+
+    {% if total %}
+      <nav class="tabs" aria-label="Filter status" data-tabs>
+        {% for tab in tabs %}<a class="tab" href="{% if tab.value %}?status={{ tab.value }}{% else %}{% url 'journal:list' %}{% endif %}" data-tab="{{ tab.value }}" data-count-key="{{ tab.key }}"{% if tab.active %} aria-current="page"{% endif %}>{{ tab.label }} (<span data-tab-count>{{ tab.count }}</span>)</a>{% endfor %}
+      </nav>
+    {% endif %}
+
+    <p class="sr-only" role="status" aria-live="polite" data-live></p>
+    <div data-results>{% include 'journal/_list_results.html' %}</div>
+
+    <a class="fab" href="{% url 'journal:create' %}" aria-label="Tambah catatan"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="24" height="24"></a>
+  </div>
+{% endif %}
+{% endblock %}
+{% block extra_js %}{% if not visitor %}<script src="{% static 'journal/journal.js' %}" defer></script><script src="{% static 'journal/list.js' %}" defer></script>{% endif %}{% endblock %}
