@@ -25,6 +25,12 @@
 
 .parts-head p { margin: 0 0 16px; }
 
+.parts-head__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .parts-layout {
   display: grid;
   gap: 24px;

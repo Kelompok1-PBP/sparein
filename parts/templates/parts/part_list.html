@@ -9,7 +9,12 @@
     <p class="parts-muted">Cek suku cadang yang cocok dan toko yang menjualnya.</p>
   </div>
   {% if can_create %}
-    <a class="btn btn--primary" href="{% url 'parts:create' %}"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="20" height="20">Tambah suku cadang</a>
+    <div class="parts-head__actions">
+      {% if can_sync %}
+        <form method="post" action="{% url 'parts:sync' %}">{% csrf_token %}<button class="btn btn--secondary" type="submit">Sinkronkan data</button></form>
+      {% endif %}
+      <a class="btn btn--primary" href="{% url 'parts:create' %}"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="20" height="20">Tambah suku cadang</a>
+    </div>
   {% endif %}
 </div>
 {% include "partials/alert.html" with kind="info" message="Sparein tidak menjual barang. Kami cuma menunjukkan toko yang menjual." %}

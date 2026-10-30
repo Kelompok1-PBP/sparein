@@ -12,6 +12,7 @@ from django.views.decorators.http import require_http_methods
 from core.permissions import is_admin, is_contributor, is_member
 from devices.selectors import get_device_qs
 from parts.forms import MAX_PRICE, CompatibilityFormSet, SourceFormSet, SparePartForm
+from parts.mock_api import SyncFailure, fetch_parts, upsert_parts
 from parts.models import PartCompatibility, SparePart
 from parts.selectors import (
     get_part_or_404,
@@ -93,6 +94,7 @@ def part_list(request):
         "empty_message": None if parts else _empty_message(filters, device),
         "show_reset": any(filters.values()),
         "can_create": is_contributor(request.user),
+        "can_sync": is_admin(request.user),
     })
 
 
@@ -227,3 +229,25 @@ def part_delete(request, slug):
         messages.success(request, "Suku cadang dihapus.")
         return redirect("parts:list")
     return render(request, "parts/part_confirm_delete.html", {"part": part})
+
+
+@require_http_methods(["POST"])
+def part_sync(request):
+    """Tombol sync buat admin, soalnya di PWS ga ada shell buat jalanin sync_parts."""
+    if not is_admin(request.user):
+        return _deny(request)
+    try:
+        counts = upsert_parts(fetch_parts())
+    except SyncFailure as exc:
+        if wants_json(request):
+            return JsonResponse({"error": str(exc)}, status=502)
+        messages.error(request, str(exc))
+        return redirect("parts:list")
+    if wants_json(request):
+        return JsonResponse(counts)
+    messages.success(
+        request,
+        f"Sinkronisasi selesai: {counts['parts']} suku cadang, {counts['sources']} toko, "
+        f"{counts['skipped']} dilewati.",
+    )
+    return redirect("parts:list")
