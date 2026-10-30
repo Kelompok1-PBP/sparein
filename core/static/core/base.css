@@ -121,6 +121,9 @@ img { max-width: 100%; }
 .btn--danger { background: var(--danger); color: var(--white); }
 .btn--danger:hover { background: #B91C1C; }
 
+.btn--danger-outline { border-color: var(--danger); background: var(--white); color: var(--danger); }
+.btn--danger-outline:hover { background: rgba(220, 38, 38, 0.1); }
+
 .btn:disabled,
 .btn[aria-busy="true"] {
   background: var(--blue-300);

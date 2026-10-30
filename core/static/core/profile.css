@@ -33,9 +33,6 @@
 .info-card__title { margin: 0 0 4px; font-size: 16px; line-height: 26px; }
 .info-card .btn img { margin-left: 8px; }
 
-.btn--danger-outline { border: 1px solid var(--danger); background: var(--white); color: var(--danger); }
-.btn--danger-outline:hover { background: rgba(220, 38, 38, 0.1); }
-
 @media (min-width: 768px) {
   .profile { max-width: none; }
   .profile__shortcuts { grid-template-columns: repeat(3, 1fr); }
