@@ -150,6 +150,13 @@ class DeviceUiTests(TestCase):
         resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
         self.assertNotContains(resp, "score__bar")
 
+    def test_form_uses_indonesian_labels_and_marks_optional_fields(self):
+        self.client.force_login(make_user("sari", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("devices:create"))
+        self.assertContains(resp, "Nama perangkat")
+        self.assertContains(resp, "(opsional)", count=5)
+        self.assertContains(resp, "Simpan perangkat")
+
     def test_form_shows_field_error(self):
         user = make_user("sari", UserProfile.Role.CONTRIBUTOR)
         self.client.force_login(user)
