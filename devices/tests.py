@@ -150,6 +150,20 @@ class DeviceUiTests(TestCase):
         resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
         self.assertNotContains(resp, "score__bar")
 
+    def test_delete_page_uses_confirm_dialog(self):
+        self.client.force_login(make_user("adm", UserProfile.Role.ADMIN))
+        resp = self.client.get(reverse("devices:delete", args=[self.device.slug]))
+        self.assertContains(resp, "confirm__icon")
+        self.assertContains(resp, 'Hapus &quot;iPhone 12&quot;?')
+        self.assertNotContains(resp, "masih dipakai")
+
+    def test_delete_page_explains_when_device_is_still_used(self):
+        admin = make_user("adm", UserProfile.Role.ADMIN)
+        self.client.force_login(admin)
+        with mock.patch.object(Device, "delete", side_effect=ProtectedError("x", set())):
+            resp = self.client.post(reverse("devices:delete", args=[self.device.slug]))
+        self.assertContains(resp, "masih dipakai")
+
     def test_form_uses_indonesian_labels_and_marks_optional_fields(self):
         self.client.force_login(make_user("sari", UserProfile.Role.CONTRIBUTOR))
         resp = self.client.get(reverse("devices:create"))
