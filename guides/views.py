@@ -2,6 +2,7 @@ from uuid import uuid4
 
 from django.contrib import messages
 from django.db import transaction
+from django.db.models import Count
 from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -9,6 +10,7 @@ from django.utils.text import slugify
 from django.views.decorators.http import require_http_methods
 
 from .forms import FilterForm, GuideForm, StepFormSet, WarningFormSet
+from .labels import difficulty_label, difficulty_tone, duration_label
 from .models import GuideStep
 from .permissions import can_create, can_delete, can_edit
 from .selectors import visible_guides
@@ -48,7 +50,7 @@ def guide_list(request):
         request,
         "guides/list.html",
         {
-            "guides": qs[:100],
+            "guides": qs.annotate(step_total=Count("steps"))[:100],
             "filters": filters,
             "can_create": can_create(request.user),
             "devices": GuideForm().fields["device"].queryset,
@@ -62,7 +64,7 @@ def guide_api(request):
     if filters.errors:
         return JsonResponse({"errors": filters.errors.get_json_data()}, status=400)
     items = []
-    for guide in qs.prefetch_related("warnings")[:100]:
+    for guide in qs.prefetch_related("warnings").annotate(step_total=Count("steps"))[:100]:
         data = {
             "id": guide.pk,
             "title": guide.title,
@@ -70,8 +72,13 @@ def guide_api(request):
             "summary": guide.summary,
             "device": guide.device_id,
             "device_name": str(guide.device),
+            "device_image_url": guide.device.image_url,
             "difficulty": guide.difficulty,
+            "difficulty_label": difficulty_label(guide.difficulty),
+            "difficulty_tone": difficulty_tone(guide.difficulty),
             "time_required_minutes": guide.time_required_minutes,
+            "duration_label": duration_label(guide.time_required_minutes),
+            "step_total": guide.step_total,
             "url": reverse("guides:detail", args=[guide.slug]),
             "warnings": list(guide.warnings.values("level", "message")),
         }

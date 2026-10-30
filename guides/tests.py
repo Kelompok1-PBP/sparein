@@ -9,6 +9,7 @@ from core.models import UserProfile
 from devices.models import Device, DeviceCategory
 
 from .ifixit import ImportFailure, fetch_guide, import_guide
+from .labels import difficulty_label, difficulty_tone, duration_label
 from .models import GuideStep, RepairGuide, SafetyWarning
 
 
@@ -217,3 +218,41 @@ class GuideTests(TestCase):
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(RepairGuide.objects.count(), 2)
+
+
+class LabelTests(TestCase):
+    def test_difficulty_labels_and_tones(self):
+        self.assertEqual(difficulty_label("Very easy"), "Sangat mudah")
+        self.assertEqual(difficulty_tone("Very difficult"), "hard")
+        self.assertEqual(difficulty_tone("Easy"), "easy")
+
+    def test_unknown_difficulty_falls_back(self):
+        self.assertEqual(difficulty_label("Aneh"), "Aneh")
+        self.assertEqual(difficulty_tone("Aneh"), "moderate")
+
+    def test_duration_label(self):
+        self.assertEqual(duration_label(45), "45 menit")
+        self.assertEqual(duration_label(60), "1 jam")
+        self.assertEqual(duration_label(75), "1 jam 15 menit")
+        self.assertEqual(duration_label(120), "2 jam")
+
+
+class ApiDisplayFieldsTests(TestCase):
+    def test_api_carries_display_fields_for_cards(self):
+        user = get_user_model().objects.create_user("penulis", password="x")
+        device = Device.objects.create(
+            name="iPhone 11",
+            category=DeviceCategory.objects.create(name="Phone"),
+            image_url="https://example.com/a.jpg",
+        )
+        guide = RepairGuide.objects.create(
+            title="Ganti baterai", slug="ganti-baterai", summary="x", difficulty="Moderate",
+            time_required_minutes=75, device=device, author=user, published=True,
+        )
+        GuideStep.objects.create(guide=guide, order=1, title="Buka", detail="x")
+        item = Client().get("/api/guides/").json()["results"][0]
+        self.assertEqual(item["difficulty_label"], "Sedang")
+        self.assertEqual(item["difficulty_tone"], "moderate")
+        self.assertEqual(item["duration_label"], "1 jam 15 menit")
+        self.assertEqual(item["step_total"], 1)
+        self.assertEqual(item["device_image_url"], "https://example.com/a.jpg")
