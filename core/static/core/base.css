@@ -477,6 +477,9 @@ img { max-width: 100%; }
   .site-main { padding: 32px 0 64px; }
 }
 
+/* halaman dengan section selebar layar (beranda) ngatur jaraknya sendiri */
+.site-main--flush { padding: 0; }
+
 /* default elemen polos buat halaman modul yang belum didesain (gampang ditimpa class) */
 :where(.site-main) h1 { margin: 0 0 16px; font-size: 32px; line-height: 40px; font-weight: 700; }
 :where(.site-main) h2 { margin: 0 0 12px; font-size: 24px; line-height: 32px; font-weight: 600; }
