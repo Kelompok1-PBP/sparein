@@ -1,5 +1,34 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>Sparein</h1>
-<p>Perbaiki dulu, buang belakangan.</p>
+{% extends "base.html" %}{% load static %}
+{% block title %}Sparein · Perbaiki dulu, buang belakangan{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'core/home/home.css' %}">{% endblock %}
+{% block main_class %} site-main--flush{% endblock %}
+{% block main %}
+<div class="home">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title" id="hero-title">Barangmu rusak? Coba perbaiki dulu.</h1>
+        <p class="hero__lead">Cari perangkatmu, cek gejalanya, lalu ikuti panduan langkah demi langkah.</p>
+      </div>
+      <picture class="hero__art">
+        <source media="(max-width: 1023px)" srcset="{% static 'core/home/hero-mobile.svg' %}">
+        <img src="{% static 'core/home/hero.svg' %}" width="680" height="460" alt="Gambar terurai sebuah ponsel dengan tiga contoh gejala: layar retak, baterai cepat habis, dan charger tidak masuk, masing-masing menunjuk komponen penyebabnya.">
+      </picture>
+      <div class="hero__search">
+        <form class="search" role="search" action="{% url 'devices:list' %}" method="get">
+          <span class="search__icon" aria-hidden="true"><img src="{% static 'core/icons/search-white.svg' %}" alt="" width="20" height="20"></span>
+          <label class="sr-only" for="hero-q">Cari perangkat</label>
+          <input class="search__input" id="hero-q" name="q" type="search" placeholder="Cari perangkat, misal iPhone 11 atau Oppo Reno 11" autocomplete="off">
+          <button class="btn btn--primary btn--sm" type="submit">Cari</button>
+        </form>
+        {% if popular %}
+          <p class="chips">
+            <span class="chips__label">Populer:</span>
+            {% for device in popular %}<a class="chip" href="{% url 'devices:detail' device.slug %}">{{ device.name }}</a>{% endfor %}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</div>
 {% endblock %}

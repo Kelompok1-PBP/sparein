@@ -311,7 +311,7 @@ class ProfilePageTests(TestCase):
         self.assertContains(self.client.get(reverse("core:home")), f'href="{self.url}"')
 
 
-class HomeSelectorTests(TestCase):
+class HomeData(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.author = User.objects.create_user("penulis", password="x")
@@ -327,6 +327,8 @@ class HomeSelectorTests(TestCase):
             title=title, slug=title.lower().replace(" ", "-"), summary="x", difficulty="Easy",
             time_required_minutes=10, device=device, author=self.author, **extra)
 
+
+class HomeSelectorTests(HomeData):
     def test_top_categories_skip_empty_and_sort_by_device_count(self):
         names = [c.name for c in top_categories()]
         self.assertEqual(names, ["Phone", "Laptop"])
@@ -352,3 +354,18 @@ class HomeSelectorTests(TestCase):
         self.guide("A", self.iphone, published=True)
         self.guide("B", self.iphone, published=True)
         self.assertEqual(list(popular_devices()), [self.iphone])
+
+
+class HomePageTests(HomeData):
+    def test_hero_has_title_and_search_to_device_catalog(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, "Barangmu rusak? Coba perbaiki dulu.")
+        self.assertContains(resp, f'action="{reverse("devices:list")}"')
+
+    def test_popular_chips_link_to_device_detail(self):
+        self.guide("A", self.iphone, published=True)
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, reverse("devices:detail", args=[self.iphone.slug]))
+
+    def test_popular_chips_hidden_without_published_guides(self):
+        self.assertNotContains(self.client.get(reverse("core:home")), "Populer:")

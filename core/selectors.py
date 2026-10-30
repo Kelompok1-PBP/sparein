@@ -7,7 +7,8 @@ from guides.selectors import get_guide_qs
 def top_categories(limit=8):
     """Kategori yang punya perangkat, paling banyak dulu. Buat kisi kategori di beranda."""
     return (
-        DeviceCategory.objects.annotate(total=Count("devices"))
+        DeviceCategory.objects.select_related("parent")
+        .annotate(total=Count("devices"))
         .filter(total__gt=0)
         .order_by("-total", "name")[:limit]
     )
