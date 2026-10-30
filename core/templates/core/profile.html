@@ -18,23 +18,32 @@
   <ul class="profile__shortcuts">
     <li>
       <a class="card shortcut" href="/journal/">
-        <img src="{% static 'core/icons/notebook-pen-muted.svg' %}" alt="" width="24" height="24">
-        <span class="shortcut__title">Jurnal Saya</span>
-        <span class="shortcut__text">Catatan perbaikanmu</span>
+        <span class="shortcut__icon" aria-hidden="true"><img src="{% static 'core/icons/notebook-pen-blue.svg' %}" alt="" width="20" height="20"></span>
+        <span class="shortcut__body">
+          <span class="shortcut__title">Jurnal Saya</span>
+          <span class="shortcut__text">{{ journal_total }} catatan</span>
+        </span>
+        <img class="shortcut__chevron" src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
       </a>
     </li>
     <li>
       <a class="card shortcut" href="/guides/saved/">
-        <img src="{% static 'core/icons/bookmark-muted.svg' %}" alt="" width="24" height="24">
-        <span class="shortcut__title">Panduan Tersimpan</span>
-        <span class="shortcut__text">Panduan yang kamu simpan</span>
+        <span class="shortcut__icon" aria-hidden="true"><img src="{% static 'core/icons/bookmark-blue.svg' %}" alt="" width="20" height="20"></span>
+        <span class="shortcut__body">
+          <span class="shortcut__title">Panduan Tersimpan</span>
+          <span class="shortcut__text">Panduan yang kamu simpan</span>
+        </span>
+        <img class="shortcut__chevron" src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
       </a>
     </li>
     <li>
       <a class="card shortcut" href="{% url 'diagnostics:history' %}">
-        <img src="{% static 'core/icons/stethoscope-muted.svg' %}" alt="" width="24" height="24">
-        <span class="shortcut__title">Riwayat Diagnosa</span>
-        <span class="shortcut__text">Hasil diagnosa yang kamu simpan</span>
+        <span class="shortcut__icon" aria-hidden="true"><img src="{% static 'core/icons/stethoscope-blue.svg' %}" alt="" width="20" height="20"></span>
+        <span class="shortcut__body">
+          <span class="shortcut__title">Riwayat Diagnosa</span>
+          <span class="shortcut__text">{{ session_total }} hasil</span>
+        </span>
+        <img class="shortcut__chevron" src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
       </a>
     </li>
   </ul>
@@ -57,7 +66,7 @@
   </section>
 
   <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-    <button type="submit" class="btn btn--sm btn--danger-outline">Keluar</button>
+    <button type="submit" class="btn btn--danger-outline"><img src="{% static 'core/icons/log-out-danger.svg' %}" alt="" width="20" height="20">Keluar</button>
   </form>
 </div>
 {% endblock %}

@@ -298,6 +298,14 @@ class ProfilePageTests(TestCase):
         self.assertContains(resp, "Kamu Admin")
         self.assertContains(resp, "Buka panel admin")
 
+    def test_shortcuts_show_personal_counts(self):
+        user = self.login("sari")
+        RepairLog.objects.create(user=user, status="planned")
+        RepairLog.objects.create(user=user, status="planned")
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "2 catatan")
+        self.assertContains(resp, "0 hasil")
+
     def test_superuser_counts_as_admin(self):
         self.login("root", superuser=True)
         self.assertContains(self.client.get(self.url), "Kamu Admin")

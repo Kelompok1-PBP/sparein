@@ -5,7 +5,8 @@ from django.shortcuts import redirect, render
 
 from core.permissions import is_admin, is_contributor
 from core.selectors import latest_guides, popular_devices, top_categories
-from journal.selectors import site_impact_totals
+from diagnostics.selectors import get_sessions_for_user
+from journal.selectors import logs_for, site_impact_totals
 
 # Kata kunci nama kategori (atau induknya) ke nama ikon di static/core/icons. Urutan penting.
 CATEGORY_ICONS = (
@@ -55,4 +56,8 @@ def register(request):
 @login_required
 def profile(request):
     role = "admin" if is_admin(request.user) else "contributor" if is_contributor(request.user) else "member"
-    return render(request, "core/profile.html", {"role": role})
+    return render(request, "core/profile.html", {
+        "role": role,
+        "journal_total": logs_for(request.user).count(),
+        "session_total": get_sessions_for_user(request.user).count(),
+    })
