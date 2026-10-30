@@ -575,3 +575,12 @@ class ApiTests(TestCase):
 
     def test_only_get_allowed(self):
         self.assertEqual(self.client.post(self.url).status_code, 405)
+
+
+class FormPolishTests(TestCase):
+    def test_create_form_has_breadcrumb_and_icon_delete_buttons(self):
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("parts:create"))
+        self.assertContains(resp, 'aria-label="Breadcrumb"')
+        self.assertContains(resp, "icon-button--danger")
+        self.assertNotContains(resp, "Hapus baris ini</label>")

@@ -1,1 +1,64 @@
-{% extends 'guides/base.html' %}{% load static %}{% block guide_content %}<div class="breadcrumb"><a href="{% url 'core:home' %}">Beranda</a><span>›</span><strong>Panduan</strong></div><section class="guide-heading"><div><h1>Panduan perbaikan</h1><p>Temukan solusi dan ikuti langkah perbaikan untuk perangkatmu.</p></div>{% if can_create %}<div class="heading-actions"><a class="button" href="{% url 'guides:create' %}">+ Tulis panduan</a><a class="button secondary" href="{% url 'guides:import' %}">Impor iFixit</a></div>{% endif %}</section><form id="filters" class="filters" method="get"><div><label for="device">Perangkat</label><select name="device" id="device"><option value="">Semua perangkat</option>{% for device in devices %}<option value="{{ device.pk }}" {% if filters.device.value == device.pk|stringformat:'s' %}selected{% endif %}>{{ device }}</option>{% endfor %}</select></div><div><label for="difficulty">Kesulitan</label><select name="difficulty" id="difficulty">{% for value,label in filters.fields.difficulty.choices %}<option value="{{ value }}" {% if filters.difficulty.value == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div><div><label for="max_time">Durasi maksimal (menit)</label><input id="max_time" name="max_time" type="number" min="1" placeholder="Contoh: 60" value="{{ filters.max_time.value|default_if_none:'' }}"></div><button>Terapkan filter</button></form>{{ filters.errors }}<p id="result-status" role="status" aria-live="polite">{{ guides|length }} panduan ditampilkan (maks. 100)</p><div id="guide-grid" class="grid">{% for guide in guides %}<article class="card guide-card"><div class="guide-cover">{% if guide.device.image_url %}<img src="{{ guide.device.image_url }}" alt="{{ guide.device.name }}" loading="lazy">{% else %}<span aria-hidden="true">↗</span><span>Panduan perangkat</span>{% endif %}</div><p class="eyebrow">{{ guide.device }}</p><h2><a href="{% url 'guides:detail' guide.slug %}">{{ guide.title }}</a></h2><p>{{ guide.summary|truncatechars:150 }}</p><div class="meta"><span class="badge">{{ guide.difficulty }}</span><span>{{ guide.time_required_minutes }} menit</span>{% if not guide.published %}<span>Draf</span>{% endif %}</div><a class="read-link" href="{% url 'guides:detail' guide.slug %}">Baca panduan →</a></article>{% empty %}<div class="empty">Belum ada panduan yang cocok. Coba ubah filter perangkat atau durasinya.</div>{% endfor %}</div>{% endblock %}{% block extra_js %}<script src="{% static 'guides/list.js' %}" defer></script>{% endblock %}
+{% extends "guides/base.html" %}
+{% load static guide_format %}
+{% block content %}
+<div class="guides-head">
+  <div>
+    <h1>Panduan Perbaikan</h1>
+    <p>Langkah demi langkah memperbaiki barangmu sendiri.</p>
+  </div>
+  {% if can_create %}
+    <div class="guides-head__actions">
+      <a class="btn btn--primary" href="{% url 'guides:create' %}"><img src="{% static 'core/icons/plus-white.svg' %}" alt="" width="20" height="20">Tulis panduan</a>
+      <a class="btn btn--secondary" href="{% url 'guides:import' %}">Impor iFixit</a>
+    </div>
+  {% endif %}
+</div>
+
+<div class="guides-layout">
+  <form id="filters" class="guide-filters card" method="get">
+    <div class="field">
+      <label class="field__label" for="device">Perangkat</label>
+      <select class="input" name="device" id="device">
+        <option value="">Semua perangkat</option>
+        {% for device in devices %}<option value="{{ device.pk }}"{% if filters.device.value == device.pk|stringformat:"s" %} selected{% endif %}>{{ device }}</option>{% endfor %}
+      </select>
+    </div>
+    <fieldset class="filter-group">
+      <legend>Tingkat kesulitan</legend>
+      {% for value, label in filters.fields.difficulty.choices %}
+        <label class="filter-option"><input type="radio" name="difficulty" value="{{ value }}"{% if filters.difficulty.value|default:"" == value %} checked{% endif %}>{% if value %}{{ value|difficulty_label }}{% else %}Semua{% endif %}</label>
+      {% endfor %}
+    </fieldset>
+    <fieldset class="filter-group">
+      <legend>Waktu maksimal</legend>
+      {% for value, label in time_choices %}
+        <label class="filter-option"><input type="radio" name="max_time" value="{{ value }}"{% if filters.max_time.value|default:"" == value %} checked{% endif %}>{{ label }}</label>
+      {% endfor %}
+    </fieldset>
+    <div class="guide-filters__actions">
+      <button class="btn btn--primary btn--sm" type="submit">Terapkan filter</button>
+      <a class="link" href="{% url 'guides:list' %}">Reset filter</a>
+    </div>
+  </form>
+
+  <section aria-label="Hasil pencarian">
+    <p class="guides-result__status" id="result-status" role="status" aria-live="polite">Menampilkan {{ guides|length }} panduan</p>
+    <ul class="filter-chips" id="filter-chips">
+      {% for chip in chips %}<li><a class="filter-chip" href="{{ chip.url }}">{{ chip.label }} <img src="{% static 'core/icons/x-muted.svg' %}" alt="Hapus filter" width="14" height="14"></a></li>{% endfor %}
+    </ul>
+    <ul class="guide-grid" id="guide-grid"
+        data-clock-icon="{% static 'core/icons/clock-muted.svg' %}"
+        data-steps-icon="{% static 'core/icons/list-checks-muted.svg' %}"
+        data-cover-icon="{% static 'core/icons/wrench-blue.svg' %}"
+        data-remove-icon="{% static 'core/icons/x-muted.svg' %}"
+        data-empty-icon="{% static 'core/icons/inbox-sky.svg' %}">
+      {% for guide in guides %}
+        {% include "guides/_card.html" %}
+      {% empty %}
+        <li class="guide-grid__empty">{% include "partials/empty_state.html" with message="Belum ada panduan yang cocok. Coba ubah filter perangkat atau durasinya." %}</li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'guides/list.js' %}" defer></script>{% endblock %}

@@ -4,8 +4,10 @@
 {% block extra_css %}<link rel="stylesheet" href="{% static 'diagnostics/diagnostics.css' %}">{% endblock %}
 {% block content %}
 <nav class="breadcrumb" aria-label="Breadcrumb">
-  <a href="{% url 'diagnostics:list' %}">Diagnosa</a> /
-  <a href="{% url 'diagnostics:list' %}?device={{ symptom.device.slug }}">{{ symptom.device.name }}</a> /
+  <a href="{% url 'diagnostics:list' %}">Diagnosa</a>
+  <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+  <a href="{% url 'diagnostics:list' %}?device={{ symptom.device.slug }}">{{ symptom.device.name }}</a>
+  <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
   <span aria-current="page">{{ symptom.title }}</span>
 </nav>
 

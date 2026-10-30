@@ -1,0 +1,17 @@
+{% load static %}{# Satu baris formset. Parameter: row, label ("Langkah" atau "Peringatan"), movable (boleh digeser atau tidak) #}
+<div class="form-row" data-row>
+  <div class="form-row__head">
+    <h3 class="form-row__title">{{ label }} <span data-number>{{ forloop.counter|default:1 }}</span></h3>
+    <div class="form-row__tools">
+      {% if movable %}
+        <button class="icon-button" type="button" data-move="up" aria-label="Naikkan" hidden><img src="{% static 'core/icons/chevron-down-muted.svg' %}" alt="" width="20" height="20" class="flip"></button>
+        <button class="icon-button" type="button" data-move="down" aria-label="Turunkan" hidden><img src="{% static 'core/icons/chevron-down-muted.svg' %}" alt="" width="20" height="20"></button>
+      {% endif %}
+      <label class="icon-button icon-button--danger" title="Hapus {{ label|lower }} ini">
+        {{ row.DELETE }}<img src="{% static 'core/icons/trash-danger.svg' %}" alt="" width="20" height="20"><span class="sr-only">Hapus {{ label|lower }} ini</span>
+      </label>
+    </div>
+  </div>
+  {% for hidden in row.hidden_fields %}{{ hidden }}{% endfor %}
+  {% for field in row.visible_fields %}{% if field.name != "DELETE" %}{% include "partials/model_field.html" %}{% endif %}{% endfor %}
+</div>

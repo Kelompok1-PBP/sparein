@@ -53,6 +53,18 @@ img { max-width: 100%; }
 
 .skip-link:focus { transform: none; outline: 2px solid var(--blue-400); outline-offset: 2px; }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ---------- lebar isi ---------- */
 .container {
   width: min(100% - 32px, 1120px);
@@ -108,6 +120,9 @@ img { max-width: 100%; }
 
 .btn--danger { background: var(--danger); color: var(--white); }
 .btn--danger:hover { background: #B91C1C; }
+
+.btn--danger-outline { border-color: var(--danger); background: var(--white); color: var(--danger); }
+.btn--danger-outline:hover { background: rgba(220, 38, 38, 0.1); }
 
 .btn:disabled,
 .btn[aria-busy="true"] {
@@ -166,6 +181,7 @@ img { max-width: 100%; }
 }
 
 .field__req { margin-left: 4px; color: var(--danger); }
+.field__opt { font-size: 14px; font-weight: 400; color: var(--muted); }
 .field__control { position: relative; }
 
 .input {
@@ -186,6 +202,7 @@ img { max-width: 100%; }
 .input:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
 .input[aria-invalid="true"] { border-color: var(--danger); }
 .input--password { padding-right: 48px; }
+textarea.input { height: auto; min-height: 96px; padding: 10px 12px; resize: vertical; }
 
 .field__toggle {
   position: absolute;
@@ -477,6 +494,9 @@ img { max-width: 100%; }
   .site-main { padding: 32px 0 64px; }
 }
 
+/* halaman dengan section selebar layar (beranda) ngatur jaraknya sendiri */
+.site-main--flush { padding: 0; }
+
 /* default elemen polos buat halaman modul yang belum didesain (gampang ditimpa class) */
 :where(.site-main) h1 { margin: 0 0 16px; font-size: 32px; line-height: 40px; font-weight: 700; }
 :where(.site-main) h2 { margin: 0 0 12px; font-size: 24px; line-height: 32px; font-weight: 600; }
@@ -552,6 +572,57 @@ img { max-width: 100%; }
   .status-page { margin-top: 64px; }
   .status-page__title { font-size: 32px; line-height: 40px; }
   .status-page__actions { flex-direction: row; justify-content: center; width: auto; }
+}
+
+/* ---------- tombol ikon (hapus, geser baris form) ---------- */
+.icon-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.icon-button[hidden] { display: none; }
+.icon-button:hover { background: var(--blue-100); }
+.icon-button--danger:hover { background: rgba(220, 38, 38, 0.1); }
+.icon-button:has(:focus-visible) { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.icon-button .flip { transform: rotate(180deg); }
+.icon-button input[type="checkbox"] { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+
+/* ---------- breadcrumb ---------- */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted);
+}
+
+.breadcrumb a { color: var(--muted); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb [aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+/* ---------- dialog konfirmasi hapus ---------- */
+.confirm { max-width: 480px; margin: 32px auto 0; padding: 32px; }
+.confirm:hover { border-color: var(--blue-200); }
+.confirm__icon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 16px; border-radius: 50%; background: rgba(220, 38, 38, 0.1); }
+.confirm h1 { margin: 0; font-size: 24px; line-height: 32px; }
+.confirm .alert { margin-top: 12px; }
+.confirm__text { margin: 12px 0 24px; color: var(--muted); }
+.confirm__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 639px) {
+  .confirm { padding: 24px; }
+  .confirm__actions { flex-direction: column-reverse; }
 }
 
 /* ---------- toast (dari Django messages) ---------- */

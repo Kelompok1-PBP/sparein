@@ -1,17 +1,18 @@
 from django import forms
 from django.forms import inlineformset_factory
 
+from core.forms import InputStyleMixin
 from devices.selectors import get_device_qs
 
 from .models import GuideStep, RepairGuide, SafetyWarning
 
 
-class GuideForm(forms.ModelForm):
+class GuideForm(InputStyleMixin, forms.ModelForm):
     class Meta:
         model = RepairGuide
         fields = [
-            "device",
             "title",
+            "device",
             "summary",
             "difficulty",
             "time_required_minutes",
@@ -22,13 +23,18 @@ class GuideForm(forms.ModelForm):
             "device": "Perangkat",
             "title": "Judul panduan",
             "summary": "Ringkasan",
-            "difficulty": "Kesulitan",
-            "time_required_minutes": "Durasi (menit)",
+            "difficulty": "Tingkat kesulitan",
+            "time_required_minutes": "Perkiraan waktu",
             "tools": "Alat yang dibutuhkan",
-            "published": "Terbitkan panduan",
+            "published": "Terbitkan sekarang",
+        }
+        help_texts = {
+            "title": "Mulai dengan kata kerja.",
+            "time_required_minutes": "Dalam menit.",
+            "tools": "Satu alat per baris.",
         }
         widgets = {
-            "summary": forms.Textarea(attrs={"rows": 3}),
+            "summary": forms.Textarea(attrs={"rows": 3, "placeholder": "Ceritakan singkat apa yang dikerjakan."}),
             "tools": forms.Textarea(attrs={"rows": 3}),
         }
 
@@ -37,27 +43,48 @@ class GuideForm(forms.ModelForm):
         self.fields["device"].queryset = get_device_qs()
 
 
+class StepForm(InputStyleMixin, forms.ModelForm):
+    class Meta:
+        model = GuideStep
+        fields = ["order", "title", "detail", "image_url"]
+        labels = {"title": "Judul langkah", "detail": "Penjelasan", "image_url": "URL gambar"}
+        widgets = {"order": forms.HiddenInput, "detail": forms.Textarea(attrs={"rows": 3})}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Baris baru tanpa JS tetap dapat urutan: nomor barisnya
+        index = (self.prefix or "").rsplit("-", 1)[-1]
+        if index.isdigit() and not self.instance.pk:
+            self.fields["order"].initial = int(index) + 1
+
+
+class WarningForm(InputStyleMixin, forms.ModelForm):
+    class Meta:
+        model = SafetyWarning
+        fields = ["level", "message"]
+        labels = {"level": "Level", "message": "Pesan"}
+        widgets = {"message": forms.Textarea(attrs={"rows": 3})}
+
+
 StepFormSet = inlineformset_factory(
     RepairGuide,
     GuideStep,
-    fields=["order", "title", "detail", "image_url"],
+    form=StepForm,
     extra=1,
     can_delete=True,
     min_num=1,
     validate_min=True,
     max_num=100,
     validate_max=True,
-    widgets={"detail": forms.Textarea(attrs={"rows": 3})},
 )
 WarningFormSet = inlineformset_factory(
     RepairGuide,
     SafetyWarning,
-    fields=["level", "message"],
+    form=WarningForm,
     extra=1,
     can_delete=True,
     max_num=50,
     validate_max=True,
-    widgets={"message": forms.Textarea(attrs={"rows": 2})},
 )
 
 
@@ -69,7 +96,7 @@ class FilterForm(forms.Form):
     max_time = forms.IntegerField(required=False, min_value=1)
 
 
-class ImportGuideForm(forms.Form):
+class ImportGuideForm(InputStyleMixin, forms.Form):
     guide_id = forms.IntegerField(min_value=1, label="ID panduan iFixit")
     device = forms.ModelChoiceField(queryset=None, label="Perangkat yang sesuai")
     minutes = forms.IntegerField(

@@ -1,0 +1,20 @@
+{% load static guide_format %}{# Kartu panduan. Parameter: guide. Markup-nya harus sama dengan yang dibuat list.js #}
+<li>
+  <a class="guide-card" href="{% url 'guides:detail' guide.slug %}">
+    <span class="guide-card__cover">
+      {% if guide.device.image_url %}
+        <img class="guide-card__photo" src="{{ guide.device.image_url }}" alt="" loading="lazy">
+      {% else %}
+        <img src="{% static 'core/icons/wrench-blue.svg' %}" alt="" width="40" height="40">
+      {% endif %}
+      <span class="difficulty difficulty--{{ guide.difficulty|difficulty_tone }}">{{ guide.difficulty|difficulty_label }}</span>
+      {% if not guide.published %}<span class="guide-card__draft">Draf</span>{% endif %}
+    </span>
+    <span class="guide-card__title">{{ guide.title }}</span>
+    <span class="guide-card__device">{{ guide.device.name }}</span>
+    <span class="guide-meta">
+      <span><img src="{% static 'core/icons/clock-muted.svg' %}" alt="" width="16" height="16">{{ guide.time_required_minutes|duration_label }}</span>
+      <span><img src="{% static 'core/icons/list-checks-muted.svg' %}" alt="" width="16" height="16">{{ guide.step_total }} langkah</span>
+    </span>
+  </a>
+</li>

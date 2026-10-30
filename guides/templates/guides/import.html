@@ -1,1 +1,22 @@
-{% extends 'guides/base.html' %}{% block guide_content %}<section class="narrow"><a href="{% url 'guides:list' %}">← Semua panduan</a><h1>Impor panduan iFixit</h1><p>Masukkan angka ID di ujung link panduan iFixit, lalu pilih perangkat yang benar-benar sesuai. Hasil impor disimpan sebagai draf untuk diperiksa, bukan langsung diterbitkan.</p><form method="post" class="card">{% csrf_token %}{{ form.as_p }}<button>Impor sebagai draf</button></form></section>{% endblock %}
+{% extends "guides/base.html" %}
+{% load static %}
+{% block title %}Impor panduan iFixit · Sparein{% endblock %}
+{% block content %}
+<div class="guide-form">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{% url 'guides:list' %}">Panduan</a>
+    <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+    <span aria-current="page">Impor iFixit</span>
+  </nav>
+  <h1>Impor panduan iFixit</h1>
+  <p class="guide-form__lead">Masukkan angka ID di ujung link panduan iFixit, lalu pilih perangkat yang benar-benar sesuai. Hasil impor disimpan sebagai draf untuk diperiksa, bukan langsung diterbitkan.</p>
+  <form method="post" class="card form-card" novalidate>{% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert--error" role="alert"><p>{{ form.non_field_errors|join:" " }}</p></div>{% endif %}
+    {% for field in form %}{% include "partials/model_field.html" %}{% endfor %}
+    <div class="guide-form__actions">
+      <a class="btn btn--secondary" href="{% url 'guides:list' %}">Batal</a>
+      <button type="submit" class="btn btn--primary">Impor sebagai draf</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

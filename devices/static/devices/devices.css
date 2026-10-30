@@ -62,44 +62,37 @@
 .device-card__brand { margin: 2px 0 0; padding: 0 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
 
 /* ---------- detail ---------- */
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 16px;
-  font-size: 14px;
-  color: var(--muted);
-}
-
 .detail { display: grid; gap: 24px; }
 
-.detail__img {
+.detail__img { padding: 12px; }
+.detail__img.card:hover { border-color: var(--blue-200); }
+
+.detail__photo {
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 4 / 3;
-  background: var(--surface);
+  border-radius: 10px;
+  background: var(--blue-50);
 }
 
-.detail__img.card:hover { border-color: var(--blue-200); }
-.detail__img img { max-width: 80%; max-height: 80%; object-fit: contain; }
-.detail__info h1 { margin: 0 0 16px; }
-.detail__summary { margin: 24px 0 0; }
+.detail__photo img { max-width: 80%; max-height: 80%; object-fit: contain; }
+.detail__info h1 { margin: 0 0 8px; }
+.detail__meta { margin: 0 0 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
+.detail__summary { margin: 0 0 16px; }
 .detail__actions { display: flex; gap: 12px; margin-top: 24px; }
 
-.facts { display: grid; gap: 12px; margin: 0; }
-.facts dt { font-size: 14px; color: var(--muted); }
-.facts dd { margin: 0; font-weight: 600; }
-
-.score { margin-top: 24px; }
-.score__label { margin: 0 0 8px; }
-.score__bar { height: 8px; border-radius: 999px; background: var(--blue-100); overflow: hidden; }
-.score__fill { height: 100%; background: var(--blue-500); }
+.score__label { margin: 0 0 8px; font-weight: 600; font-size: 14px; line-height: 20px; }
+.score__row { display: flex; align-items: center; gap: 12px; }
+.score__bar { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.score__seg { width: 20px; height: 8px; border-radius: 999px; background: var(--blue-100); }
+.score__seg.is-on { background: var(--warning); }
+.score__value { font-size: 14px; line-height: 20px; }
 
 /* ---------- form dan konfirmasi hapus ---------- */
+.form-breadcrumb { max-width: 720px; margin: 0 auto 8px; padding: 0 24px; }
 .form-page { max-width: 720px; margin: 0 auto; padding: 24px; }
 .form-page.card:hover { border-color: var(--blue-200); }
-.form-page--narrow { max-width: 480px; }
 .form-page h1 { margin: 0 0 24px; }
 
 .device-form { display: flex; flex-direction: column; gap: 16px; }
@@ -134,4 +127,3 @@
   .detail { grid-template-columns: 1fr 1fr; align-items: start; }
   .form-page { padding: 32px; }
 }
-.breadcrumb a { text-decoration: none; }

@@ -1,6 +1,7 @@
 /* Halaman Profil Saya */
 
 .profile { display: grid; gap: 24px; max-width: 720px; }
+.profile form { justify-self: start; }
 
 .profile__identity { display: flex; align-items: center; gap: 16px; }
 .profile__identity:hover { border-color: var(--blue-200); }
@@ -9,7 +10,10 @@
 .avatar--xl { width: 64px; height: 64px; font-size: 24px; }
 
 .profile__shortcuts { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-.shortcut { display: flex; flex-direction: column; gap: 4px; height: 100%; color: var(--ink); text-decoration: none; }
+.shortcut { display: flex; align-items: center; gap: 12px; height: 100%; padding: 12px 16px; color: var(--ink); text-decoration: none; }
+.shortcut__icon { display: grid; flex: none; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--blue-50); }
+.shortcut__body { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.shortcut__chevron { flex: none; }
 .shortcut:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
 .shortcut + .shortcut { margin-top: 0; }
 .shortcut__title { font-weight: 600; }
@@ -19,8 +23,9 @@
   display: flex;
   gap: 12px;
   padding: 16px;
+  border-left: 4px solid var(--blue-500);
   border-radius: 14px;
-  background: var(--blue-50);
+  background: var(--blue-100);
 }
 
 .info-card img { flex: none; }
@@ -28,9 +33,7 @@
 .info-card__title { margin: 0 0 4px; font-size: 16px; line-height: 26px; }
 .info-card .btn img { margin-left: 8px; }
 
-.btn--danger-outline { border: 1px solid var(--danger); background: var(--white); color: var(--danger); }
-.btn--danger-outline:hover { background: rgba(220, 38, 38, 0.1); }
-
 @media (min-width: 768px) {
+  .profile { max-width: none; }
   .profile__shortcuts { grid-template-columns: repeat(3, 1fr); }
 }
