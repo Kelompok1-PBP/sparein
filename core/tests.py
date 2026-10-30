@@ -8,6 +8,7 @@ from core.permissions import is_admin, is_contributor, is_member
 from core.selectors import latest_guides, popular_devices, top_categories
 from devices.models import Device, DeviceCategory
 from guides.models import GuideStep, RepairGuide
+from journal.models import ImpactEstimate, RepairLog
 
 
 class ProfileTests(TestCase):
@@ -401,3 +402,24 @@ class HomePageTests(HomeData):
     def test_guides_section_hidden_without_published_guides(self):
         self.guide("Draf", self.iphone)
         self.assertNotContains(self.client.get(reverse("core:home")), "Panduan terbaru")
+
+    def make_impact(self, waste, cost):
+        log = RepairLog.objects.create(user=self.author, device=self.iphone, status="succeeded")
+        ImpactEstimate.objects.update_or_create(
+            log=log, defaults={"waste_avoided_kg": waste, "cost_avoided": cost})
+
+    def test_impact_section_shows_site_totals(self):
+        self.make_impact("0.30", 2_000_000)
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, "Dampak nyata dari setiap perbaikan")
+        self.assertContains(resp, "0,3 kg")
+        self.assertContains(resp, "Rp 2 juta")
+
+    def test_impact_section_hidden_without_repairs(self):
+        self.assertNotContains(self.client.get(reverse("core:home")), "Dampak nyata")
+
+    def test_signup_cta_only_for_visitors(self):
+        url = reverse("core:home")
+        self.assertContains(self.client.get(url), "Mulai catatan perbaikanmu!")
+        self.client.force_login(self.author)
+        self.assertNotContains(self.client.get(url), "Mulai catatan perbaikanmu!")

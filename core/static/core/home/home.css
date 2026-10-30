@@ -328,3 +328,98 @@
 @media (min-width: 768px) {
   .guide-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* ---------- dampak ---------- */
+.impact {
+  padding: 40px 0;
+  background: var(--blue-900);
+  color: var(--white);
+}
+
+.impact__title {
+  margin: 0 0 8px;
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
+}
+
+.impact__lead {
+  margin: 0 0 32px;
+  text-align: center;
+  color: var(--blue-100);
+}
+
+.impact__stats {
+  display: grid;
+  gap: 24px;
+  margin: 0 0 24px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.stat__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--blue-100);
+}
+
+.stat__label img {
+  box-sizing: content-box;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--blue-800);
+}
+
+.stat__value {
+  margin: 0;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+}
+
+.impact__note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--blue-200);
+}
+
+@media (min-width: 768px) {
+  .impact { padding: 56px 0; }
+  .impact__stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* ---------- ajakan daftar ---------- */
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--blue-50);
+}
+
+.cta__title { margin: 0 0 4px; }
+.cta__text { margin: 0; color: var(--muted); }
+
+@media (min-width: 768px) {
+  .cta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px;
+  }
+}

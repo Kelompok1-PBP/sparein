@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load static %}
+{% extends "base.html" %}{% load static journal_format %}
 {% block title %}Sparein · Perbaiki dulu, buang belakangan{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'core/home/home.css' %}">{% endblock %}
 {% block main_class %} site-main--flush{% endblock %}
@@ -119,6 +119,43 @@
           </li>
         {% endfor %}
       </ul>
+    </div>
+  </section>
+  {% endif %}
+  {% if impact.repairs %}
+  <section class="impact" aria-labelledby="impact-title">
+    <div class="container">
+      <h2 class="impact__title" id="impact-title">Dampak nyata dari setiap perbaikan</h2>
+      <p class="impact__lead">Setiap perangkat yang diperbaiki membawa perubahan bagi lingkungan dan dompetmu.</p>
+      <dl class="impact__stats">
+        <div class="stat">
+          <dt class="stat__label"><img src="{% static 'core/icons/wrench-light.svg' %}" alt="" width="20" height="20">Perangkat terselamatkan</dt>
+          <dd class="stat__value">{{ impact.repairs }}</dd>
+        </div>
+        <div class="stat">
+          <dt class="stat__label"><img src="{% static 'core/icons/leaf-light.svg' %}" alt="" width="20" height="20">Limbah elektronik dihindari</dt>
+          <dd class="stat__value">{{ impact.waste_avoided_kg|kg }}</dd>
+        </div>
+        <div class="stat">
+          <dt class="stat__label"><img src="{% static 'core/icons/wallet-light.svg' %}" alt="" width="20" height="20">Potensi biaya penggantian dihemat</dt>
+          <dd class="stat__value">{{ impact.cost_avoided|rupiah_short }}</dd>
+        </div>
+      </dl>
+      <p class="impact__note">Dihitung dari catatan perbaikan yang berhasil. Berat limbah dan penghematan merupakan estimasi berdasarkan rata-rata per kategori.</p>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if not user.is_authenticated %}
+  <section class="band band--white" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta">
+        <div>
+          <h2 class="cta__title" id="cta-title">Mulai catatan perbaikanmu!</h2>
+          <p class="cta__text">Simpan riwayat perbaikanmu dan lihat berapa limbah dan biaya yang sudah kamu hemat.</p>
+        </div>
+        <a class="btn btn--primary" href="{% url 'core:register' %}">Daftar</a>
+      </div>
     </div>
   </section>
   {% endif %}
