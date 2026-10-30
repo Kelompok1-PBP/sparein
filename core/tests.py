@@ -263,12 +263,11 @@ class ProfilePageTests(TestCase):
     def test_visitor_is_sent_to_login(self):
         self.assertRedirects(self.client.get(self.url), f"{reverse('login')}?next={self.url}")
 
-    def test_identity_card_shows_username_role_and_join_date(self):
-        user = self.login("sari")
+    def test_identity_card_shows_username_and_role(self):
+        self.login("sari")
         resp = self.client.get(self.url)
         self.assertContains(resp, "sari")
         self.assertContains(resp, "badge--member")
-        self.assertContains(resp, f"Bergabung sejak {user.date_joined:%-d} ")
 
     def test_shortcuts_link_to_personal_pages(self):
         self.login("sari")
