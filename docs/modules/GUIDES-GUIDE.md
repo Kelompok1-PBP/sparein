@@ -9,7 +9,7 @@
 - **Konsumen:** `journal` merujuk `RepairGuide` melalui foreign key.
 - **Batas implementasi:** field `symptom` yang direncanakan dalam `MODULES.md` belum ada pada model/migrasi guides. Keberadaan app diagnostics tidak otomatis mengaktifkan relasi tersebut.
 
-Dokumen ini menjelaskan perilaku yang sudah diimplementasikan. Rencana umum antarmodul berada di [MODULES.md](MODULES.md).
+Dokumen ini menjelaskan perilaku yang sudah diimplementasikan. Rencana umum antarmodul berada di [MODULES.md](../MODULES.md).
 
 ## Publik dan internal
 
@@ -198,14 +198,14 @@ Jalankan `python manage.py migrate`. Jangan mengedit migrasi app lain. Field sym
 
 ## Menjalankan dan memverifikasi
 
-Ikuti [setup ringkas](../guides/README.md). Data `seed_devices` hanya mengisi perangkat, bukan panduan. Buat panduan melalui contributor/admin atau impor satu panduan, periksa sumber dan peringatannya sebelum menerbitkan.
+Ikuti [setup ringkas](../../guides/README.md). Data `seed_devices` hanya mengisi perangkat, bukan panduan. Buat panduan melalui contributor/admin atau impor satu panduan, periksa sumber dan peringatannya sebelum menerbitkan.
 
 ```sh
 python manage.py test guides
 python manage.py makemigrations --check --dry-run
 ```
 
-Sebelum PR ikuti checks dalam [CONTRIBUTING.md](../CONTRIBUTING.md). Tes guides mencakup CRUD, permission, draf/filter, CSRF, import rollback/duplikat/cache/timeout, serta larangan pengambilan kolom detail untuk pengunjung. Periksa manual warning tetap terlihat, AJAX filter, dan alur login sesuai kebutuhan; dokumentasi ini tidak menyatakan semua pengujian manual tersebut sudah dilakukan.
+Sebelum PR ikuti checks dalam [CONTRIBUTING.md](../../CONTRIBUTING.md). Tes guides mencakup CRUD, permission, draf/filter, CSRF, import rollback/duplikat/cache/timeout, serta larangan pengambilan kolom detail untuk pengunjung. Periksa manual warning tetap terlihat, AJAX filter, dan alur login sesuai kebutuhan; dokumentasi ini tidak menyatakan semua pengujian manual tersebut sudah dilakukan.
 
 ## Changelog dokumentasi
 

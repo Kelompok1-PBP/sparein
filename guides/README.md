@@ -2,7 +2,7 @@
 
 Modul panduan perbaikan: CRUD panduan, langkah, peringatan keselamatan, filter AJAX, API JSON, dan impor satu panduan iFixit sebagai draf.
 
-**Dokumentasi lengkap:** [docs/GUIDES-GUIDE.md](../docs/GUIDES-GUIDE.md), berisi owner/dependencies, kontrak fungsi dan endpoint, model/DTO, hak akses, error, transaksi, konfigurasi, migrasi, dan changelog.
+**Dokumentasi lengkap:** [docs/modules/GUIDES-GUIDE.md](../docs/modules/GUIDES-GUIDE.md), berisi owner/dependencies, kontrak fungsi dan endpoint, model/DTO, hak akses, error, transaksi, konfigurasi, migrasi, dan changelog.
 
 ## Menjalankan lokal
 
