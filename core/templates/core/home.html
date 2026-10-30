@@ -1,5 +1,166 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>Sparein</h1>
-<p>Perbaiki dulu, buang belakangan.</p>
+{% extends "base.html" %}{% load static journal_format guide_format %}
+{% block title %}Sparein · Perbaiki dulu, buang belakangan{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'core/home/home.css' %}">{% endblock %}
+{% block main_class %} site-main--flush{% endblock %}
+{% block main %}
+<div class="home">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title" id="hero-title">Barangmu rusak? <span class="hero__nowrap">Coba perbaiki dulu.</span></h1>
+        <p class="hero__lead">Cari perangkatmu, cek gejalanya, lalu ikuti panduan langkah demi langkah.</p>
+      </div>
+      <picture class="hero__art">
+        <source media="(max-width: 1023px)" srcset="{% static 'core/home/hero-mobile.svg' %}">
+        <img src="{% static 'core/home/hero.svg' %}" width="680" height="460" alt="Gambar terurai sebuah ponsel dengan tiga contoh gejala: layar retak, baterai cepat habis, dan charger tidak masuk, masing-masing menunjuk komponen penyebabnya.">
+      </picture>
+      <div class="hero__search">
+        <form class="search" role="search" action="{% url 'devices:list' %}" method="get">
+          <span class="search__icon" aria-hidden="true"><img src="{% static 'core/icons/search-white.svg' %}" alt="" width="20" height="20"></span>
+          <label class="sr-only" for="hero-q">Cari perangkat</label>
+          <input class="search__input" id="hero-q" name="q" type="search" placeholder="Cari perangkat, misal iPhone 11 atau Oppo Reno 11" autocomplete="off">
+          <button class="btn btn--primary btn--sm" type="submit">Cari</button>
+        </form>
+        {% if popular %}
+          <p class="chips">
+            <span class="chips__label">Populer:</span>
+            {% for device in popular %}<a class="chip" href="{% url 'devices:detail' device.slug %}">{{ device.name }}</a>{% endfor %}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--surface" aria-labelledby="steps-title">
+    <div class="container">
+      <h2 class="band__title" id="steps-title">Lima langkah sebelum buang barang</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__icon" aria-hidden="true"><img src="{% static 'core/icons/search-blue.svg' %}" alt="" width="20" height="20"></span>
+          <span class="step__num" aria-hidden="true">1</span>
+          <h3 class="step__title">Cari perangkat</h3>
+          <p class="step__text">Temukan model barangmu di katalog.</p>
+        </li>
+        <li class="step">
+          <span class="step__icon" aria-hidden="true"><img src="{% static 'core/icons/stethoscope-blue.svg' %}" alt="" width="20" height="20"></span>
+          <span class="step__num" aria-hidden="true">2</span>
+          <h3 class="step__title">Diagnosa gejala</h3>
+          <p class="step__text">Centang gejalanya, lihat kemungkinan masalahnya.</p>
+        </li>
+        <li class="step">
+          <span class="step__icon" aria-hidden="true"><img src="{% static 'core/icons/book-open-blue.svg' %}" alt="" width="20" height="20"></span>
+          <span class="step__num" aria-hidden="true">3</span>
+          <h3 class="step__title">Ikuti panduan</h3>
+          <p class="step__text">Langkah demi langkah, lengkap dengan peringatan keselamatan.</p>
+        </li>
+        <li class="step">
+          <span class="step__icon" aria-hidden="true"><img src="{% static 'core/icons/package-blue.svg' %}" alt="" width="20" height="20"></span>
+          <span class="step__num" aria-hidden="true">4</span>
+          <h3 class="step__title">Temukan suku cadang</h3>
+          <p class="step__text">Cek toko yang jual dan kisaran harganya.</p>
+        </li>
+        <li class="step">
+          <span class="step__icon" aria-hidden="true"><img src="{% static 'core/icons/notebook-pen-blue.svg' %}" alt="" width="20" height="20"></span>
+          <span class="step__num" aria-hidden="true">5</span>
+          <h3 class="step__title">Catat hasilnya</h3>
+          <p class="step__text">Lihat berapa limbah dan biaya yang kamu hemat.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  {% if categories %}
+  <section class="band band--white" aria-labelledby="categories-title">
+    <div class="container">
+      <div class="band__head">
+        <h2 class="band__title" id="categories-title">Jelajahi kategori</h2>
+        <a class="band__more" href="{% url 'devices:list' %}">Lihat semua perangkat</a>
+      </div>
+      <ul class="categories">
+        {% for category in categories %}
+          <li>
+            <a class="category" href="{% url 'devices:list' %}?category={{ category.slug }}">
+              <span class="category__icon" aria-hidden="true"><img src="{% static 'core/icons/' %}{{ category.icon }}-blue.svg" alt="" width="20" height="20"></span>
+              <span class="category__name">{{ category.name }}</span>
+              <span class="category__count">{{ category.total }} perangkat</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+  {% if guides %}
+  <section class="band band--surface" aria-labelledby="guides-title">
+    <div class="container">
+      <div class="band__head">
+        <h2 class="band__title" id="guides-title">Panduan terbaru</h2>
+        <a class="band__more" href="{% url 'guides:list' %}">Lihat semua panduan</a>
+      </div>
+      <ul class="guide-cards">
+        {% for guide in guides %}
+          <li>
+            <a class="guide-card" href="{% url 'guides:detail' guide.slug %}">
+              <span class="guide-card__cover">
+                {% if guide.device.image_url %}
+                  <img class="guide-card__photo" src="{{ guide.device.image_url }}" alt="" loading="lazy">
+                {% else %}
+                  <img src="{% static 'core/icons/book-open-blue.svg' %}" alt="" width="40" height="40">
+                {% endif %}
+                <span class="level level--{{ guide.difficulty|slugify }}">{{ guide.difficulty|difficulty_label }}</span>
+              </span>
+              <span class="guide-card__title">{{ guide.title }}</span>
+              <span class="guide-card__device">{{ guide.device.name }}</span>
+              <span class="guide-card__meta">
+                <span><img src="{% static 'core/icons/clock-muted.svg' %}" alt="" width="16" height="16">{{ guide.time_required_minutes|duration_label }}</span>
+                <span><img src="{% static 'core/icons/list-checks-muted.svg' %}" alt="" width="16" height="16">{{ guide.step_total }} langkah</span>
+              </span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+  {% if impact.repairs %}
+  <section class="impact" aria-labelledby="impact-title">
+    <div class="container">
+      <h2 class="impact__title" id="impact-title">Dampak nyata dari setiap perbaikan</h2>
+      <p class="impact__lead">Setiap perangkat yang diperbaiki membawa perubahan bagi lingkungan dan dompetmu.</p>
+      <ul class="impact__stats">
+        <li class="stat">
+          <img src="{% static 'core/icons/wrench-light.svg' %}" alt="" width="20" height="20">
+          <strong class="stat__value">{{ impact.repairs }}</strong>
+          <span class="stat__label">Perangkat terselamatkan</span>
+        </li>
+        <li class="stat">
+          <img src="{% static 'core/icons/leaf-light.svg' %}" alt="" width="20" height="20">
+          <strong class="stat__value">{{ impact.waste_avoided_kg|kg }}</strong>
+          <span class="stat__label">Limbah elektronik dihindari</span>
+        </li>
+        <li class="stat">
+          <img src="{% static 'core/icons/wallet-light.svg' %}" alt="" width="20" height="20">
+          <strong class="stat__value">{{ impact.cost_avoided|rupiah_short }}</strong>
+          <span class="stat__label">Potensi biaya penggantian dihemat</span>
+        </li>
+      </ul>
+      <p class="impact__note">Dihitung dari catatan perbaikan yang berhasil. Berat limbah dan penghematan merupakan estimasi berdasarkan rata-rata per kategori.</p>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if not user.is_authenticated %}
+  <section class="band band--white" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta">
+        <div>
+          <h2 class="cta__title" id="cta-title">Mulai catatan perbaikanmu!</h2>
+          <p class="cta__text">Simpan riwayat perbaikanmu dan lihat berapa limbah dan biaya yang sudah kamu hemat.</p>
+        </div>
+        <a class="btn btn--primary" href="{% url 'core:register' %}">Daftar</a>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+</div>
 {% endblock %}

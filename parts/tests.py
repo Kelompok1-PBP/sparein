@@ -867,3 +867,12 @@ class SyncViewTests(MockApiCase):
         self.assertNotContains(resp, "0812-0000-0001")
         detail = self.client.get(reverse("parts:detail", args=["baterai-iphone-11"]))
         self.assertNotContains(detail, "0812-0000-0001")
+        
+        
+class FormPolishTests(TestCase):
+    def test_create_form_has_breadcrumb_and_icon_delete_buttons(self):
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("parts:create"))
+        self.assertContains(resp, 'aria-label="Breadcrumb"')
+        self.assertContains(resp, "icon-button--danger")
+        self.assertNotContains(resp, "Hapus baris ini</label>")

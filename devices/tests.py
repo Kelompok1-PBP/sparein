@@ -136,13 +136,40 @@ class DeviceUiTests(TestCase):
     def test_detail_shows_score_bar(self):
         resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
         self.assertContains(resp, "6/10")
-        self.assertContains(resp, "width: 60%")
+        self.assertContains(resp, "is-on", count=6)
+
+    def test_detail_meta_line_joins_brand_category_and_year(self):
+        self.device.release_year = 2020
+        self.device.save()
+        resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
+        self.assertContains(resp, "Apple · Phone · Rilis 2020")
 
     def test_detail_without_score_has_no_bar(self):
         self.device.repairability_score = None
         self.device.save()
         resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
         self.assertNotContains(resp, "score__bar")
+
+    def test_delete_page_uses_confirm_dialog(self):
+        self.client.force_login(make_user("adm", UserProfile.Role.ADMIN))
+        resp = self.client.get(reverse("devices:delete", args=[self.device.slug]))
+        self.assertContains(resp, "confirm__icon")
+        self.assertContains(resp, 'Hapus &quot;iPhone 12&quot;?')
+        self.assertNotContains(resp, "masih dipakai")
+
+    def test_delete_page_explains_when_device_is_still_used(self):
+        admin = make_user("adm", UserProfile.Role.ADMIN)
+        self.client.force_login(admin)
+        with mock.patch.object(Device, "delete", side_effect=ProtectedError("x", set())):
+            resp = self.client.post(reverse("devices:delete", args=[self.device.slug]))
+        self.assertContains(resp, "masih dipakai")
+
+    def test_form_uses_indonesian_labels_and_marks_optional_fields(self):
+        self.client.force_login(make_user("sari", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("devices:create"))
+        self.assertContains(resp, "Nama perangkat")
+        self.assertContains(resp, "(opsional)", count=5)
+        self.assertContains(resp, "Simpan perangkat")
 
     def test_form_shows_field_error(self):
         user = make_user("sari", UserProfile.Role.CONTRIBUTOR)

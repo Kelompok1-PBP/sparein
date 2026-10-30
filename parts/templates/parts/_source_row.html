@@ -1,8 +1,8 @@
-{# Satu baris toko di form. Parameter: row, number (kosong di <template>, diisi form.js) #}
+{% load static %}{# Satu baris toko di form. Parameter: row, number (kosong di <template>, diisi form.js) #}
 <div class="part-row">
   <div class="part-row__head">
     <h3 class="part-row__title">Toko <span data-row-number>{{ number }}</span></h3>
-    <label class="parts-check">{{ row.DELETE }}Hapus baris ini</label>
+    <label class="icon-button icon-button--danger" title="Hapus baris ini">{{ row.DELETE }}<img src="{% static 'core/icons/trash-danger.svg' %}" alt="" width="20" height="20"><span class="sr-only">Hapus baris ini</span></label>
   </div>
   {% for hidden in row.hidden_fields %}{{ hidden }}{% endfor %}
   <div class="part-row__fields">

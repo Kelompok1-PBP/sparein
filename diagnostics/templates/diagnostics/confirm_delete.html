@@ -1,17 +1,6 @@
 {% extends "base.html" %}
-{% load static %}
 {% block title %}Hapus gejala · Sparein{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'diagnostics/diagnostics.css' %}">{% endblock %}
 {% block content %}
-<div class="confirm card">
-  <span class="confirm__icon"><img src="{% static 'core/icons/triangle-alert-danger.svg' %}" alt="" width="24" height="24"></span>
-  <h1>Hapus "{{ symptom.title }}"?</h1>
-  <p class="confirm__text">Gejala ini akan dihapus permanen dan ngga bisa dikembalikan.</p>
-  <form method="post">{% csrf_token %}
-    <div class="confirm__actions">
-      <a class="btn btn--secondary" href="{% url 'diagnostics:detail' symptom.slug %}">Batal</a>
-      <button type="submit" class="btn btn--primary btn--danger">Ya, hapus</button>
-    </div>
-  </form>
-</div>
+{% url 'diagnostics:detail' symptom.slug as cancel_url %}
+{% include "partials/confirm_dialog.html" with title='Hapus "'|add:symptom.title|add:'"?' text="Gejala ini akan dihapus permanen dan ngga bisa dikembalikan." cancel_url=cancel_url %}
 {% endblock %}
