@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load static journal_format %}
+{% extends "base.html" %}{% load static journal_format guide_format %}
 {% block title %}Sparein · Perbaiki dulu, buang belakangan{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'core/home/home.css' %}">{% endblock %}
 {% block main_class %} site-main--flush{% endblock %}
@@ -107,12 +107,12 @@
                 {% else %}
                   <img src="{% static 'core/icons/book-open-blue.svg' %}" alt="" width="40" height="40">
                 {% endif %}
-                <span class="level level--{{ guide.difficulty|slugify }}">{% if guide.difficulty == "Very easy" or guide.difficulty == "Easy" %}Mudah{% elif guide.difficulty == "Moderate" %}Sedang{% else %}Sulit{% endif %}</span>
+                <span class="level level--{{ guide.difficulty|slugify }}">{{ guide.difficulty|difficulty_label }}</span>
               </span>
               <span class="guide-card__title">{{ guide.title }}</span>
               <span class="guide-card__device">{{ guide.device.name }}</span>
               <span class="guide-card__meta">
-                <span><img src="{% static 'core/icons/clock-muted.svg' %}" alt="" width="16" height="16">{{ guide.time_required_minutes }} menit</span>
+                <span><img src="{% static 'core/icons/clock-muted.svg' %}" alt="" width="16" height="16">{{ guide.time_required_minutes|duration_label }}</span>
                 <span><img src="{% static 'core/icons/list-checks-muted.svg' %}" alt="" width="16" height="16">{{ guide.step_total }} langkah</span>
               </span>
             </a>
