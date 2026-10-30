@@ -136,7 +136,13 @@ class DeviceUiTests(TestCase):
     def test_detail_shows_score_bar(self):
         resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
         self.assertContains(resp, "6/10")
-        self.assertContains(resp, "width: 60%")
+        self.assertContains(resp, "is-on", count=6)
+
+    def test_detail_meta_line_joins_brand_category_and_year(self):
+        self.device.release_year = 2020
+        self.device.save()
+        resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
+        self.assertContains(resp, "Apple · Phone · Rilis 2020")
 
     def test_detail_without_score_has_no_bar(self):
         self.device.repairability_score = None

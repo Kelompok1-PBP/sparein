@@ -11,29 +11,30 @@
 
 <div class="detail">
   <div class="detail__img card">
-    <img src="{% if device.image_url %}{{ device.image_url }}{% else %}{% static 'core/icons/package-muted.svg' %}{% endif %}" alt="{% if device.image_url %}{{ device.name }}{% endif %}">
+    <div class="detail__photo">
+      <img src="{% if device.image_url %}{{ device.image_url }}{% else %}{% static 'core/icons/package-muted.svg' %}{% endif %}" alt="{% if device.image_url %}{{ device.name }}{% endif %}">
+    </div>
   </div>
 
   <div class="detail__info">
     <h1>{{ device.name }}</h1>
-    <dl class="facts">
-      <div><dt>Kategori</dt><dd>{{ device.category }}</dd></div>
-      <div><dt>Merek</dt><dd>{{ device.brand|default:"-" }}</dd></div>
-      <div><dt>Tahun rilis</dt><dd>{{ device.release_year|default:"-" }}</dd></div>
-    </dl>
-
-    {% if device.repairability_score %}
-    <div class="score">
-      <p class="score__label">Skor perbaikan <strong>{{ device.repairability_score }}/10</strong></p>
-      <div class="score__bar"><div class="score__fill" style="width: {% widthratio device.repairability_score 10 100 %}%"></div></div>
-    </div>
-    {% endif %}
+    <p class="detail__meta">{% if device.brand %}{{ device.brand }} · {% endif %}{{ device.category }}{% if device.release_year %} · Rilis {{ device.release_year }}{% endif %}</p>
 
     {% if device.summary %}<p class="detail__summary">{{ device.summary|linebreaksbr }}</p>{% endif %}
 
+    {% if device.repairability_score %}
+    <div class="score">
+      <p class="score__label">Skor perbaikan</p>
+      <div class="score__row">
+        <ol class="score__bar" aria-hidden="true">{% for _ in "1234567890" %}<li class="score__seg{% if forloop.counter <= device.repairability_score %} is-on{% endif %}"></li>{% endfor %}</ol>
+        <strong class="score__value">{{ device.repairability_score }}/10</strong>
+      </div>
+    </div>
+    {% endif %}
+
     <div class="detail__actions">
-      {% if can_edit %}<a class="btn btn--secondary" href="{% url 'devices:edit' device.slug %}">Ubah</a>{% endif %}
-      {% if can_delete %}<a class="btn btn--danger" href="{% url 'devices:delete' device.slug %}">Hapus</a>{% endif %}
+      {% if can_edit %}<a class="btn btn--secondary" href="{% url 'devices:edit' device.slug %}"><img src="{% static 'core/icons/pencil-blue.svg' %}" alt="" width="20" height="20">Ubah</a>{% endif %}
+      {% if can_delete %}<a class="btn btn--danger-outline" href="{% url 'devices:delete' device.slug %}"><img src="{% static 'core/icons/trash-danger.svg' %}" alt="" width="20" height="20">Hapus</a>{% endif %}
     </div>
   </div>
 </div>
