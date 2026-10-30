@@ -105,3 +105,74 @@
 
   .hero__title { font-size: 40px; line-height: 48px; }
 }
+
+/* ---------- section berselang-seling ---------- */
+.band { padding: 40px 0; }
+.band--surface { background: var(--surface); }
+.band--white { background: var(--white); }
+
+.band__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 24px;
+}
+
+.band__title { margin: 0 0 24px; }
+.band__head .band__title { margin: 0; }
+
+.band__more {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+/* ---------- lima langkah ---------- */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-content: start;
+  gap: 12px 8px;
+  padding: 16px;
+  border: 1px solid var(--blue-200);
+  border-radius: 14px;
+  background: var(--white);
+}
+
+.step__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--blue-50);
+}
+
+.step__num {
+  justify-self: end;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted);
+}
+
+.step__title,
+.step__text { grid-column: 1 / -1; margin: 0; }
+
+.step__title { font-size: 16px; line-height: 24px; }
+.step__text { font-size: 14px; line-height: 20px; color: var(--muted); }
+
+@media (min-width: 1024px) {
+  .band { padding: 56px 0; }
+  .steps { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}

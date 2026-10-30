@@ -369,3 +369,8 @@ class HomePageTests(HomeData):
 
     def test_popular_chips_hidden_without_published_guides(self):
         self.assertNotContains(self.client.get(reverse("core:home")), "Populer:")
+
+    def test_five_steps_are_listed(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, "Lima langkah sebelum buang barang")
+        self.assertContains(resp, 'class="step"', count=5)
