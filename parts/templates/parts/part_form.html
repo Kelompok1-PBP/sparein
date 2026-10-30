@@ -5,6 +5,11 @@
 {% block content %}
 <div class="parts-form">
   <div>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'parts:list' %}">Suku Cadang</a>
+      <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+      <span aria-current="page">{% if title|slice:":6" == "Tambah" %}Tambah{% else %}Ubah{% endif %}</span>
+    </nav>
     <h1>{{ title }}</h1>
     <p class="parts-muted">Isi info suku cadangnya, perangkat yang cocok, dan toko yang jual.</p>
   </div>
@@ -29,7 +34,7 @@
       {% for error in compat.non_form_errors %}{% include "partials/alert.html" with kind="error" message=error %}{% endfor %}
       <div class="part-rows" id="compat-rows">{% for row in compat %}{% include "parts/_compat_row.html" with number=forloop.counter %}{% endfor %}</div>
       {# tombol tambah baris dimunculin form.js #}
-      <button class="btn btn--secondary" type="button" data-add-row="compat" hidden>+ Tambah perangkat</button>
+      <button class="btn btn--secondary" type="button" data-add-row="compat" hidden><img src="{% static 'core/icons/plus-blue.svg' %}" alt="" width="20" height="20">Tambah perangkat</button>
       <template id="compat-template">{% include "parts/_compat_row.html" with row=compat.empty_form number="" %}</template>
     </section>
 
@@ -41,7 +46,7 @@
       {{ sources.management_form }}
       {% for error in sources.non_form_errors %}{% include "partials/alert.html" with kind="error" message=error %}{% endfor %}
       <div class="part-rows" id="sources-rows">{% for row in sources %}{% include "parts/_source_row.html" with number=forloop.counter %}{% endfor %}</div>
-      <button class="btn btn--secondary" type="button" data-add-row="sources" hidden>+ Tambah toko</button>
+      <button class="btn btn--secondary" type="button" data-add-row="sources" hidden><img src="{% static 'core/icons/plus-blue.svg' %}" alt="" width="20" height="20">Tambah toko</button>
       <template id="sources-template">{% include "parts/_source_row.html" with row=sources.empty_form number="" %}</template>
     </section>
 

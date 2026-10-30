@@ -1,0 +1,13 @@
+{% load static %}{# Dialog konfirmasi hapus. Parameter: title, text, cancel_url, alert (opsional) #}
+<div class="confirm card">
+  <span class="confirm__icon"><img src="{% static 'core/icons/triangle-alert-danger.svg' %}" alt="" width="24" height="24"></span>
+  <h1>{{ title }}</h1>
+  {% if alert %}<div class="alert alert--error" role="alert"><p>{{ alert }}</p></div>{% endif %}
+  <p class="confirm__text">{{ text }}</p>
+  <form method="post">{% csrf_token %}
+    <div class="confirm__actions">
+      <a class="btn btn--secondary" href="{{ cancel_url }}">Batal</a>
+      <button type="submit" class="btn btn--danger">Ya, hapus</button>
+    </div>
+  </form>
+</div>

@@ -9,6 +9,7 @@ from core.models import UserProfile
 from devices.models import Device, DeviceCategory
 
 from .ifixit import ImportFailure, fetch_guide, import_guide
+from .labels import difficulty_label, difficulty_tone, duration_label
 from .models import GuideStep, RepairGuide, SafetyWarning
 
 
@@ -217,3 +218,210 @@ class GuideTests(TestCase):
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(RepairGuide.objects.count(), 2)
+
+
+class LabelTests(TestCase):
+    def test_difficulty_labels_and_tones(self):
+        self.assertEqual(difficulty_label("Very easy"), "Sangat mudah")
+        self.assertEqual(difficulty_tone("Very difficult"), "hard")
+        self.assertEqual(difficulty_tone("Easy"), "easy")
+
+    def test_unknown_difficulty_falls_back(self):
+        self.assertEqual(difficulty_label("Aneh"), "Aneh")
+        self.assertEqual(difficulty_tone("Aneh"), "moderate")
+
+    def test_duration_label(self):
+        self.assertEqual(duration_label(45), "45 menit")
+        self.assertEqual(duration_label(60), "1 jam")
+        self.assertEqual(duration_label(75), "1 jam 15 menit")
+        self.assertEqual(duration_label(120), "2 jam")
+
+
+class ApiDisplayFieldsTests(TestCase):
+    def test_api_carries_display_fields_for_cards(self):
+        user = get_user_model().objects.create_user("penulis", password="x")
+        device = Device.objects.create(
+            name="iPhone 11",
+            category=DeviceCategory.objects.create(name="Phone"),
+            image_url="https://example.com/a.jpg",
+        )
+        guide = RepairGuide.objects.create(
+            title="Ganti baterai", slug="ganti-baterai", summary="x", difficulty="Moderate",
+            time_required_minutes=75, device=device, author=user, published=True,
+        )
+        GuideStep.objects.create(guide=guide, order=1, title="Buka", detail="x")
+        item = Client().get("/api/guides/").json()["results"][0]
+        self.assertEqual(item["difficulty_label"], "Sedang")
+        self.assertEqual(item["difficulty_tone"], "moderate")
+        self.assertEqual(item["duration_label"], "1 jam 15 menit")
+        self.assertEqual(item["step_total"], 1)
+        self.assertEqual(item["device_image_url"], "https://example.com/a.jpg")
+
+
+class ListPageTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user = get_user_model().objects.create_user("penulis", password="x")
+        cls.phone = Device.objects.create(
+            name="iPhone 11", category=DeviceCategory.objects.create(name="Phone")
+        )
+        cls.guide = RepairGuide.objects.create(
+            title="Ganti baterai", slug="ganti-baterai", summary="x", difficulty="Easy",
+            time_required_minutes=45, device=cls.phone, author=user, published=True,
+        )
+        GuideStep.objects.create(guide=cls.guide, order=1, title="Buka", detail="x")
+
+    def test_card_shows_label_duration_and_step_count(self):
+        resp = Client().get("/guides/")
+        self.assertContains(resp, "difficulty--easy")
+        self.assertContains(resp, ">Mudah<")
+        self.assertContains(resp, "45 menit")
+        self.assertContains(resp, "1 langkah")
+
+    def test_filters_offer_every_difficulty_and_time_preset(self):
+        resp = Client().get("/guides/")
+        for text in ("Sangat mudah", "Sangat sulit", "30 menit", "1 jam", "2 jam", "Reset filter"):
+            self.assertContains(resp, text)
+
+    def test_active_filters_become_removable_chips(self):
+        resp = Client().get(f"/guides/?difficulty=Easy&max_time=60&device={self.phone.pk}")
+        self.assertContains(resp, "Kesulitan: Mudah")
+        self.assertContains(resp, "Waktu: ≤ 1 jam")
+        self.assertContains(resp, "Perangkat: iPhone 11")
+        self.assertContains(resp, f'href="?max_time=60&amp;device={self.phone.pk}"')
+
+    def test_garbage_filter_values_do_not_break_chips(self):
+        resp = Client().get("/guides/?max_time=abc&device=xyz")
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotContains(resp, 'class="filter-chip"')
+
+    def test_empty_result_shows_empty_state(self):
+        self.assertContains(Client().get("/guides/?difficulty=Difficult"), "Belum ada panduan yang cocok")
+
+
+class DetailPageTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = get_user_model().objects.create_user("penulis", password="x")
+        cls.author.profile.role = UserProfile.Role.CONTRIBUTOR
+        cls.author.profile.save()
+        cls.device = Device.objects.create(
+            name="iPhone 11", brand="Apple", category=DeviceCategory.objects.create(name="Phone")
+        )
+        cls.guide = RepairGuide.objects.create(
+            title="Ganti baterai", slug="ganti-baterai", summary="Ringkas", difficulty="Moderate",
+            time_required_minutes=45, device=cls.device, author=cls.author, published=True,
+            tools="Obeng P2\nSpudger",
+        )
+        GuideStep.objects.create(guide=cls.guide, order=1, title="Buka sekrup", detail="Lepas dua sekrup")
+        SafetyWarning.objects.create(guide=cls.guide, level="danger", message="Jangan tusuk baterai")
+        SafetyWarning.objects.create(guide=cls.guide, level="caution", message="Cabut charger")
+
+    def test_header_shows_meta_and_author(self):
+        resp = Client().get("/guides/ganti-baterai/")
+        self.assertContains(resp, "difficulty--moderate")
+        self.assertContains(resp, "45 menit")
+        self.assertContains(resp, "1 langkah")
+        self.assertContains(resp, "oleh penulis")
+
+    def test_warnings_use_level_classes_and_labels(self):
+        resp = Client().get("/guides/ganti-baterai/")
+        self.assertContains(resp, "safety--danger")
+        self.assertContains(resp, "safety--caution")
+        self.assertContains(resp, "Bahaya")
+
+    def test_sidebar_lists_tools_device_and_parts_link(self):
+        resp = Client().get("/guides/ganti-baterai/")
+        self.assertContains(resp, "<li>Obeng P2</li>", html=True)
+        self.assertContains(resp, f"/parts/?device={self.device.slug}")
+        self.assertContains(resp, "Apple")
+
+    def test_visitor_sees_step_titles_but_not_journal_button(self):
+        resp = Client().get("/guides/ganti-baterai/")
+        self.assertContains(resp, "Buka sekrup")
+        self.assertNotContains(resp, "Lepas dua sekrup")
+        self.assertNotContains(resp, "Catat perbaikan ini")
+
+    def test_member_gets_journal_shortcut_with_guide_prefilled(self):
+        client = Client()
+        client.force_login(get_user_model().objects.create_user("anggota", password="x"))
+        resp = client.get("/guides/ganti-baterai/")
+        self.assertContains(resp, "Lepas dua sekrup")
+        self.assertContains(resp, "/journal/create/?guide=ganti-baterai")
+
+    def test_owner_sees_edit_and_delete(self):
+        client = Client()
+        client.force_login(self.author)
+        resp = client.get("/guides/ganti-baterai/")
+        self.assertContains(resp, "/guides/ganti-baterai/edit/")
+        self.assertContains(resp, "/guides/ganti-baterai/delete/")
+
+
+class FormPageTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = get_user_model().objects.create_user("penulis", password="x")
+        cls.author.profile.role = UserProfile.Role.CONTRIBUTOR
+        cls.author.profile.save()
+
+    def setUp(self):
+        self.client.force_login(self.author)
+
+    def test_create_page_has_three_sections_with_indonesian_labels(self):
+        resp = self.client.get("/guides/create/")
+        for text in ("1. Info dasar", "2. Peringatan keselamatan", "3. Langkah-langkah",
+                     "Judul panduan", "Perkiraan waktu", "Judul langkah", "Terbitkan sekarang"):
+            self.assertContains(resp, text)
+
+    def test_new_step_row_gets_its_position_as_order(self):
+        resp = self.client.get("/guides/create/")
+        self.assertContains(resp, 'name="steps-0-order" value="1"')
+
+    def test_inputs_carry_shared_input_class(self):
+        self.assertContains(self.client.get("/guides/create/"), 'class="input"')
+
+    def test_invalid_post_shows_error_summary_and_marks_field(self):
+        resp = self.client.post("/guides/create/", {
+            "steps-TOTAL_FORMS": 1, "steps-INITIAL_FORMS": 0,
+            "warnings-TOTAL_FORMS": 0, "warnings-INITIAL_FORMS": 0,
+        })
+        self.assertEqual(resp.status_code, 400)
+        self.assertContains(resp, "Ada isian yang belum benar", status_code=400)
+        self.assertContains(resp, 'aria-invalid="true"', status_code=400)
+
+    def test_edit_page_title_and_breadcrumb(self):
+        device = Device.objects.create(name="iPhone", category=DeviceCategory.objects.create(name="Phone"))
+        guide = RepairGuide.objects.create(
+            title="Ganti", slug="ganti", summary="x", difficulty="Easy", time_required_minutes=5,
+            device=device, author=self.author, published=True,
+        )
+        GuideStep.objects.create(guide=guide, order=1, title="Buka", detail="x")
+        resp = self.client.get("/guides/ganti/edit/")
+        self.assertContains(resp, "Ubah panduan")
+        self.assertContains(resp, "Buka")
+
+
+class DeleteAndImportPageTests(TestCase):
+    def test_delete_page_uses_confirm_dialog(self):
+        admin = get_user_model().objects.create_user("adm", password="x")
+        admin.profile.role = UserProfile.Role.ADMIN
+        admin.profile.save()
+        device = Device.objects.create(name="iPhone", category=DeviceCategory.objects.create(name="Phone"))
+        RepairGuide.objects.create(
+            title="Ganti", slug="ganti", summary="x", difficulty="Easy", time_required_minutes=5,
+            device=device, author=admin, published=True,
+        )
+        self.client.force_login(admin)
+        resp = self.client.get("/guides/ganti/delete/")
+        self.assertContains(resp, "confirm__icon")
+        self.assertContains(resp, "Hapus &quot;Ganti&quot;?")
+
+    def test_import_page_labels_and_breadcrumb(self):
+        user = get_user_model().objects.create_user("penulis", password="x")
+        user.profile.role = UserProfile.Role.CONTRIBUTOR
+        user.profile.save()
+        self.client.force_login(user)
+        resp = self.client.get("/guides/import/")
+        self.assertContains(resp, "ID panduan iFixit")
+        self.assertContains(resp, "Impor sebagai draf")
+        self.assertContains(resp, 'aria-current="page"')

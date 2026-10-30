@@ -5,6 +5,10 @@ from django.urls import reverse
 
 from core.models import UserProfile
 from core.permissions import is_admin, is_contributor, is_member
+from core.selectors import latest_guides, popular_devices, top_categories
+from devices.models import Device, DeviceCategory
+from guides.models import GuideStep, RepairGuide
+from journal.models import ImpactEstimate, RepairLog
 
 
 class ProfileTests(TestCase):
@@ -294,6 +298,14 @@ class ProfilePageTests(TestCase):
         self.assertContains(resp, "Kamu Admin")
         self.assertContains(resp, "Buka panel admin")
 
+    def test_shortcuts_show_personal_counts(self):
+        user = self.login("sari")
+        RepairLog.objects.create(user=user, status="planned")
+        RepairLog.objects.create(user=user, status="planned")
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "2 catatan")
+        self.assertContains(resp, "0 hasil")
+
     def test_superuser_counts_as_admin(self):
         self.login("root", superuser=True)
         self.assertContains(self.client.get(self.url), "Kamu Admin")
@@ -306,3 +318,116 @@ class ProfilePageTests(TestCase):
     def test_menus_link_to_profile_by_url_name(self):
         self.login("sari")
         self.assertContains(self.client.get(reverse("core:home")), f'href="{self.url}"')
+
+
+class HomeData(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = User.objects.create_user("penulis", password="x")
+        cls.phone = DeviceCategory.objects.create(name="Phone")
+        cls.laptop = DeviceCategory.objects.create(name="Laptop")
+        cls.empty = DeviceCategory.objects.create(name="Kosong")
+        cls.iphone = Device.objects.create(name="iPhone 11", category=cls.phone)
+        Device.objects.create(name="Pixel 8", category=cls.phone)
+        cls.macbook = Device.objects.create(name="MacBook Air", category=cls.laptop)
+
+    def guide(self, title, device, **extra):
+        fields = {"difficulty": "Easy", "time_required_minutes": 10, **extra}
+        return RepairGuide.objects.create(
+            title=title, slug=title.lower().replace(" ", "-"), summary="x",
+            device=device, author=self.author, **fields)
+
+
+class HomeSelectorTests(HomeData):
+    def test_top_categories_skip_empty_and_sort_by_device_count(self):
+        names = [c.name for c in top_categories()]
+        self.assertEqual(names, ["Phone", "Laptop"])
+        self.assertEqual(top_categories()[0].total, 2)
+
+    def test_top_categories_respect_limit(self):
+        self.assertEqual(len(top_categories(limit=1)), 1)
+
+    def test_latest_guides_are_published_only_newest_first(self):
+        self.guide("Draf", self.iphone)
+        old = self.guide("Lama", self.iphone, published=True)
+        new = self.guide("Baru", self.macbook, published=True)
+        self.assertEqual(list(latest_guides()), [new, old])
+
+    def test_latest_guides_count_steps(self):
+        guide = self.guide("Ganti baterai", self.iphone, published=True)
+        GuideStep.objects.create(guide=guide, order=1, title="Buka", detail="x")
+        GuideStep.objects.create(guide=guide, order=2, title="Lepas", detail="x")
+        self.assertEqual(latest_guides()[0].step_total, 2)
+
+    def test_popular_devices_need_a_published_guide(self):
+        self.guide("Draf", self.macbook)
+        self.guide("A", self.iphone, published=True)
+        self.guide("B", self.iphone, published=True)
+        self.assertEqual(list(popular_devices()), [self.iphone])
+
+
+class HomePageTests(HomeData):
+    def test_hero_has_title_and_search_to_device_catalog(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, "Barangmu rusak?")
+        self.assertContains(resp, "Coba perbaiki dulu.")
+        self.assertContains(resp, f'action="{reverse("devices:list")}"')
+
+    def test_popular_chips_link_to_device_detail(self):
+        self.guide("A", self.iphone, published=True)
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, reverse("devices:detail", args=[self.iphone.slug]))
+
+    def test_popular_chips_hidden_without_published_guides(self):
+        self.assertNotContains(self.client.get(reverse("core:home")), "Populer:")
+
+    def test_five_steps_are_listed(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, "Lima langkah sebelum buang barang")
+        self.assertContains(resp, 'class="step"', count=5)
+
+    def test_categories_link_to_filtered_catalog(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, f'{reverse("devices:list")}?category={self.phone.slug}')
+        self.assertContains(resp, "2 perangkat")
+        self.assertContains(resp, "smartphone-blue.svg")
+        self.assertContains(resp, "laptop-blue.svg")
+
+    def test_categories_section_hidden_without_devices(self):
+        Device.objects.all().delete()
+        self.assertNotContains(self.client.get(reverse("core:home")), "Jelajahi kategori")
+
+    def test_latest_guides_show_label_time_and_steps(self):
+        guide = self.guide("Ganti baterai", self.iphone, published=True, difficulty="Moderate")
+        GuideStep.objects.create(guide=guide, order=1, title="Buka", detail="x")
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, reverse("guides:detail", args=[guide.slug]))
+        self.assertContains(resp, "level--moderate")
+        self.assertContains(resp, ">Sedang<")
+        self.assertContains(resp, "10 menit")
+        self.assertContains(resp, "1 langkah")
+
+    def test_guides_section_hidden_without_published_guides(self):
+        self.guide("Draf", self.iphone)
+        self.assertNotContains(self.client.get(reverse("core:home")), "Panduan terbaru")
+
+    def make_impact(self, waste, cost):
+        log = RepairLog.objects.create(user=self.author, device=self.iphone, status="succeeded")
+        ImpactEstimate.objects.update_or_create(
+            log=log, defaults={"waste_avoided_kg": waste, "cost_avoided": cost})
+
+    def test_impact_section_shows_site_totals(self):
+        self.make_impact("0.30", 2_000_000)
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, "Dampak nyata dari setiap perbaikan")
+        self.assertContains(resp, "0,3 kg")
+        self.assertContains(resp, "Rp 2 juta")
+
+    def test_impact_section_hidden_without_repairs(self):
+        self.assertNotContains(self.client.get(reverse("core:home")), "Dampak nyata")
+
+    def test_signup_cta_only_for_visitors(self):
+        url = reverse("core:home")
+        self.assertContains(self.client.get(url), "Mulai catatan perbaikanmu!")
+        self.client.force_login(self.author)
+        self.assertNotContains(self.client.get(url), "Mulai catatan perbaikanmu!")
