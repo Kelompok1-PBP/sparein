@@ -181,6 +181,7 @@ img { max-width: 100%; }
 }
 
 .field__req { margin-left: 4px; color: var(--danger); }
+.field__opt { font-size: 14px; font-weight: 400; color: var(--muted); }
 .field__control { position: relative; }
 
 .input {
@@ -201,6 +202,7 @@ img { max-width: 100%; }
 .input:focus-visible { outline: 2px solid var(--blue-400); outline-offset: 2px; }
 .input[aria-invalid="true"] { border-color: var(--danger); }
 .input--password { padding-right: 48px; }
+textarea.input { height: auto; min-height: 96px; padding: 10px 12px; resize: vertical; }
 
 .field__toggle {
   position: absolute;

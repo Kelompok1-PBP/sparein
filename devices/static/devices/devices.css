@@ -92,7 +92,6 @@
 /* ---------- form dan konfirmasi hapus ---------- */
 .form-breadcrumb { max-width: 720px; margin: 0 auto 8px; padding: 0 24px; }
 .form-page { max-width: 720px; margin: 0 auto; padding: 24px; }
-.field__opt { font-size: 14px; font-weight: 400; color: var(--muted); }
 .form-page.card:hover { border-color: var(--blue-200); }
 .form-page h1 { margin: 0 0 24px; }
 
