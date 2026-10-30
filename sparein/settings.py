@@ -153,3 +153,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "core:home"
 LOGOUT_REDIRECT_URL = "core:home"
+
+# mock API M4 di-host di repo terpisah, dibaca waktu sync doang
+PARTS_API_URL = os.getenv(
+    "PARTS_API_URL", "https://kelompok1-pbp.github.io/sparein-mock-api/v1/parts.json"
+)

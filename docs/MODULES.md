@@ -186,25 +186,38 @@ Information and referral only. No cart, no checkout, no payment.
 
 | Model | Key fields |
 |---|---|
-| `SparePart` | `name`, `slug`, `part_number`, `category`, `description`, `image_url` |
+| `SparePart` | `name`, `slug`, `part_number`, `category`, `description`, `image_url`, `external_id`, `created_by` FK, `created_at` |
 | `PartCompatibility` | `part` FK, `device` FK, `note`, unique together |
-| `PartSource` | `part` FK, `vendor_name`, `city`, `price`, `currency`, `url`, `contact`, `last_checked` |
+| `PartSource` | `part` FK, `vendor_name`, `city`, `price`, `currency`, `url`, `contact`, `last_checked`, `external_id` |
+
+`external_id` holds the mock API id and is empty for rows entered by hand. `created_by` decides who owns a part.
 
 ### CRUD surface
 
 | Operation | Route | Access |
 |---|---|---|
 | Create | `POST /parts/create/` | Contributor |
-| Read | `GET /parts/?device=&category=&max_price=`, `GET /parts/<slug>/` | Visitor, price and contact hidden |
+| Read | `GET /parts/?q=&device=&category=&max_price=`, `GET /parts/<slug>/` | Visitor, price and contact hidden |
 | Update | `POST /parts/<slug>/edit/` | Contributor, owner or Admin |
 | Delete | `POST /parts/<slug>/delete/` | Admin |
-| JSON | `GET /api/parts/?device=&max_price=` | Visitor |
+| JSON | `GET /api/parts/?q=&device=&category=&max_price=` | Visitor |
+| Sync | `POST /parts/sync/` | Admin |
 
-Auth filter: `PartSource.price` and `PartSource.contact` are excluded from the queryset for anonymous users. Excluding at the queryset level, not in the template, keeps the JSON endpoint honest too.
+Auth filter: `PartSource.price` and `PartSource.contact` are excluded from the queryset for anonymous users. Excluding at the queryset level, not in the template, keeps the JSON endpoint honest too. `max_price` is ignored for anonymous users, because filtering on it would reveal the price.
+
+### Exported contract
+
+```python
+# parts/selectors.py
+def get_part_qs(*, q=None, device=None, category=None, max_price=None): ...
+def get_part_or_404(slug: str) -> SparePart: ...
+```
 
 ### External data
 
-Indonesia has no public spare-part API, so the team publishes its own mock API outside this repository and consumes it over HTTP. The endpoint and schema are recorded in `docs/MOCK-API.md` by Checkpoint 2.
+Indonesia has no public spare-part API, so the team publishes its own mock API outside this repository and consumes it over HTTP. `GET https://kelompok1-pbp.github.io/sparein-mock-api/v1/parts.json` supplies parts, compatible devices, and stores. The schema and sync rules are recorded in [`docs/MOCK-API.md`](MOCK-API.md).
+
+`manage.py sync_parts` writes the response to the database, and falls back to `parts/data/parts_snapshot.json` when the API is down. Pages never call the API.
 
 ---
 

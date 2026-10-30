@@ -1,0 +1,963 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-10-30T09:00:00+07:00",
+  "parts": [
+    {
+      "id": "part-0001",
+      "name": "Baterai iPhone 11",
+      "part_number": "BAT-IP11",
+      "category": "battery",
+      "description": "Baterai pengganti kapasitas standar 3110 mAh.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "iphone-11",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0001",
+          "vendor_name": "Sinar Ponsel",
+          "city": "Depok",
+          "price": 185000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+iphone+11",
+          "contact": "0812-0000-0001",
+          "last_checked": "2026-10-27"
+        },
+        {
+          "id": "src-0002",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 210000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=baterai+iphone+11",
+          "contact": "0812-0000-0002",
+          "last_checked": "2026-10-20"
+        },
+        {
+          "id": "src-0003",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 245000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+iphone+11+original",
+          "contact": "0812-0000-0003",
+          "last_checked": "2026-09-15"
+        }
+      ]
+    },
+    {
+      "id": "part-0002",
+      "name": "Layar iPhone 11 LCD",
+      "part_number": "LCD-IP11",
+      "category": "screen",
+      "description": "Panel LCD lengkap dengan digitizer.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "iphone-11",
+          "note": "Bukan untuk iPhone 11 Pro"
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0004",
+          "vendor_name": "Sinar Ponsel",
+          "city": "Depok",
+          "price": 420000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=lcd+iphone+11",
+          "contact": "0812-0000-0004",
+          "last_checked": "2026-10-25"
+        },
+        {
+          "id": "src-0005",
+          "vendor_name": "Kios Gawai Margonda",
+          "city": "Depok",
+          "price": 465000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=lcd+iphone+11",
+          "contact": "0812-0000-0005",
+          "last_checked": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "id": "part-0003",
+      "name": "Kamera Belakang iPhone 11",
+      "part_number": "",
+      "category": "other",
+      "description": "Modul kamera ganda belakang.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "iphone-11",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0006",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 540000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=kamera+belakang+iphone+11",
+          "contact": "0812-0000-0006",
+          "last_checked": "2026-10-21"
+        },
+        {
+          "id": "src-0007",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 610000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=kamera+belakang+iphone+11",
+          "contact": "0812-0000-0007",
+          "last_checked": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "part-0004",
+      "name": "Kabel Lightning 1 m",
+      "part_number": "",
+      "category": "cable",
+      "description": "Kabel data dan charging Lightning ke USB-C.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "iphone-11",
+          "note": ""
+        },
+        {
+          "slug": "iphone-12",
+          "note": ""
+        },
+        {
+          "slug": "iphone-13",
+          "note": ""
+        },
+        {
+          "slug": "iphone-14",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0008",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 45000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=kabel+lightning",
+          "contact": "0812-0000-0008",
+          "last_checked": "2026-10-28"
+        },
+        {
+          "id": "src-0009",
+          "vendor_name": "Pusat Aksesori Cell",
+          "city": "Surabaya",
+          "price": 75000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=kabel+lightning+usb+c",
+          "contact": "0812-0000-0009",
+          "last_checked": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": "part-0005",
+      "name": "Motor Getar iPhone 12",
+      "part_number": "TAP-IP12",
+      "category": "motor",
+      "description": "Taptic Engine untuk getaran dan haptic.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "iphone-12",
+          "note": ""
+        },
+        {
+          "slug": "iphone-12-pro",
+          "note": "Sama dengan iPhone 12"
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0010",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 150000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=taptic+engine+iphone+12",
+          "contact": "0812-0000-0010",
+          "last_checked": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "id": "part-0006",
+      "name": "Layar iPhone 12 OLED",
+      "part_number": "OLED-IP12",
+      "category": "screen",
+      "description": "Panel OLED dengan frame.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "iphone-12",
+          "note": ""
+        },
+        {
+          "slug": "iphone-12-pro",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0011",
+          "vendor_name": "Sinar Ponsel",
+          "city": "Depok",
+          "price": 980000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=lcd+oled+iphone+12",
+          "contact": "0812-0000-0011",
+          "last_checked": "2026-10-26"
+        },
+        {
+          "id": "src-0012",
+          "vendor_name": "Kios Gawai Margonda",
+          "city": "Depok",
+          "price": 1150000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=lcd+oled+iphone+12",
+          "contact": "0812-0000-0012",
+          "last_checked": "2026-10-17"
+        },
+        {
+          "id": "src-0013",
+          "vendor_name": "Pusat Aksesori Cell",
+          "city": "Surabaya",
+          "price": 1075000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=oled+iphone+12",
+          "contact": "0812-0000-0013",
+          "last_checked": "2026-09-22"
+        }
+      ]
+    },
+    {
+      "id": "part-0007",
+      "name": "Baterai iPhone 13",
+      "part_number": "BAT-IP13",
+      "category": "battery",
+      "description": "Baterai pengganti kapasitas standar 3227 mAh.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "iphone-13",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0014",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 275000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=baterai+iphone+13",
+          "contact": "0812-0000-0014",
+          "last_checked": "2026-10-24"
+        },
+        {
+          "id": "src-0015",
+          "vendor_name": "Sinar Ponsel",
+          "city": "Depok",
+          "price": 299000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+iphone+13",
+          "contact": "0812-0000-0015",
+          "last_checked": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "part-0008",
+      "name": "Speaker Bawah iPhone XR",
+      "part_number": "",
+      "category": "other",
+      "description": "Modul loudspeaker bagian bawah.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "iphone-xr",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0016",
+          "vendor_name": "Kios Gawai Margonda",
+          "city": "Depok",
+          "price": 85000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=speaker+iphone+xr",
+          "contact": "0812-0000-0016",
+          "last_checked": "2026-10-19"
+        }
+      ]
+    },
+    {
+      "id": "part-0009",
+      "name": "Baterai Samsung Galaxy A52",
+      "part_number": "EB-BG781ABY",
+      "category": "battery",
+      "description": "Baterai 4500 mAh, dipakai tiga varian A52.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "samsung-galaxy-a52",
+          "note": ""
+        },
+        {
+          "slug": "samsung-galaxy-a52-5g",
+          "note": ""
+        },
+        {
+          "slug": "samsung-galaxy-a52s",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0017",
+          "vendor_name": "Pusat Aksesori Cell",
+          "city": "Surabaya",
+          "price": 165000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+samsung+a52",
+          "contact": "0812-0000-0017",
+          "last_checked": "2026-10-26"
+        },
+        {
+          "id": "src-0018",
+          "vendor_name": "Sinar Ponsel",
+          "city": "Depok",
+          "price": 195000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=baterai+samsung+a52",
+          "contact": "0812-0000-0018",
+          "last_checked": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "id": "part-0010",
+      "name": "Layar Samsung Galaxy A52 AMOLED",
+      "part_number": "",
+      "category": "screen",
+      "description": "Panel Super AMOLED dengan frame.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "samsung-galaxy-a52",
+          "note": ""
+        },
+        {
+          "slug": "samsung-galaxy-a52-5g",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0019",
+          "vendor_name": "Kios Gawai Margonda",
+          "city": "Depok",
+          "price": 650000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=lcd+samsung+a52+amoled",
+          "contact": "0812-0000-0019",
+          "last_checked": "2026-10-24"
+        },
+        {
+          "id": "src-0020",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 890000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=lcd+samsung+a52+original",
+          "contact": "0812-0000-0020",
+          "last_checked": "2026-10-21"
+        }
+      ]
+    },
+    {
+      "id": "part-0011",
+      "name": "Baterai Samsung Galaxy A54",
+      "part_number": "EB-BA546ABY",
+      "category": "battery",
+      "description": "Baterai 5000 mAh.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "samsung-galaxy-a54",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0021",
+          "vendor_name": "Pusat Aksesori Cell",
+          "city": "Surabaya",
+          "price": 210000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+samsung+a54",
+          "contact": "0812-0000-0021",
+          "last_checked": "2026-10-25"
+        },
+        {
+          "id": "src-0022",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 235000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=baterai+samsung+a54",
+          "contact": "0812-0000-0022",
+          "last_checked": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "id": "part-0012",
+      "name": "Papan Port Charger Galaxy A32",
+      "part_number": "",
+      "category": "other",
+      "description": "Board USB-C beserta mikrofon bawah.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "samsung-galaxy-a32",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0023",
+          "vendor_name": "Toko Part Cemerlang",
+          "city": "Yogyakarta",
+          "price": 60000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=papan+cas+samsung+a32",
+          "contact": "0812-0000-0023",
+          "last_checked": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "id": "part-0013",
+      "name": "Charger USB-C 25W",
+      "part_number": "EP-TA800",
+      "category": "charger",
+      "description": "Kepala charger fast charging 25W.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "samsung-galaxy-a35",
+          "note": ""
+        },
+        {
+          "slug": "samsung-galaxy-a52",
+          "note": ""
+        },
+        {
+          "slug": "samsung-galaxy-a54",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0024",
+          "vendor_name": "Pusat Aksesori Cell",
+          "city": "Surabaya",
+          "price": 95000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=charger+samsung+25w",
+          "contact": "0812-0000-0024",
+          "last_checked": "2026-10-29"
+        },
+        {
+          "id": "src-0025",
+          "vendor_name": "Sinar Ponsel",
+          "city": "Depok",
+          "price": 120000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=charger+samsung+25w",
+          "contact": "0812-0000-0025",
+          "last_checked": "2026-10-22"
+        },
+        {
+          "id": "src-0026",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 150000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=charger+samsung+25w+original",
+          "contact": "0812-0000-0026",
+          "last_checked": "2026-10-16"
+        }
+      ]
+    },
+    {
+      "id": "part-0014",
+      "name": "Kabel USB-C 1 m",
+      "part_number": "",
+      "category": "cable",
+      "description": "Kabel data dan charging USB-C ke USB-C.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "samsung-galaxy-a35",
+          "note": ""
+        },
+        {
+          "slug": "samsung-galaxy-a54",
+          "note": ""
+        },
+        {
+          "slug": "xiaomi-redmi-13c",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0027",
+          "vendor_name": "Pusat Aksesori Cell",
+          "city": "Surabaya",
+          "price": 35000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=kabel+usb+c",
+          "contact": "0812-0000-0027",
+          "last_checked": "2026-10-27"
+        },
+        {
+          "id": "src-0028",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 50000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=kabel+usb+c",
+          "contact": "0812-0000-0028",
+          "last_checked": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "id": "part-0015",
+      "name": "Baterai Xiaomi Redmi 9",
+      "part_number": "BN54",
+      "category": "battery",
+      "description": "Baterai 5020 mAh.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "xiaomi-redmi-9",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0029",
+          "vendor_name": "Toko Part Cemerlang",
+          "city": "Yogyakarta",
+          "price": 125000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+redmi+9",
+          "contact": "0812-0000-0029",
+          "last_checked": "2026-10-24"
+        }
+      ]
+    },
+    {
+      "id": "part-0016",
+      "name": "Baterai Xiaomi Redmi 10",
+      "part_number": "BN5G",
+      "category": "battery",
+      "description": "Baterai 5000 mAh.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "xiaomi-redmi-10",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0030",
+          "vendor_name": "Toko Part Cemerlang",
+          "city": "Yogyakarta",
+          "price": 130000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+redmi+10",
+          "contact": "0812-0000-0030",
+          "last_checked": "2026-08-31"
+        }
+      ]
+    },
+    {
+      "id": "part-0017",
+      "name": "Layar Xiaomi Redmi 9A",
+      "part_number": "",
+      "category": "screen",
+      "description": "LCD dengan touchscreen, dipakai 9A dan 9C.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "xiaomi-redmi-9a",
+          "note": ""
+        },
+        {
+          "slug": "xiaomi-redmi-9c",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0031",
+          "vendor_name": "Kios Gawai Margonda",
+          "city": "Depok",
+          "price": 215000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=lcd+redmi+9a",
+          "contact": "0812-0000-0031",
+          "last_checked": "2026-10-22"
+        },
+        {
+          "id": "src-0032",
+          "vendor_name": "Toko Part Cemerlang",
+          "city": "Yogyakarta",
+          "price": 240000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=lcd+redmi+9c",
+          "contact": "0812-0000-0032",
+          "last_checked": "2026-10-11"
+        }
+      ]
+    },
+    {
+      "id": "part-0018",
+      "name": "Papan Port Charger Redmi 9",
+      "part_number": "",
+      "category": "other",
+      "description": "Board USB beserta mikrofon bawah.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "xiaomi-redmi-9",
+          "note": ""
+        },
+        {
+          "slug": "xiaomi-redmi-9a",
+          "note": "Cek dulu, ada versi yang beda konektor"
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0033",
+          "vendor_name": "Toko Part Cemerlang",
+          "city": "Yogyakarta",
+          "price": 55000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=papan+cas+redmi+9",
+          "contact": "0812-0000-0033",
+          "last_checked": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "id": "part-0019",
+      "name": "Charger Micro USB 10W",
+      "part_number": "",
+      "category": "charger",
+      "description": "Kepala charger 10W untuk Redmi seri lama.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "xiaomi-redmi-9a",
+          "note": ""
+        },
+        {
+          "slug": "xiaomi-redmi-9c",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0034",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 40000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=charger+xiaomi+10w",
+          "contact": "0812-0000-0034",
+          "last_checked": "2026-10-18"
+        },
+        {
+          "id": "src-0035",
+          "vendor_name": "Pusat Aksesori Cell",
+          "city": "Surabaya",
+          "price": 55000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=charger+xiaomi+10w",
+          "contact": "0812-0000-0035",
+          "last_checked": "2026-10-08"
+        }
+      ]
+    },
+    {
+      "id": "part-0020",
+      "name": "Baterai Oppo A5s",
+      "part_number": "BLP673",
+      "category": "battery",
+      "description": "Baterai 4230 mAh.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "oppo-a5s",
+          "note": ""
+        },
+        {
+          "slug": "oppo-a3s",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0036",
+          "vendor_name": "Toko Part Cemerlang",
+          "city": "Yogyakarta",
+          "price": 110000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+oppo+a5s",
+          "contact": "0812-0000-0036",
+          "last_checked": "2026-10-25"
+        },
+        {
+          "id": "src-0037",
+          "vendor_name": "Sinar Ponsel",
+          "city": "Depok",
+          "price": 125000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=baterai+oppo+a5s",
+          "contact": "0812-0000-0037",
+          "last_checked": "2026-10-09"
+        }
+      ]
+    },
+    {
+      "id": "part-0021",
+      "name": "Layar Oppo A5s",
+      "part_number": "",
+      "category": "screen",
+      "description": "LCD dengan touchscreen.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "oppo-a5s",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0038",
+          "vendor_name": "Kios Gawai Margonda",
+          "city": "Depok",
+          "price": 230000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=lcd+oppo+a5s",
+          "contact": "0812-0000-0038",
+          "last_checked": "2026-10-25"
+        },
+        {
+          "id": "src-0039",
+          "vendor_name": "Toko Part Cemerlang",
+          "city": "Yogyakarta",
+          "price": 275000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=lcd+oppo+a5s",
+          "contact": "0812-0000-0039",
+          "last_checked": "2026-10-19"
+        }
+      ]
+    },
+    {
+      "id": "part-0022",
+      "name": "Baterai Nintendo Switch",
+      "part_number": "HAC-003",
+      "category": "battery",
+      "description": "Baterai internal 4310 mAh.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "nintendo-switch",
+          "note": "Bukan untuk Switch Lite"
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0040",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 320000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+nintendo+switch",
+          "contact": "0812-0000-0040",
+          "last_checked": "2026-10-24"
+        },
+        {
+          "id": "src-0041",
+          "vendor_name": "Pusat Aksesori Cell",
+          "city": "Surabaya",
+          "price": 380000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=baterai+nintendo+switch",
+          "contact": "0812-0000-0041",
+          "last_checked": "2026-09-25"
+        }
+      ]
+    },
+    {
+      "id": "part-0023",
+      "name": "Analog Stick Joy-Con",
+      "part_number": "",
+      "category": "other",
+      "description": "Modul analog pengganti stick drift.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "nintendo-switch-joy-con",
+          "note": ""
+        },
+        {
+          "slug": "nintendo-switch-lite",
+          "note": ""
+        },
+        {
+          "slug": "nintendo-switch-oled",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0042",
+          "vendor_name": "Toko Part Cemerlang",
+          "city": "Yogyakarta",
+          "price": 35000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=analog+joycon",
+          "contact": "0812-0000-0042",
+          "last_checked": "2026-10-28"
+        },
+        {
+          "id": "src-0043",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 45000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=analog+joycon",
+          "contact": "0812-0000-0043",
+          "last_checked": "2026-10-26"
+        },
+        {
+          "id": "src-0044",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 60000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=analog+joycon+original",
+          "contact": "0812-0000-0044",
+          "last_checked": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "part-0024",
+      "name": "Baterai MacBook Air 13",
+      "part_number": "A1466-BAT",
+      "category": "battery",
+      "description": "Baterai internal untuk bodi unibody.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "macbook-air-13",
+          "note": "Cek dulu nomor model di bodi laptop"
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0045",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 780000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=baterai+macbook+air+13",
+          "contact": "0812-0000-0045",
+          "last_checked": "2026-10-17"
+        },
+        {
+          "id": "src-0046",
+          "vendor_name": "Mitra Servis HP",
+          "city": "Jakarta Selatan",
+          "price": 845000,
+          "currency": "IDR",
+          "url": "https://shopee.co.id/search?keyword=baterai+macbook+air+13",
+          "contact": "0812-0000-0046",
+          "last_checked": "2026-10-05"
+        }
+      ]
+    },
+    {
+      "id": "part-0025",
+      "name": "Trackpad MacBook Air 13",
+      "part_number": "",
+      "category": "other",
+      "description": "Modul trackpad beserta kabel flex.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "macbook-air-13",
+          "note": ""
+        }
+      ],
+      "sources": [
+        {
+          "id": "src-0047",
+          "vendor_name": "Gawai Jaya Part",
+          "city": "Bandung",
+          "price": 650000,
+          "currency": "IDR",
+          "url": "https://www.tokopedia.com/search?st=product&q=trackpad+macbook+air+13",
+          "contact": "0812-0000-0047",
+          "last_checked": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "id": "part-0026",
+      "name": "Keyboard MacBook Air 13",
+      "part_number": "",
+      "category": "other",
+      "description": "Keyboard pengganti layout US.",
+      "image_url": "",
+      "compatible_devices": [
+        {
+          "slug": "macbook-air-13",
+          "note": ""
+        }
+      ],
+      "sources": []
+    }
+  ]
+}

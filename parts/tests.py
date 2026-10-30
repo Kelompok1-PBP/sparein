@@ -1,6 +1,12 @@
-from datetime import timedelta
+from copy import deepcopy
+from datetime import date, timedelta
+from io import StringIO
+from unittest import mock
 
+import requests
 from django.contrib.auth.models import AnonymousUser, User
+from django.core.cache import cache
+from django.core.management import call_command
 from django.db import IntegrityError, connection
 from django.db.models import ProtectedError
 from django.http import Http404
@@ -11,6 +17,7 @@ from django.utils import timezone
 
 from core.models import UserProfile
 from devices.models import Device, DeviceCategory
+from parts.mock_api import SyncFailure, fetch_parts, load_snapshot, upsert_parts
 from parts.models import PartCompatibility, PartSource, SparePart
 from parts.selectors import (
     get_part_or_404,
@@ -575,3 +582,288 @@ class ApiTests(TestCase):
 
     def test_only_get_allowed(self):
         self.assertEqual(self.client.post(self.url).status_code, 405)
+
+
+PAYLOAD = {
+    "version": "1.0",
+    "generated_at": "2026-10-30T09:00:00+07:00",
+    "parts": [
+        {
+            "id": "part-0001",
+            "name": "Baterai iPhone 11",
+            "part_number": "BAT-IP11",
+            "category": "battery",
+            "description": "Baterai pengganti.",
+            "image_url": "",
+            "compatible_devices": [
+                {"slug": "iphone-11", "note": "Bukan untuk Pro"},
+                {"slug": "belum-ada", "note": ""},
+            ],
+            "sources": [
+                {
+                    "id": "src-0001",
+                    "vendor_name": "Sinar Ponsel",
+                    "city": "Depok",
+                    "price": 185000,
+                    "currency": "IDR",
+                    "url": "https://toko.example/baterai",
+                    "contact": "0812-0000-0001",
+                    "last_checked": "2026-10-20",
+                }
+            ],
+        }
+    ],
+}
+
+
+class MockApiCase(TestCase):
+    def setUp(self):
+        cache.clear()
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.iphone = Device.objects.create(name="iPhone 11", category=cat, brand="Apple")
+        self.data = deepcopy(PAYLOAD)
+        self.row = self.data["parts"][0]
+        self.source = self.row["sources"][0]
+
+
+class FetchPartsTests(MockApiCase):
+    @mock.patch("parts.mock_api.requests.get")
+    def test_second_fetch_uses_cache(self, get):
+        get.return_value.json.return_value = self.data
+        fetch_parts()
+        fetch_parts()
+        self.assertEqual(get.call_count, 1)
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_fresh_skips_cache(self, get):
+        get.return_value.json.return_value = self.data
+        fetch_parts()
+        fetch_parts(fresh=True)
+        self.assertEqual(get.call_count, 2)
+
+    @mock.patch("parts.mock_api.requests.get", side_effect=requests.Timeout())
+    def test_timeout_raises_sync_failure(self, _):
+        with self.assertRaises(SyncFailure):
+            fetch_parts()
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_http_error_raises_sync_failure(self, get):
+        get.return_value.raise_for_status.side_effect = requests.HTTPError("404")
+        with self.assertRaises(SyncFailure):
+            fetch_parts()
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_invalid_json_raises_sync_failure(self, get):
+        get.return_value.json.side_effect = ValueError("bukan json")
+        with self.assertRaises(SyncFailure):
+            fetch_parts()
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_payload_without_parts_is_rejected_and_not_cached(self, get):
+        get.return_value.json.return_value = {"version": "1.0"}
+        with self.assertRaises(SyncFailure):
+            fetch_parts()
+        get.return_value.json.return_value = self.data
+        self.assertEqual(fetch_parts(), self.data)
+
+
+class UpsertPartsTests(MockApiCase):
+    def test_creates_part_with_device_and_source(self):
+        counts = upsert_parts(self.data)
+        self.assertEqual(counts, {"parts": 1, "sources": 1, "skipped": 1})
+        part = SparePart.objects.get(external_id="part-0001")
+        self.assertEqual(part.slug, "baterai-iphone-11")
+        self.assertIsNone(part.created_by)
+        self.assertEqual(part.compatibilities.get().note, "Bukan untuk Pro")
+        source = part.sources.get()
+        self.assertEqual((source.price, source.last_checked), (185000, date(2026, 10, 20)))
+
+    def test_second_sync_updates_without_duplicates(self):
+        upsert_parts(self.data)
+        self.row["name"] = "Baterai iPhone 11 Baru"
+        self.source["price"] = 199000
+        upsert_parts(self.data)
+        part = SparePart.objects.get()
+        self.assertEqual(part.name, "Baterai iPhone 11 Baru")
+        self.assertEqual(part.slug, "baterai-iphone-11")  # link lama tetap jalan
+        self.assertEqual(part.compatibilities.count(), 1)
+        self.assertEqual(part.sources.get().price, 199000)
+
+    def test_manual_data_untouched(self):
+        upsert_parts(self.data)
+        part = SparePart.objects.get()
+        manual = PartSource.objects.create(
+            part=part, vendor_name="Toko Manual", city="Bogor", price=150000,
+            url="https://toko.example/manual",
+        )
+        other = make_part("Baterai Manual", prices=[100000])
+        upsert_parts(self.data)
+        manual.refresh_from_db()
+        self.assertEqual(manual.vendor_name, "Toko Manual")
+        self.assertEqual(part.sources.count(), 2)
+        self.assertTrue(SparePart.objects.filter(pk=other.pk).exists())
+
+    def test_source_gone_from_feed_stays(self):
+        upsert_parts(self.data)
+        self.row["sources"] = []
+        upsert_parts(self.data)
+        self.assertEqual(PartSource.objects.get().external_id, "src-0001")
+
+    def test_invalid_rows_skipped(self):
+        for field, value in (
+            ("url", "http://toko.example"),
+            ("url", "javascript:alert(1)"),
+            ("price", 0),
+            ("last_checked", "kemarin"),
+            ("id", ""),
+            ("id", "x" * 51),
+        ):
+            with self.subTest(field=field, value=value):
+                row = {**self.source, field: value}
+                self.row["sources"] = [row]
+                counts = upsert_parts(self.data)
+                self.assertEqual((counts["sources"], counts["skipped"]), (0, 2))
+        self.assertFalse(PartSource.objects.exists())
+
+    def test_invalid_part_skipped_with_its_sources(self):
+        self.row["category"] = "gaib"
+        counts = upsert_parts(self.data)
+        self.assertEqual(counts, {"parts": 0, "sources": 0, "skipped": 1})
+        self.assertFalse(SparePart.objects.exists())
+
+    def test_broken_structure_rolls_back_everything(self):
+        cache.set("parts-mock-api", self.data)
+        # rusaknya di baris kedua, jadi baris pertama udah kesimpan dan harus ikut batal
+        broken = {**self.row, "id": "part-0002", "name": "Tanpa sources"}
+        del broken["sources"]
+        self.data["parts"].append(broken)
+        with self.assertRaises(SyncFailure):
+            upsert_parts(self.data)
+        self.assertFalse(SparePart.objects.exists())
+        self.assertIsNone(cache.get("parts-mock-api"))
+
+
+class SyncCommandTests(MockApiCase):
+    def run_command(self, *args):
+        out, err = StringIO(), StringIO()
+        call_command("sync_parts", *args, stdout=out, stderr=err)
+        return out.getvalue(), err.getvalue()
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_sync_from_api(self, get):
+        get.return_value.json.return_value = self.data
+        out, err = self.run_command()
+        self.assertIn("Synced 1 parts, 1 sources, 1 skipped", out)
+        self.assertEqual(err, "")
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_fresh_flag_skips_cache(self, get):
+        get.return_value.json.return_value = self.data
+        self.run_command()
+        self.run_command("--fresh")
+        self.assertEqual(get.call_count, 2)
+
+    @mock.patch("parts.mock_api.requests.get", side_effect=requests.ConnectionError("down"))
+    def test_api_down_falls_back_to_snapshot_without_duplicates(self, _):
+        out, err = self.run_command()
+        self.assertIn("loading snapshot", err)
+        self.assertIn("Synced", out)
+        total = SparePart.objects.count()
+        self.assertGreaterEqual(total, 20)
+        self.run_command()
+        self.assertEqual(SparePart.objects.count(), total)
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_broken_payload_falls_back_to_snapshot(self, get):
+        get.return_value.json.return_value = {"parts": [{"id": "part-0001"}]}
+        _, err = self.run_command()
+        self.assertIn("loading snapshot", err)
+        self.assertGreaterEqual(SparePart.objects.count(), 20)
+
+
+class SnapshotTests(TestCase):
+    fixtures = ["seed_devices"]
+
+    def test_every_snapshot_row_is_accepted(self):
+        data = load_snapshot()
+        counts = upsert_parts(data)
+        self.assertEqual(counts["skipped"], 0)
+        self.assertEqual(counts["parts"], len(data["parts"]))
+        self.assertEqual(counts["sources"], sum(len(p["sources"]) for p in data["parts"]))
+
+
+class SyncViewTests(MockApiCase):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse("parts:sync")
+        self.admin = make_user("a", UserProfile.Role.ADMIN)
+
+    def test_visitor_redirected_to_login(self):
+        resp = self.client.post(self.url)
+        self.assertEqual(resp.status_code, 302)
+        self.assertIn(reverse("login"), resp["Location"])
+        self.assertFalse(SparePart.objects.exists())
+
+    def test_member_and_contributor_forbidden(self):
+        for role in (UserProfile.Role.MEMBER, UserProfile.Role.CONTRIBUTOR):
+            with self.subTest(role=role):
+                self.client.force_login(make_user(role, role))
+                self.assertEqual(self.client.post(self.url).status_code, 403)
+        self.assertFalse(SparePart.objects.exists())
+
+    def test_anonymous_json_gets_401(self):
+        resp = self.client.post(self.url, headers={"accept": "application/json"})
+        self.assertEqual(resp.status_code, 401)
+
+    def test_get_not_allowed(self):
+        self.client.force_login(self.admin)
+        self.assertEqual(self.client.get(self.url).status_code, 405)
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_admin_sync_shows_toast(self, get):
+        get.return_value.json.return_value = self.data
+        self.client.force_login(self.admin)
+        resp = self.client.post(self.url, follow=True)
+        self.assertRedirects(resp, reverse("parts:list"))
+        self.assertContains(resp, "Sinkronisasi selesai: 1 suku cadang, 1 toko, 1 dilewati.")
+        self.assertTrue(SparePart.objects.filter(external_id="part-0001").exists())
+
+    @mock.patch("parts.mock_api.requests.get", side_effect=requests.Timeout())
+    def test_api_down_shows_error_and_keeps_data(self, _):
+        part = make_part("Baterai Lama", prices=[100000])
+        self.client.force_login(self.admin)
+        resp = self.client.post(self.url, follow=True)
+        self.assertContains(resp, "Mock API tidak dapat diakses.")
+        self.assertEqual(list(SparePart.objects.all()), [part])
+
+    @mock.patch("parts.mock_api.requests.get")
+    def test_json_response(self, get):
+        get.return_value.json.return_value = self.data
+        self.client.force_login(self.admin)
+        resp = self.client.post(self.url, headers={"accept": "application/json"})
+        self.assertEqual(resp.json(), {"parts": 1, "sources": 1, "skipped": 1})
+
+    @mock.patch("parts.mock_api.requests.get", side_effect=requests.Timeout())
+    def test_json_failure_returns_502(self, _):
+        self.client.force_login(self.admin)
+        resp = self.client.post(self.url, headers={"accept": "application/json"})
+        self.assertEqual(resp.status_code, 502)
+        self.assertIn("error", resp.json())
+
+    def test_button_only_for_admin(self):
+        url = reverse("parts:list")
+        self.assertNotContains(self.client.get(url), self.url)
+        self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
+        self.assertNotContains(self.client.get(url), self.url)
+        self.client.force_login(self.admin)
+        self.assertContains(self.client.get(url), self.url)
+
+    def test_synced_price_and_contact_hidden_from_visitor(self):
+        upsert_parts(self.data)
+        resp = self.client.get(reverse("parts:api"))
+        source = resp.json()["results"][0]["sources"][0]
+        self.assertEqual(set(source), {"vendor_name", "city", "url", "last_checked"})
+        self.assertNotContains(resp, "185000")
+        self.assertNotContains(resp, "0812-0000-0001")
+        detail = self.client.get(reverse("parts:detail", args=["baterai-iphone-11"]))
+        self.assertNotContains(detail, "0812-0000-0001")

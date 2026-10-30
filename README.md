@@ -163,7 +163,7 @@ erDiagram
 | Source | Type | Used by | Docs |
 |---|---|---|---|
 | iFixit API 2.0 | Public API eksternal, tanpa API key | M1, M3 | <https://www.ifixit.com/api/2.0/doc> |
-| Sparein Mock API | Mock API buatan kelompok | M4 | `docs/MOCK-API.md`, menyusul di Checkpoint 2 |
+| Sparein Mock API | Mock API buatan kelompok | M4 | [`docs/MOCK-API.md`](docs/MOCK-API.md) |
 
 **iFixit API 2.0** menyediakan katalog perangkat dan panduan perbaikan terbuka.
 
@@ -176,6 +176,12 @@ erDiagram
 Data ditarik lewat management command `seed_devices`, lalu disimpan ke database sebagai initial data dengan minimal 50 perangkat utama saat deployment. Respons juga di-cache supaya halaman tidak bergantung pada ketersediaan API saat demo.
 
 **Mock API** dibutuhkan karena tidak ada Public API untuk harga dan ketersediaan suku cadang di Indonesia. Kelompok menerbitkan sendiri endpoint JSON di luar repositori proyek, lalu M4 mengonsumsinya lewat HTTP seperti API pihak ketiga, bukan sebagai data statis yang ditulis langsung di dalam kode.
+
+| Endpoint | Returns | Mapped to |
+|---|---|---|
+| `GET https://kelompok1-pbp.github.io/sparein-mock-api/v1/parts.json` | suku cadang, perangkat yang cocok, toko beserta harga | `SparePart`, `PartCompatibility`, `PartSource` |
+
+Data ditarik lewat management command `sync_parts` atau tombol sinkronisasi khusus Admin di `/parts/`, lalu disimpan ke database. Kalau API tidak bisa diakses, `sync_parts` memakai salinan lokal.
 
 ---
 
@@ -358,6 +364,7 @@ cp .env.example .env           # isi kredensial database
 python manage.py migrate
 python manage.py seed_devices  # tarik initial data dari iFixit API
 python manage.py loaddata seed_devices  # alternatif tanpa internet
+python manage.py sync_parts    # tarik suku cadang dari Mock API, tanpa internet pakai salinan lokal
 python manage.py runserver
 ```
 
