@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="../docs/brand/sparein-lockup-dark.svg">
-    <img src="../docs/brand/sparein-lockup.svg" alt="Sparein" width="320">
+    <img src="docs/brand/sparein-lockup.svg" alt="Sparein" width="420">
   </picture>
 </p>
 
@@ -25,6 +25,8 @@
   <a href="#5-config">Config</a> ·
   <a href="#6-migration">Migration</a> ·
   <a href="#7-changelog">Changelog</a>
+  ·
+  <a href="#8-ai-disclosure">AI Disclosure</a>
 </p>
 
 ---
@@ -33,8 +35,8 @@
 
 | | |
 |---|---|
-| **Purpose** | Mencatat perbaikan yang direncanakan, dikerjakan, berhasil, atau gagal, lalu menghitung otomatis dampaknya: **limbah elektronik yang dihindari (kg)** dan **biaya beli baru yang dihemat (Rp)**. |
-| **Owner (PIC)** | Marsya Rizka Aulia, NPM 2506586236, Kelompok 1 |
+| **Purpose** | Mencatat perbaikan yang direncanakan, dikerjakan, berhasil, atau gagal, lalu menghitung otomatis dampaknya, yaitu **limbah elektronik yang dihindari (kg)** dan **biaya beli baru yang dihemat (Rp)**. |
+| **Owner (PIC)** | Marsya Rizka Aulia, NPM 2506586236 |
 | **Versi** | `1.0.0` |
 | **Django app** | `journal` |
 | **Role yang boleh memakai** | Member, Contributor, Admin. Visitor hanya melihat counter dampak seluruh situs. |
@@ -157,13 +159,13 @@ Dipakai di seluruh tabel kontrak di bawah.
 
 | Kode | Penyebab | Retryable? |
 |---|---|---|
-| `302` ke login | Visitor mengakses halaman Member | **Tidak.** Login dulu, lalu ulangi. |
+| `302` | Visitor mengakses halaman Member | **Tidak.** Login dulu, lalu ulangi. |
 | `400` | Validasi form gagal, atau nilai `status` tidak dikenal | **Tidak.** Perbaiki input, mengulang payload yang sama pasti gagal lagi. |
 | `403` `Akses ditolak.` | Visitor memanggil endpoint JSON | **Tidak** sampai pengguna login. |
 | `403` CSRF | Token CSRF hilang atau kedaluwarsa | **Ya, sekali**, setelah memuat ulang halaman untuk mengambil token baru. |
 | `404` | Objek tidak ada atau bukan milik pemanggil | **Tidak.** |
 | `405` | HTTP method tidak diizinkan | **Tidak.** |
-| `500` (DB lock, koneksi putus, `IntegrityError` saat dua request menulis estimasi bersamaan) | Kegagalan sementara di sisi server | **Ya** untuk method idempoten. Untuk `create`, cek dulu apakah catatan sudah terbuat agar tidak dobel. |
+| `500` | Kegagalan sementara di sisi server | **Ya** untuk method idempoten. Untuk `create`, cek dulu apakah catatan sudah terbuat agar tidak dobel. |
 
 ---
 
@@ -340,7 +342,7 @@ Urutan pencarian profil saat perangkat berada di kategori bertingkat:
 ```text
 Device "iPhone 12"
  └─ Kategori "Apple iPhone"   → tidak punya profil, naik ke induk
-     └─ Kategori "Phone"      → punya profil (0,20 kg · Rp 3.000.000)  ✔ dipakai
+     └─ Kategori "Phone"      → punya profil (0.20 kg, Rp 3.000.000)  ✔ dipakai
 ```
 
 Alur satu perubahan status lewat AJAX:
@@ -684,8 +686,6 @@ python manage.py test journal
 
 ## 7. Changelog
 
-<!-- Tanggal diambil dari riwayat berkas. Sesuaikan dengan git log bila berbeda. -->
-
 Mengikuti [Semantic Versioning](https://semver.org/lang/id/).
 
 ### 1.0.0 · 2026-10-29
@@ -711,6 +711,12 @@ Mengikuti [Semantic Versioning](https://semver.org/lang/id/).
 
 - Model `RepairLog`, `CategoryImpactProfile`, `ImpactEstimate` beserta migration `0001` dan `0002`.
 - Perhitungan dampak awal lewat `sync_impact`.
+
+---
+
+## 8. AI Disclosure
+
+AI digunakan selama proses pengembangan untuk mendukung riset teknis, pemecahan masalah, dan penyusunan dokumentasi. Bantuan AI terutama dimanfaatkan untuk memahami keterkaitan antarmodul, menjaga konsistensi dengan konvensi proyek yang disepakati bersama, mengeksplorasi alternatif pendekatan implementasi, serta menyempurnakan cakupan pengujian dalam lingkungan kerja kolaboratif. Setiap saran yang dihasilkan AI ditinjau, disesuaikan, dan divalidasi kembali berdasarkan kebutuhan proyek. Keputusan arsitektur, implementasi, integrasi, serta tanggung jawab akhir atas modul ini tetap berada pada pengembang yang bersangkutan.
 
 ---
 
