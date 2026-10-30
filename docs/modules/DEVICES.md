@@ -115,3 +115,7 @@ Semua field yang tipenya string; `brand` dan `image_url` boleh string kosong. Ti
 ## Changelog
 
 - **1.0, 30 Oktober 2026:** kontrak pertama berdasarkan #9, #12 s.d. #14, #23, dan #27.
+
+## AI Disclosure
+
+Saya menggunakan AI dalam fix bug/error, memperbaiki kosakata saya yang kurang baik, dan membantu saya memahami project di bagian yang saya tidak mengerti. Jika reviewer membaca dan menganalisa bahwa dokumentasi saya mungkin terlihat seperti AI generate mungkin menurut saya pribadi itu adalah dokumenetasi standard yang saya sukai, dan saya nyaman akan dokumentasi tersebut karena saya mudah memahaminya, tapi tentunya dokumentasi tersebut melalui proses brainstorming terlebih dahulu jadi TIDAK SEMENTAH-MENTAH dilakukan oleh AI secara keseluruhan
