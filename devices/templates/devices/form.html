@@ -6,7 +6,7 @@
 <nav class="breadcrumb form-breadcrumb" aria-label="Breadcrumb">
   <a href="{% url 'devices:list' %}">Perangkat</a>
   <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
-  <span>{% if form.instance.pk %}Ubah{% else %}Tambah{% endif %}</span>
+  <span aria-current="page">{% if form.instance.pk %}Ubah{% else %}Tambah{% endif %}</span>
 </nav>
 <div class="form-page card">
   <h1>{% if form.instance.pk %}Ubah {{ form.instance.name }}{% else %}Tambah perangkat{% endif %}</h1>

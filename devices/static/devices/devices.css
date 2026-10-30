@@ -62,15 +62,6 @@
 .device-card__brand { margin: 2px 0 0; padding: 0 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
 
 /* ---------- detail ---------- */
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 16px;
-  font-size: 14px;
-  color: var(--muted);
-}
-
 .detail { display: grid; gap: 24px; }
 
 .detail__img { padding: 12px; }
@@ -137,4 +128,3 @@
   .detail { grid-template-columns: 1fr 1fr; align-items: start; }
   .form-page { padding: 32px; }
 }
-.breadcrumb a { text-decoration: none; }

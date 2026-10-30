@@ -15,8 +15,6 @@
 .symptom-desc:hover { border-color: var(--blue-200); }
 .section { margin-block: 32px; }
 
-.breadcrumb { margin-bottom: 16px; font-size: 14px; line-height: 20px; color: var(--muted); }
-.breadcrumb a { color: var(--muted); }
 
 /* tombol bahaya, dipakai buat hapus */
 .btn--danger { color: var(--danger); border-color: var(--danger); }

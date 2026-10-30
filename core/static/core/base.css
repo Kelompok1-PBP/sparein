@@ -572,6 +572,22 @@ img { max-width: 100%; }
   .status-page__actions { flex-direction: row; justify-content: center; width: auto; }
 }
 
+/* ---------- breadcrumb ---------- */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted);
+}
+
+.breadcrumb a { color: var(--muted); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb [aria-current="page"] { color: var(--ink); font-weight: 600; }
+
 /* ---------- dialog konfirmasi hapus ---------- */
 .confirm { max-width: 480px; margin: 32px auto 0; padding: 32px; }
 .confirm:hover { border-color: var(--blue-200); }
