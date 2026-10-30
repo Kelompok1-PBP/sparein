@@ -11,8 +11,8 @@ class GuideForm(InputStyleMixin, forms.ModelForm):
     class Meta:
         model = RepairGuide
         fields = [
-            "device",
             "title",
+            "device",
             "summary",
             "difficulty",
             "time_required_minutes",
@@ -96,7 +96,7 @@ class FilterForm(forms.Form):
     max_time = forms.IntegerField(required=False, min_value=1)
 
 
-class ImportGuideForm(forms.Form):
+class ImportGuideForm(InputStyleMixin, forms.Form):
     guide_id = forms.IntegerField(min_value=1, label="ID panduan iFixit")
     device = forms.ModelChoiceField(queryset=None, label="Perangkat yang sesuai")
     minutes = forms.IntegerField(
