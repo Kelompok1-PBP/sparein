@@ -1,6 +1,26 @@
-{% extends "base.html" %}
+{% extends "auth_base.html" %}
 {% block title %}Daftar · Sparein{% endblock %}
+{% block mode %}register{% endblock %}
+
+{% block mode_link_top %}
+  <p class="auth__switch-top">Sudah punya akun? <a href="{% url 'login' %}" data-auth-switch>Masuk</a></p>
+{% endblock %}
+
+{% block tagline %}<span>Mulai perbaiki</span><span>barangmu sendiri.</span>{% endblock %}
+
 {% block content %}
-<h1>Daftar</h1>
-<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Daftar</button></form>
+  <div class="auth__heading">
+    <h1 class="auth__title">Bikin akun Sparein</h1>
+    <p class="auth__lead">Gratis. Buka langkah panduan lengkap, harga suku cadang, dan jurnal perbaikan.</p>
+  </div>
+
+  <form class="auth__form" method="post" novalidate data-auth-form>
+    {% csrf_token %}
+    {% include "partials/form_field.html" with field=form.username label="Username" kind="text" autocomplete="username" hint="Maksimal 150 karakter. Boleh huruf, angka, dan @ . + - _" %}
+    {% include "partials/form_field.html" with field=form.password1 label="Password" kind="password" autocomplete="new-password" hint="Minimal 8 karakter, jangan cuma angka, dan jangan terlalu mirip username." %}
+    {% include "partials/form_field.html" with field=form.password2 label="Ulangi password" kind="password" autocomplete="new-password" %}
+    <button class="btn btn--primary btn--block" type="submit">Daftar</button>
+  </form>
+
+  <p class="auth__switch">Sudah punya akun? <a class="link" href="{% url 'login' %}" data-auth-switch>Masuk</a></p>
 {% endblock %}

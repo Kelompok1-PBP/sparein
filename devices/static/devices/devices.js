@@ -1,27 +1,59 @@
 const form = document.getElementById("device-filter");
 const results = document.getElementById("device-results");
 
-// textContent bukan innerHTML biar nama device ga ke-render jadi HTML
+// Bikin elemen + isi teksnya. Pakai textContent bukan innerHTML biar nama device ga ke-render jadi HTML
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text) node.textContent = text;
+  return node;
+}
+
+// Markup kartu ini harus sama dengan devices/_card.html
+function makeCard(d) {
+  const article = el("article", "device-card");
+  const link = el("a", "device-card__link");
+  link.href = d.url;
+
+  const box = el("div", "device-card__img");
+  const img = el("img");
+  img.alt = "";
+  img.loading = "lazy";
+  if (d.image_url) {
+    img.src = d.image_url;
+  } else {
+    img.src = results.dataset.placeholder;
+    img.className = "is-placeholder";
+    img.width = 40;
+    img.height = 40;
+  }
+  box.append(img);
+
+  link.append(box, el("h3", "device-card__name", d.name));
+  if (d.brand) link.append(el("p", "device-card__brand", d.brand));
+  article.append(link);
+  return article;
+}
+
+// Markup ini sama dengan partials/empty_state.html
+function makeEmpty() {
+  const box = el("div", "empty-state");
+  const img = el("img");
+  img.src = results.dataset.emptyIcon;
+  img.alt = "";
+  img.width = 48;
+  img.height = 48;
+  box.append(img, el("p", "", "Perangkat tidak ditemukan."));
+  return box;
+}
+
 function render(items) {
   results.replaceChildren();
   if (!items.length) {
-    const p = document.createElement("p");
-    p.textContent = "Perangkat tidak ditemukan.";
-    results.append(p);
+    results.append(makeEmpty());
     return;
   }
-  for (const d of items) {
-    const article = document.createElement("article");
-    const h3 = document.createElement("h3");
-    const a = document.createElement("a");
-    a.href = d.url;
-    a.textContent = d.name;
-    h3.append(a);
-    const p = document.createElement("p");
-    p.textContent = d.brand;
-    article.append(h3, p);
-    results.append(article);
-  }
+  for (const d of items) results.append(makeCard(d));
 }
 
 async function search() {

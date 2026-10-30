@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ title }} · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'parts/parts.css' %}">{% endblock %}
+{% block content %}
+<div class="parts-form">
+  <div>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'parts:list' %}">Suku Cadang</a>
+      <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+      <span aria-current="page">{% if title|slice:":6" == "Tambah" %}Tambah{% else %}Ubah{% endif %}</span>
+    </nav>
+    <h1>{{ title }}</h1>
+    <p class="parts-muted">Isi info suku cadangnya, perangkat yang cocok, dan toko yang jual.</p>
+  </div>
+  {% if form.errors or compat.total_error_count or sources.total_error_count %}
+    {% include "partials/alert.html" with kind="error" message="Ada isian yang belum benar. Cek lagi yang ditandai merah." %}
+  {% endif %}
+
+  <form class="parts-form__body" method="post">
+    {% csrf_token %}
+    <section class="card part-form-card" aria-labelledby="info-title">
+      <h2 id="info-title">Info suku cadang</h2>
+      {% include "parts/_field.html" with field=form.name %}
+      {% include "parts/_field.html" with field=form.part_number %}
+      {% include "parts/_field.html" with field=form.category %}
+      {% include "parts/_field.html" with field=form.description %}
+      {% include "parts/_field.html" with field=form.image_url %}
+    </section>
+
+    <section class="card part-form-card" aria-labelledby="compat-title">
+      <h2 id="compat-title">Cocok untuk perangkat</h2>
+      {{ compat.management_form }}
+      {% for error in compat.non_form_errors %}{% include "partials/alert.html" with kind="error" message=error %}{% endfor %}
+      <div class="part-rows" id="compat-rows">{% for row in compat %}{% include "parts/_compat_row.html" with number=forloop.counter %}{% endfor %}</div>
+      {# tombol tambah baris dimunculin form.js #}
+      <button class="btn btn--secondary" type="button" data-add-row="compat" hidden><img src="{% static 'core/icons/plus-blue.svg' %}" alt="" width="20" height="20">Tambah perangkat</button>
+      <template id="compat-template">{% include "parts/_compat_row.html" with row=compat.empty_form number="" %}</template>
+    </section>
+
+    <section class="card part-form-card" aria-labelledby="sources-title">
+      <div>
+        <h2 id="sources-title">Tempat beli</h2>
+        <p class="parts-muted">Opsional. Tambahkan toko yang kamu tahu menjual suku cadang ini.</p>
+      </div>
+      {{ sources.management_form }}
+      {% for error in sources.non_form_errors %}{% include "partials/alert.html" with kind="error" message=error %}{% endfor %}
+      <div class="part-rows" id="sources-rows">{% for row in sources %}{% include "parts/_source_row.html" with number=forloop.counter %}{% endfor %}</div>
+      <button class="btn btn--secondary" type="button" data-add-row="sources" hidden><img src="{% static 'core/icons/plus-blue.svg' %}" alt="" width="20" height="20">Tambah toko</button>
+      <template id="sources-template">{% include "parts/_source_row.html" with row=sources.empty_form number="" %}</template>
+    </section>
+
+    <div class="parts-form__actions">
+      <a class="btn btn--secondary" href="{{ cancel_url }}">Batal</a>
+      <button class="btn btn--primary" type="submit">Simpan suku cadang</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'parts/form.js' %}" defer></script>{% endblock %}

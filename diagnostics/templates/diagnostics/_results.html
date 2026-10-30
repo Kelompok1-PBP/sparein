@@ -1,0 +1,26 @@
+{# Panel hasil. Parameter: results, ticked, guides_url. Markup-nya harus sama dengan yang dibuat diagnostics.js #}
+{% load static %}
+{% if results %}
+  <p class="result-count">{{ results|length }} kemungkinan ditemukan</p>
+  <ol class="results">
+    {% for r in results %}
+      <li class="result">
+        <span class="result__rank">{{ forloop.counter }}</span>
+        <div class="result__body">
+          <h3 class="result__title">{{ r.cause.title }}</h3>
+          <span class="bar bar--{{ r.likelihood }}" aria-hidden="true"><span></span></span>
+          <p class="result__likelihood">Kemungkinan {{ r.likelihood_label|lower }}</p>
+          {% if r.note %}<p class="result__note">{{ r.note }}</p>{% endif %}
+          <a class="link" href="{{ guides_url }}">Lihat panduan terkait</a>
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
+{% elif ticked %}
+  <div class="empty-state"><p>Belum ada kemungkinan yang cocok buat kombinasi gejala ini.</p><a class="link" href="{{ guides_url }}">Lihat panduan</a></div>
+{% else %}
+  <div class="empty-state">
+    <img src="{% static 'core/icons/stethoscope-muted.svg' %}" alt="" width="48" height="48">
+    <p>Centang gejala di sebelah kiri buat lihat kemungkinan masalahnya.</p>
+  </div>
+{% endif %}

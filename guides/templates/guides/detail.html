@@ -1,0 +1,93 @@
+{% extends "guides/base.html" %}
+{% load static guide_format %}
+{% block title %}{{ guide.title }} · Sparein{% endblock %}
+{% block content %}
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="{% url 'guides:list' %}">Panduan</a>
+  <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+  <span aria-current="page">{{ guide.title }}</span>
+</nav>
+
+<header class="guide-head">
+  <h1>{{ guide.title }}{% if not guide.published %} <span class="guide-head__draft">Draf</span>{% endif %}</h1>
+  <p class="guide-meta guide-meta--lg">
+    <span class="difficulty difficulty--{{ guide.difficulty|difficulty_tone }}">{{ guide.difficulty|difficulty_label }}</span>
+    <span><img src="{% static 'core/icons/clock-muted.svg' %}" alt="" width="16" height="16">{{ guide.time_required_minutes|duration_label }}</span>
+    <span><img src="{% static 'core/icons/list-checks-muted.svg' %}" alt="" width="16" height="16">{{ steps|length }} langkah</span>
+    <span><img src="{% static 'core/icons/user-muted.svg' %}" alt="" width="16" height="16">oleh {{ guide.author.username }}</span>
+  </p>
+  <p class="guide-head__summary">{{ guide.summary }}</p>
+  {% if guide.ifixit_guideid %}
+    <p class="guide-head__source">Diadaptasi dari {{ guide.source_author|default:"kontributor iFixit" }} di <a href="https://www.ifixit.com/Guide/-/{{ guide.ifixit_guideid }}">iFixit</a>. Periksa sumber asli, teks mungkin disederhanakan. <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a></p>
+  {% endif %}
+  <div class="guide-head__actions">
+    {% if user.is_authenticated %}<a class="btn btn--primary" href="{% url 'journal:create' %}?guide={{ guide.slug }}"><img src="{% static 'core/icons/notebook-pen-white.svg' %}" alt="" width="20" height="20">Catat perbaikan ini</a>{% endif %}
+    {% if can_edit %}<a class="btn btn--secondary" href="{% url 'guides:edit' guide.slug %}"><img src="{% static 'core/icons/pencil-blue.svg' %}" alt="" width="20" height="20">Ubah</a>{% endif %}
+    {% if can_delete %}<a class="btn btn--danger-outline" href="{% url 'guides:delete' guide.slug %}"><img src="{% static 'core/icons/trash-danger.svg' %}" alt="" width="20" height="20">Hapus</a>{% endif %}
+  </div>
+</header>
+
+<div class="guide-detail">
+  <div class="guide-detail__main">
+    <section aria-labelledby="warnings-title">
+      <h2 id="warnings-title">Peringatan keselamatan</h2>
+      {% for warning in guide.warnings.all %}
+        <div class="safety safety--{{ warning.level }}" role="note">
+          <img src="{% static 'core/icons/' %}{% if warning.level == 'danger' %}circle-alert-danger{% elif warning.level == 'caution' %}triangle-alert-warning{% else %}info-blue{% endif %}.svg" alt="" width="20" height="20">
+          <div>
+            <p class="safety__title">{{ warning.get_level_display }}</p>
+            <p class="safety__text">{{ warning.message }}</p>
+          </div>
+        </div>
+      {% empty %}
+        <p class="guide-detail__none">Belum ada peringatan khusus yang ditambahkan oleh penulis.</p>
+      {% endfor %}
+    </section>
+
+    <section aria-labelledby="steps-title">
+      <h2 id="steps-title">Langkah-langkah</h2>
+      {% if not user.is_authenticated %}
+        <div class="alert alert--info"><img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20"><p><a href="{% url 'login' %}?next={{ request.path|urlencode }}">Masuk</a> untuk membaca detail langkah lengkap.</p></div>
+      {% endif %}
+      <ol class="guide-steps">
+        {% for step in steps %}
+          <li class="guide-step">
+            <h3 class="guide-step__title"><span class="guide-step__num" aria-hidden="true">{{ step.order }}</span>{{ step.title }}</h3>
+            {% if user.is_authenticated %}
+              <div class="guide-step__photo">
+                {% if step.image_url %}<img src="{{ step.image_url }}" alt="Ilustrasi {{ step.title }}" loading="lazy" referrerpolicy="no-referrer">{% else %}<img src="{% static 'core/icons/image-sky.svg' %}" alt="" width="40" height="40">{% endif %}
+              </div>
+              <p class="guide-step__text">{{ step.detail|linebreaksbr }}</p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    {% if user.is_authenticated %}
+      <section class="guide-done" aria-label="Setelah selesai">
+        <p class="guide-done__title">Sudah selesai? Catat hasilnya biar dampaknya kehitung.</p>
+        <a class="btn btn--primary" href="{% url 'journal:create' %}?guide={{ guide.slug }}"><img src="{% static 'core/icons/notebook-pen-white.svg' %}" alt="" width="20" height="20">Catat perbaikan ini</a>
+      </section>
+    {% endif %}
+  </div>
+
+  <aside class="guide-detail__side" aria-label="Info panduan">
+    <section class="card guide-side">
+      <h2>Perangkat</h2>
+      <a class="guide-device" href="{% url 'devices:detail' guide.device.slug %}">
+        <span class="guide-device__img"><img src="{% if guide.device.image_url %}{{ guide.device.image_url }}{% else %}{% static 'core/icons/smartphone-muted.svg' %}{% endif %}" alt="" width="40" height="40"></span>
+        <span><span class="guide-device__name">{{ guide.device.name }}</span>{% if guide.device.brand %}<span class="guide-device__brand">{{ guide.device.brand }}</span>{% endif %}</span>
+      </a>
+    </section>
+    <section class="card guide-side">
+      <h2>Alat yang dibutuhkan</h2>
+      {% if guide.tools %}<ul class="guide-tools">{% for tool in guide.tools.splitlines %}{% if tool.strip %}<li>{{ tool }}</li>{% endif %}{% endfor %}</ul>{% else %}<p class="guide-detail__none">Tidak ada alat khusus.</p>{% endif %}
+    </section>
+    <section class="card guide-side">
+      <h2>Butuh suku cadang?</h2>
+      <a class="link" href="{% url 'parts:list' %}?device={{ guide.device.slug }}">Cari suku cadang {{ guide.device.name }}</a>
+    </section>
+  </aside>
+</div>
+{% endblock %}

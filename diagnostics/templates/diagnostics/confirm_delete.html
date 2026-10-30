@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Hapus gejala · Sparein{% endblock %}
+{% block content %}
+{% url 'diagnostics:detail' symptom.slug as cancel_url %}
+{% include "partials/confirm_dialog.html" with title='Hapus "'|add:symptom.title|add:'"?' text="Gejala ini akan dihapus permanen dan ngga bisa dikembalikan." cancel_url=cancel_url %}
+{% endblock %}

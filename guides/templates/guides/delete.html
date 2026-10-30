@@ -1,0 +1,6 @@
+{% extends "guides/base.html" %}
+{% block title %}Hapus panduan · Sparein{% endblock %}
+{% block content %}
+{% url 'guides:detail' guide.slug as cancel_url %}
+{% include "partials/confirm_dialog.html" with title='Hapus "'|add:guide.title|add:'"?' text="Panduan ini beserta langkah dan peringatannya akan dihapus permanen dan ngga bisa dikembalikan." cancel_url=cancel_url %}
+{% endblock %}

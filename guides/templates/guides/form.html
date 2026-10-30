@@ -1,0 +1,65 @@
+{% extends "guides/base.html" %}
+{% load static %}
+{% block title %}{% if editing %}Ubah{% else %}Tulis{% endif %} panduan · Sparein{% endblock %}
+{% block content %}
+<div class="guide-form">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{% url 'guides:list' %}">Panduan</a>
+    <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+    <span aria-current="page">{% if editing %}Ubah{% else %}Tulis{% endif %}</span>
+  </nav>
+  <h1>{% if editing %}Ubah panduan{% else %}Tulis panduan{% endif %}</h1>
+
+  <form method="post" novalidate>{% csrf_token %}
+    {% if form.errors or steps.total_error_count or warnings.total_error_count or steps.non_form_errors or warnings.non_form_errors %}
+      <div class="alert alert--error" role="alert"><img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="20" height="20"><p>Ada isian yang belum benar. Cek bagian yang bertanda merah.</p></div>
+    {% endif %}
+
+    <section class="form-section" aria-labelledby="basic-title">
+      <h2 class="form-section__title" id="basic-title">1. Info dasar</h2>
+      <div class="card form-card">
+        {% for field in form %}{% if field.name != "published" %}{% include "partials/model_field.html" %}{% endif %}{% endfor %}
+      </div>
+    </section>
+
+    <section class="form-section" aria-labelledby="warnings-title">
+      <h2 class="form-section__title" id="warnings-title">2. Peringatan keselamatan</h2>
+      <div class="card form-card">
+        <div class="safety safety--caution" role="note">
+          <img src="{% static 'core/icons/triangle-alert-warning.svg' %}" alt="" width="20" height="20">
+          <p class="safety__text">Kalau ada langkah yang berisiko (listrik, panas, baterai, benda tajam), wajib kasih peringatan.</p>
+        </div>
+        {{ warnings.management_form }}
+        {% if warnings.non_form_errors %}<p class="field__msg field__msg--error">{{ warnings.non_form_errors|join:" " }}</p>{% endif %}
+        <div data-rows="warnings">
+          {% for row in warnings %}{% include "guides/_formset_row.html" with row=row label="Peringatan" %}{% endfor %}
+        </div>
+        <button type="button" class="btn btn--secondary add-row" data-prefix="warnings"><img src="{% static 'core/icons/plus-blue.svg' %}" alt="" width="20" height="20">Tambah peringatan</button>
+        <template id="warnings-template">{% include "guides/_formset_row.html" with row=warnings.empty_form label="Peringatan" %}</template>
+      </div>
+    </section>
+
+    <section class="form-section" aria-labelledby="steps-title">
+      <h2 class="form-section__title" id="steps-title">3. Langkah-langkah</h2>
+      <div class="card form-card">
+        {{ steps.management_form }}
+        {% if steps.non_form_errors %}<p class="field__msg field__msg--error">{{ steps.non_form_errors|join:" " }}</p>{% endif %}
+        <div data-rows="steps">
+          {% for row in steps %}{% include "guides/_formset_row.html" with row=row label="Langkah" movable=True %}{% endfor %}
+        </div>
+        <button type="button" class="btn btn--secondary add-row" data-prefix="steps"><img src="{% static 'core/icons/plus-blue.svg' %}" alt="" width="20" height="20">Tambah langkah</button>
+        <template id="steps-template">{% include "guides/_formset_row.html" with row=steps.empty_form label="Langkah" movable=True %}</template>
+      </div>
+    </section>
+
+    <div class="card form-card guide-form__footer">
+      <label class="filter-option"><input type="checkbox" name="{{ form.published.html_name }}" id="{{ form.published.id_for_label }}"{% if form.published.value %} checked{% endif %}>{{ form.published.label }}</label>
+      <div class="guide-form__actions">
+        <a class="btn btn--secondary" href="{% url 'guides:list' %}">Batal</a>
+        <button type="submit" class="btn btn--primary">Simpan panduan</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'guides/form.js' %}" defer></script>{% endblock %}

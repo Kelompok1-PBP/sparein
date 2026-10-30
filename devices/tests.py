@@ -4,6 +4,7 @@ from unittest import mock
 import requests
 from django.contrib.auth.models import User
 from django.core.management import call_command
+from django.db.models import ProtectedError
 from django.http import Http404
 from django.test import TestCase
 from django.urls import reverse
@@ -118,6 +119,65 @@ class PageTests(TestCase):
         self.assertEqual(resp.status_code, 404)
 
 
+class DeviceUiTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.device = Device.objects.create(
+            name="iPhone 12", category=cat, brand="Apple", repairability_score=6)
+
+    def test_list_uses_device_card_and_css(self):
+        resp = self.client.get(reverse("devices:list"))
+        self.assertContains(resp, 'class="device-card"')
+        self.assertContains(resp, "devices/devices.css")
+
+    def test_list_hides_add_button_from_visitor(self):
+        self.assertNotContains(self.client.get(reverse("devices:list")), "Tambah perangkat")
+
+    def test_detail_shows_score_bar(self):
+        resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
+        self.assertContains(resp, "6/10")
+        self.assertContains(resp, "is-on", count=6)
+
+    def test_detail_meta_line_joins_brand_category_and_year(self):
+        self.device.release_year = 2020
+        self.device.save()
+        resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
+        self.assertContains(resp, "Apple · Phone · Rilis 2020")
+
+    def test_detail_without_score_has_no_bar(self):
+        self.device.repairability_score = None
+        self.device.save()
+        resp = self.client.get(reverse("devices:detail", args=[self.device.slug]))
+        self.assertNotContains(resp, "score__bar")
+
+    def test_delete_page_uses_confirm_dialog(self):
+        self.client.force_login(make_user("adm", UserProfile.Role.ADMIN))
+        resp = self.client.get(reverse("devices:delete", args=[self.device.slug]))
+        self.assertContains(resp, "confirm__icon")
+        self.assertContains(resp, 'Hapus &quot;iPhone 12&quot;?')
+        self.assertNotContains(resp, "masih dipakai")
+
+    def test_delete_page_explains_when_device_is_still_used(self):
+        admin = make_user("adm", UserProfile.Role.ADMIN)
+        self.client.force_login(admin)
+        with mock.patch.object(Device, "delete", side_effect=ProtectedError("x", set())):
+            resp = self.client.post(reverse("devices:delete", args=[self.device.slug]))
+        self.assertContains(resp, "masih dipakai")
+
+    def test_form_uses_indonesian_labels_and_marks_optional_fields(self):
+        self.client.force_login(make_user("sari", UserProfile.Role.CONTRIBUTOR))
+        resp = self.client.get(reverse("devices:create"))
+        self.assertContains(resp, "Nama perangkat")
+        self.assertContains(resp, "(opsional)", count=5)
+        self.assertContains(resp, "Simpan perangkat")
+
+    def test_form_shows_field_error(self):
+        user = make_user("sari", UserProfile.Role.CONTRIBUTOR)
+        self.client.force_login(user)
+        resp = self.client.post(reverse("devices:create"), {"name": ""})
+        self.assertContains(resp, "field__msg--error")
+
+
 def make_user(name, role=UserProfile.Role.MEMBER):
     user = User.objects.create_user(name, password="x")
     user.profile.role = role
@@ -212,3 +272,18 @@ class ApiTests(TestCase):
     def test_filters_by_brand(self):
         data = self.client.get(reverse("devices:api"), {"brand": "samsung"}).json()
         self.assertEqual([d["name"] for d in data["results"]], ["Galaxy S21"])
+
+class ProtectedDeleteTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.device = Device.objects.create(name="iPhone 12", category=cat, brand="Apple")
+        self.url = reverse("devices:delete", args=[self.device.slug])
+        self.client.force_login(make_user("a", UserProfile.Role.ADMIN))
+
+    def test_device_with_linked_rows_is_kept_with_message(self):
+        err = ProtectedError("linked", {self.device})
+        with mock.patch.object(Device, "delete", side_effect=err):
+            resp = self.client.post(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "masih dipakai")
+        self.assertTrue(Device.objects.filter(pk=self.device.pk).exists())

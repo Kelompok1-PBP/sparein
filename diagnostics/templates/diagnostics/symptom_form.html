@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{% if form.instance.pk %}Ubah{% else %}Tambah{% endif %} gejala · Sparein{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'diagnostics/diagnostics.css' %}">{% endblock %}
+{% block content %}
+<div class="form-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{% url 'diagnostics:list' %}">Diagnosa</a>
+    <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+    <span aria-current="page">{% if form.instance.pk %}Ubah{% else %}Tambah{% endif %}</span>
+  </nav>
+  <h1>{% if form.instance.pk %}Ubah gejala{% else %}Tambah gejala{% endif %}</h1>
+  <form method="post" novalidate>{% csrf_token %}
+    {% if form.errors %}
+      {% with count=form.errors|length|stringformat:"d" %}
+        {% include "partials/alert.html" with kind="error" message="Ada "|add:count|add:" isian yang perlu dibenerin." %}
+      {% endwith %}
+    {% endif %}
+    <div class="card form-page__card">
+      {% for field in form %}
+        <div class="field">
+          {% if field.name == "severity" %}
+            <span class="field__label" id="{{ field.id_for_label }}-label">{{ field.label }}</span>
+          {% else %}
+            <label class="field__label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="field__req" aria-hidden="true">*</span>{% endif %}</label>
+          {% endif %}
+          {% if field.name == "device" %}
+            <input class="input device-filter" type="search" placeholder="Cari perangkat" aria-label="Cari perangkat" data-filter-for="{{ field.id_for_label }}" hidden>
+          {% endif %}
+          {{ field }}
+          {% if field.errors %}
+            <div class="field__msg field__msg--error">
+              <img src="{% static 'core/icons/circle-alert-danger.svg' %}" alt="" width="16" height="16">
+              <div>{% for error in field.errors %}<span>{{ error }}</span>{% endfor %}</div>
+            </div>
+          {% elif field.help_text %}
+            <p class="field__msg">{{ field.help_text }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="form-page__actions">
+      <a class="btn btn--secondary" href="{% if form.instance.pk %}{% url 'diagnostics:detail' form.instance.slug %}{% else %}{% url 'diagnostics:list' %}{% endif %}">Batal</a>
+      <button type="submit" class="btn btn--primary">Simpan gejala</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'diagnostics/diagnostics.js' %}" defer></script>{% endblock %}

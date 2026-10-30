@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Hapus {{ device.name }}{% endblock %}
 {% block content %}
-<h1>Hapus {{ device.name }}?</h1>
-<form method="post">{% csrf_token %}<button type="submit">Hapus</button></form>
-<p><a href="{% url 'devices:detail' device.slug %}">Batal</a></p>
+{% url 'devices:detail' device.slug as cancel_url %}
+{% include "partials/confirm_dialog.html" with title='Hapus "'|add:device.name|add:'"?' text="Perangkat ini akan dihapus permanen dan ngga bisa dikembalikan." cancel_url=cancel_url alert=blocked|yesno:"Perangkat ini masih dipakai panduan atau suku cadang. Hapus atau pindahkan dulu data yang terhubung.," %}
 {% endblock %}

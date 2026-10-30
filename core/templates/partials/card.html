@@ -1,4 +1,4 @@
-<article>
-  <h3>{% if url %}<a href="{{ url }}">{{ title }}</a>{% else %}{{ title }}{% endif %}</h3>
-  {% if text %}<p>{{ text }}</p>{% endif %}
+<article class="card">
+  <h3 class="card__title">{% if url %}<a href="{{ url }}">{{ title }}</a>{% else %}{{ title }}{% endif %}</h3>
+  {% if text %}<p class="card__text">{{ text }}</p>{% endif %}
 </article>

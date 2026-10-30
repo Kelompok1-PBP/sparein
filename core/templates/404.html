@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Halaman tidak ditemukan · Sparein{% endblock %}
+{% block content %}
+  <section class="status-page">
+    <img src="{% static 'core/icons/search-x-sky.svg' %}" alt="" width="48" height="48">
+    <h1 class="status-page__title">Halaman ini tidak ketemu</h1>
+    <p class="status-page__text">Mungkin link-nya salah ketik, atau datanya sudah dihapus.</p>
+    <div class="status-page__actions">
+      <a class="btn btn--primary" href="{% url 'core:home' %}">Ke beranda</a>
+      <a class="btn btn--secondary" href="{% url 'devices:list' %}">Cari perangkat</a>
+    </div>
+  </section>
+{% endblock %}

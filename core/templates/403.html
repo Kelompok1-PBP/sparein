@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Akses ditolak · Sparein{% endblock %}
+{% block content %}
+  <section class="status-page">
+    <img src="{% static 'core/icons/shield-x-sky.svg' %}" alt="" width="48" height="48">
+    <h1 class="status-page__title">Kamu belum bisa buka halaman ini</h1>
+    {% if user.is_authenticated and user.profile.role == "MEMBER" and not user.is_superuser %}
+      <p class="status-page__text">Halaman ini khusus Contributor atau Admin. Hubungi admin Sparein kalau kamu mau jadi Contributor.</p>
+    {% else %}
+      <p class="status-page__text">Akunmu tidak punya izin buat aksi ini.</p>
+    {% endif %}
+    <div class="status-page__actions">
+      <a class="btn btn--primary" href="{% url 'core:home' %}">Ke beranda</a>
+    </div>
+  </section>
+{% endblock %}

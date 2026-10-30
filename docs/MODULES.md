@@ -103,23 +103,27 @@ Owner: Kevin Fauzan Arjuna (2506612266). Depends on: `core`, `devices`.
 
 | Model | Key fields |
 |---|---|
-| `Symptom` | `device` FK, `title`, `slug`, `description`, `severity`, `created_by` FK |
-| `DiagnosisSession` | `user` FK (nullable for anonymous), `device` FK, `created_at` |
-| `DiagnosisResult` | `session` FK, `symptom` FK, `likelihood`, `note` |
+| `Symptom` | `device` FK, `title`, `slug`, `description`, `severity` (`low`, `medium`, `high`), `created_by` FK |
+| `Cause` | `device` FK, `title`, `note`, `symptoms` M2M. Added to the original contract: the panel ranks causes, not symptoms. Admin-managed only |
+| `DiagnosisSession` | `user` FK (nullable for anonymous), `device` FK, `symptoms` M2M, `created_at` |
+| `DiagnosisResult` | `session` FK, `cause` FK, `likelihood` (`high`, `medium`, `low`), `note` |
 
-A session collects the symptoms a user ticks for one device and returns ranked likely causes.
+A session collects the symptoms a user ticks for one device and returns ranked likely causes. A cause ranks by the share of its symptoms that were ticked: at least 2/3 is `high`, at least 1/3 is `medium`, anything else is `low`. A session is written only when the user presses "Simpan hasil"; ticking symptoms never writes.
 
 ### CRUD surface
 
 | Operation | Route | Access |
 |---|---|---|
 | Create | `POST /diagnostics/symptoms/create/` | Contributor |
-| Read | `GET /diagnostics/?device=`, `GET /diagnostics/<slug>/` | Visitor |
+| Read | `GET /diagnostics/?device=<slug>`, `GET /diagnostics/<slug>/` | Visitor |
 | Update | `POST /diagnostics/<slug>/edit/` | Contributor, owner or Admin |
 | Delete | `POST /diagnostics/<slug>/delete/` | Admin |
 | JSON | `GET /api/symptoms/?device=&severity=` | Visitor |
+| JSON | `GET /api/diagnose/?device=<slug>&symptom=<id>&symptom=<id>` | Visitor, compute only |
+| JSON | `POST /api/diagnose/save/` | Visitor, saves a session |
+| Read | `GET /diagnostics/my/sessions/` | Member, own sessions only |
 
-AJAX: ticking a symptom updates the ranked result list without a page reload.
+AJAX: ticking a symptom updates the ranked result list without a page reload. The page also renders the result from `?symptom=` on the server, so it works without JavaScript.
 
 ### Exported contract
 
@@ -182,25 +186,38 @@ Information and referral only. No cart, no checkout, no payment.
 
 | Model | Key fields |
 |---|---|
-| `SparePart` | `name`, `slug`, `part_number`, `category`, `description`, `image_url` |
+| `SparePart` | `name`, `slug`, `part_number`, `category`, `description`, `image_url`, `external_id`, `created_by` FK, `created_at` |
 | `PartCompatibility` | `part` FK, `device` FK, `note`, unique together |
-| `PartSource` | `part` FK, `vendor_name`, `city`, `price`, `currency`, `url`, `contact`, `last_checked` |
+| `PartSource` | `part` FK, `vendor_name`, `city`, `price`, `currency`, `url`, `contact`, `last_checked`, `external_id` |
+
+`external_id` holds the mock API id and is empty for rows entered by hand. `created_by` decides who owns a part.
 
 ### CRUD surface
 
 | Operation | Route | Access |
 |---|---|---|
 | Create | `POST /parts/create/` | Contributor |
-| Read | `GET /parts/?device=&category=&max_price=`, `GET /parts/<slug>/` | Visitor, price and contact hidden |
+| Read | `GET /parts/?q=&device=&category=&max_price=`, `GET /parts/<slug>/` | Visitor, price and contact hidden |
 | Update | `POST /parts/<slug>/edit/` | Contributor, owner or Admin |
 | Delete | `POST /parts/<slug>/delete/` | Admin |
-| JSON | `GET /api/parts/?device=&max_price=` | Visitor |
+| JSON | `GET /api/parts/?q=&device=&category=&max_price=` | Visitor |
+| Sync | `POST /parts/sync/` | Admin |
 
-Auth filter: `PartSource.price` and `PartSource.contact` are excluded from the queryset for anonymous users. Excluding at the queryset level, not in the template, keeps the JSON endpoint honest too.
+Auth filter: `PartSource.price` and `PartSource.contact` are excluded from the queryset for anonymous users. Excluding at the queryset level, not in the template, keeps the JSON endpoint honest too. `max_price` is ignored for anonymous users, because filtering on it would reveal the price.
+
+### Exported contract
+
+```python
+# parts/selectors.py
+def get_part_qs(*, q=None, device=None, category=None, max_price=None): ...
+def get_part_or_404(slug: str) -> SparePart: ...
+```
 
 ### External data
 
-Indonesia has no public spare-part API, so the team publishes its own mock API outside this repository and consumes it over HTTP. The endpoint and schema are recorded in `docs/MOCK-API.md` by Checkpoint 2.
+Indonesia has no public spare-part API, so the team publishes its own mock API outside this repository and consumes it over HTTP. `GET https://kelompok1-pbp.github.io/sparein-mock-api/v1/parts.json` supplies parts, compatible devices, and stores. The schema and sync rules are recorded in [`docs/MOCK-API.md`](MOCK-API.md).
+
+`manage.py sync_parts` writes the response to the database, and falls back to `parts/data/parts_snapshot.json` when the API is down. Pages never call the API.
 
 ---
 
@@ -212,10 +229,11 @@ Owner: Marsya Rizka Aulia (2506537606). Depends on: `core`, `guides`, optionally
 
 | Model | Key fields |
 |---|---|
+| `CategoryImpactProfile` | `category` OneToOne to `DeviceCategory`, `avg_mass_kg`, `replacement_cost` |
 | `RepairLog` | `user` FK, `guide` FK (nullable), `device` FK (nullable), `title`, `status` (`planned`, `in_progress`, `succeeded`, `failed`), `cost_spent`, `notes`, `repaired_at` |
 | `ImpactEstimate` | `log` OneToOne, `waste_avoided_kg`, `cost_avoided`, `computed_at` |
 
-`ImpactEstimate` is derived from the device category's average mass and replacement cost, then aggregated into a personal dashboard and a site-wide counter.
+`ImpactEstimate` is derived from the average mass and replacement cost defined in `CategoryImpactProfile`, which stores one profile per root device category. Child categories inherit the profile of their nearest ancestor with a defined profile. The resulting estimates are then aggregated into a personal dashboard and a site-wide counter.
 
 ### CRUD surface
 
@@ -225,9 +243,13 @@ Owner: Marsya Rizka Aulia (2506537606). Depends on: `core`, `guides`, optionally
 | Read | `GET /journal/`, `GET /journal/<id>/` | Member, own records only |
 | Update | `POST /journal/<id>/edit/` | Member, owner only |
 | Delete | `POST /journal/<id>/delete/` | Member, owner only |
+| Create from a guide | `GET /journal/create/?guide=<slug>` | Member |
+| AJAX | `POST /journal/<id>/status/` | Member, owner only |
 | JSON | `GET /api/journal/summary/` | Member |
 
-Auth filter: the entire module is login-only, and every queryset is filtered by `user=request.user`. A Visitor sees the aggregate site-wide impact counter and nothing else.
+Auth filter: the entire module is login-only, and every queryset is filtered by `user=request.user`, so another user's record returns 404. A Visitor who opens `GET /journal/` sees only the aggregate site-wide impact counter, every other route redirects to login.
+
+Linking from a guide: any page may link to `GET /journal/create/?guide=<slug>`. The form opens with that guide, its device, the title `Perbaikan: <guide title>` and the status `in_progress` already filled in, and shows a banner `Dari panduan: <guide title>`. A slug that does not exist, or a draft guide the user may not see, is ignored. `guides` is the natural place for a "Catat perbaikan ini" button.
 
 ---
 

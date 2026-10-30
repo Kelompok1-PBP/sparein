@@ -1,7 +1,26 @@
-{% extends "base.html" %}
+{% extends "auth_base.html" %}
 {% block title %}Masuk · Sparein{% endblock %}
+{% block mode %}login{% endblock %}
+
+{% block mode_link_top %}
+  <p class="auth__switch-top">Belum punya akun? <a href="{% url 'core:register' %}" data-auth-switch>Daftar</a></p>
+{% endblock %}
+
+{% block tagline %}<span>Masuk dan lanjutin</span><span>perbaikanmu.</span>{% endblock %}
+
 {% block content %}
-<h1>Masuk</h1>
-<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Masuk</button></form>
-<p><a href="{% url 'core:register' %}">Belum punya akun?</a></p>
+  <h1 class="auth__title">Masuk ke Sparein</h1>
+
+  {% if next %}{% include "partials/alert.html" with kind="info" message="Masuk dulu ya buat lanjut." %}{% endif %}
+  {% if form.non_field_errors %}{% include "partials/alert.html" with kind="error" message="Username atau password salah. Coba cek lagi ya." %}{% endif %}
+
+  <form class="auth__form" method="post" novalidate data-auth-form>
+    {% csrf_token %}
+    {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+    {% include "partials/form_field.html" with field=form.username label="Username" kind="text" autocomplete="username" %}
+    {% include "partials/form_field.html" with field=form.password label="Password" kind="password" autocomplete="current-password" %}
+    <button class="btn btn--primary btn--block" type="submit">Masuk</button>
+  </form>
+
+  <p class="auth__switch">Belum punya akun? <a class="link" href="{% url 'core:register' %}" data-auth-switch>Daftar</a></p>
 {% endblock %}

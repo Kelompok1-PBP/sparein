@@ -1,0 +1,173 @@
+[
+  {
+    "model": "diagnostics.symptom",
+    "pk": 1,
+    "fields": {
+      "device": 8,
+      "title": "Baterai cepat habis",
+      "slug": "iphone-17-baterai-cepat-habis",
+      "description": "Dari 100% ke 20% kurang dari 3 jam.",
+      "severity": "medium",
+      "created_by": null
+    }
+  },
+  {
+    "model": "diagnostics.symptom",
+    "pk": 2,
+    "fields": {
+      "device": 8,
+      "title": "HP panas walau tidak dipakai",
+      "slug": "iphone-17-hp-panas",
+      "description": "Terasa hangat saat layar mati.",
+      "severity": "medium",
+      "created_by": null
+    }
+  },
+  {
+    "model": "diagnostics.symptom",
+    "pk": 3,
+    "fields": {
+      "device": 8,
+      "title": "Layar tidak merespon sentuhan",
+      "slug": "iphone-17-layar-tidak-merespon",
+      "description": "Beberapa bagian layar tidak bereaksi.",
+      "severity": "high",
+      "created_by": null
+    }
+  },
+  {
+    "model": "diagnostics.symptom",
+    "pk": 4,
+    "fields": {
+      "device": 8,
+      "title": "Speaker suaranya pecah",
+      "slug": "iphone-17-speaker-pecah",
+      "description": "Suara kecil dan bergetar.",
+      "severity": "low",
+      "created_by": null
+    }
+  },
+  {
+    "model": "diagnostics.cause",
+    "pk": 1,
+    "fields": {
+      "device": 8,
+      "title": "Baterai sudah aus",
+      "note": "Umum di HP yang dipakai lebih dari 2 tahun.",
+      "symptoms": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "diagnostics.cause",
+    "pk": 2,
+    "fields": {
+      "device": 8,
+      "title": "Aplikasi boros daya",
+      "note": "Cek aplikasi yang jalan di latar belakang.",
+      "symptoms": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "diagnostics.cause",
+    "pk": 3,
+    "fields": {
+      "device": 8,
+      "title": "Panel layar rusak",
+      "note": "Bawa ke teknisi kalau layar retak atau bergaris.",
+      "symptoms": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "diagnostics.cause",
+    "pk": 4,
+    "fields": {
+      "device": 8,
+      "title": "Speaker kotor atau rusak",
+      "note": "Bersihkan lubang speaker dengan sikat lembut.",
+      "symptoms": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "diagnostics.symptom",
+    "pk": 5,
+    "fields": {
+      "device": 313,
+      "title": "Laptop cepat panas",
+      "slug": "macbook-air-13-cepat-panas",
+      "description": "Kipas atau bodi terasa panas saat dipakai ringan.",
+      "severity": "medium",
+      "created_by": null
+    }
+  },
+  {
+    "model": "diagnostics.symptom",
+    "pk": 6,
+    "fields": {
+      "device": 313,
+      "title": "Baterai cepat habis",
+      "slug": "macbook-air-13-baterai-cepat-habis",
+      "description": "Daya turun drastis dalam satu jam.",
+      "severity": "medium",
+      "created_by": null
+    }
+  },
+  {
+    "model": "diagnostics.symptom",
+    "pk": 7,
+    "fields": {
+      "device": 313,
+      "title": "Tidak mau menyala",
+      "slug": "macbook-air-13-tidak-menyala",
+      "description": "Layar gelap walau sudah dicas.",
+      "severity": "high",
+      "created_by": null
+    }
+  },
+  {
+    "model": "diagnostics.cause",
+    "pk": 5,
+    "fields": {
+      "device": 313,
+      "title": "Baterai menggembung atau aus",
+      "note": "Hentikan pemakaian kalau bodi terangkat.",
+      "symptoms": [
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "diagnostics.cause",
+    "pk": 6,
+    "fields": {
+      "device": 313,
+      "title": "Pasta termal mengering",
+      "note": "Umum di laptop yang dipakai lebih dari 3 tahun.",
+      "symptoms": [
+        5
+      ]
+    }
+  },
+  {
+    "model": "diagnostics.cause",
+    "pk": 7,
+    "fields": {
+      "device": 313,
+      "title": "Charger atau port rusak",
+      "note": "Coba charger lain sebelum membongkar.",
+      "symptoms": [
+        7
+      ]
+    }
+  }
+]
