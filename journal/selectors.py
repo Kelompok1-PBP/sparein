@@ -9,6 +9,15 @@ def logs_for(user):
     )
 
 
+def status_counts(user):
+    counts = {value: 0 for value in RepairLog.Status.values}
+    rows = logs_for(user).order_by().values("status").annotate(total=Count("pk"))
+    for row in rows:
+        counts[row["status"]] = row["total"]
+    counts["all"] = sum(counts.values())
+    return counts
+
+
 def _totals(qs):
     data = qs.aggregate(
         count=Count("pk"), waste=Sum("waste_avoided_kg"), cost=Sum("cost_avoided")

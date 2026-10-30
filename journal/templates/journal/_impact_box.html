@@ -1,0 +1,29 @@
+{% load static journal_format %}{% if log.status == 'succeeded' and impact %}
+  <section class="impact-panel" aria-labelledby="impact-title">
+    <h2 class="impact-panel__title" id="impact-title">Dampak perbaikan ini</h2>
+    <div class="impact-panel__tiles">
+      <article class="tile">
+        <span class="tile__icon tile__icon--success"><img src="{% static 'journal/icons/leaf-success.svg' %}" alt="" width="20" height="20"></span>
+        <p class="tile__value">{{ impact.waste_avoided_kg|kg }}</p>
+        <p class="tile__label">limbah elektronik terhindar</p>
+      </article>
+      <article class="tile">
+        <span class="tile__icon tile__icon--blue"><img src="{% static 'journal/icons/wallet-blue.svg' %}" alt="" width="20" height="20"></span>
+        <p class="tile__value">{{ impact.cost_avoided|rupiah_short }}</p>
+        <p class="tile__label">biaya ganti baru terhindar</p>
+      </article>
+    </div>
+    <p class="impact-panel__note">{% if basis %}Dihitung dari rata-rata berat dan harga baru kategori {{ basis }}, lalu dikurangi biaya perbaikanmu.{% else %}Dihitung dari perkiraan standar karena kategori perangkat ini belum punya data rata-rata.{% endif %} Dihitung pada {{ impact.computed_at|short_date }}.</p>
+  </section>
+{% elif log.status == 'succeeded' %}
+  <div class="alert alert--info">
+    <img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20">
+    <p>Dampak belum bisa dihitung karena perangkatnya tidak diisi. <a class="link" href="{% url 'journal:edit' log.pk %}">Lengkapi catatan</a></p>
+  </div>
+{% else %}
+  <div class="alert alert--info">
+    <img src="{% static 'core/icons/info-blue.svg' %}" alt="" width="20" height="20">
+    <p>Dampak dihitung otomatis kalau status catatan ini Berhasil.</p>
+  </div>
+  <button type="button" class="btn btn--secondary btn--sm impact-action" data-mark-succeeded data-url="{% url 'journal:status' log.pk %}">Tandai berhasil</button>
+{% endif %}

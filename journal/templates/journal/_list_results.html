@@ -1,0 +1,21 @@
+{% load static %}{% if page.object_list %}
+  <div class="log-list">
+    {% for log in page %}{% include 'journal/_log_card.html' %}{% endfor %}
+  </div>
+  {% if page.paginator.num_pages > 1 %}
+    <nav class="pager" aria-label="Halaman">
+      {% if page.has_previous %}<a class="btn btn--secondary btn--sm" data-page href="?{% if status %}status={{ status }}&amp;{% endif %}page={{ page.previous_page_number }}">Sebelumnya</a>{% else %}<span></span>{% endif %}
+      <span class="pager__info">Halaman {{ page.number }} dari {{ page.paginator.num_pages }}</span>
+      {% if page.has_next %}<a class="btn btn--secondary btn--sm" data-page href="?{% if status %}status={{ status }}&amp;{% endif %}page={{ page.next_page_number }}">Berikutnya</a>{% else %}<span></span>{% endif %}
+    </nav>
+  {% endif %}
+{% elif total == 0 %}
+  <div class="empty-state">
+    <img src="{% static 'core/icons/inbox-sky.svg' %}" alt="" width="40" height="40">
+    <p>Jurnalmu masih kosong. Catat perbaikan pertamamu, sekecil apa pun.</p>
+    <a class="btn btn--primary" href="{% url 'journal:create' %}">Tambah catatan</a>
+    <a class="link" href="{% url 'guides:list' %}">atau cari panduan dulu</a>
+  </div>
+{% else %}
+  <p class="j-empty-tab">Belum ada catatan dengan status ini.</p>
+{% endif %}

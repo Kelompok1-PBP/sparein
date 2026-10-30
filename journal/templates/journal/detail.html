@@ -1,0 +1,43 @@
+{% extends 'journal/base.html' %}{% load static journal_format %}
+{% block title %}{{ log.title }} · Jurnal Sparein{% endblock %}
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'journal/detail.css' %}">{% endblock %}
+{% block journal_content %}
+<div data-journal data-csrf="{{ csrf_token }}"
+     data-icon-success="{% static 'core/icons/circle-check-success.svg' %}"
+     data-icon-error="{% static 'core/icons/circle-alert-danger.svg' %}">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="{% url 'journal:list' %}">Jurnal</a>
+    <img src="{% static 'core/icons/chevron-right-muted.svg' %}" alt="" width="16" height="16">
+    <span aria-current="page">{{ log.title }}</span>
+  </nav>
+
+  <header class="j-head">
+    <div class="detail-title">
+      <h1>{{ log.title }}</h1>
+      {% include 'journal/_status_badge.html' with status=log.status label=log.get_status_display %}
+    </div>
+    <div class="j-actions">
+      <a class="btn btn--secondary" href="{% url 'journal:edit' log.pk %}"><img src="{% static 'journal/icons/pencil-blue.svg' %}" alt="" width="20" height="20">Ubah</a>
+      <a class="btn btn--danger-outline" href="{% url 'journal:delete' log.pk %}"><img src="{% static 'journal/icons/trash-danger.svg' %}" alt="" width="20" height="20">Hapus</a>
+    </div>
+  </header>
+
+  <section class="card detail-info">
+    <dl class="detail-grid">
+      <div><dt>Tanggal perbaikan</dt><dd data-detail-date>{{ log.repaired_at|short_date|default:"-" }}</dd></div>
+      <div><dt>Biaya yang dikeluarkan</dt><dd>{{ log.cost_spent|rupiah }}</dd></div>
+      <div><dt>Perangkat</dt><dd>{% if device %}<a class="link" href="{% url 'devices:detail' device.slug %}">{{ device }}</a>{% else %}Tidak diisi{% endif %}</dd></div>
+      <div><dt>Panduan yang dipakai</dt><dd>{% if log.guide %}<a class="link" href="{% url 'guides:detail' log.guide.slug %}">{{ log.guide.title }}</a>{% else %}Tanpa panduan{% endif %}</dd></div>
+    </dl>
+  </section>
+
+  <section class="detail-notes">
+    <h2 class="detail-notes__label">Catatan</h2>
+    <div class="card">{% if log.notes %}<p>{{ log.notes|linebreaksbr }}</p>{% else %}<p class="muted">Tidak ada catatan.</p>{% endif %}</div>
+  </section>
+
+  <p class="sr-only" role="status" aria-live="polite" data-live></p>
+  <div class="detail-impact" data-impact-box>{% include 'journal/_impact_box.html' %}</div>
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'journal/journal.js' %}" defer></script><script src="{% static 'journal/detail.js' %}" defer></script>{% endblock %}

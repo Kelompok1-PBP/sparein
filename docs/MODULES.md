@@ -230,9 +230,13 @@ Owner: Marsya Rizka Aulia (2506537606). Depends on: `core`, `guides`, optionally
 | Read | `GET /journal/`, `GET /journal/<id>/` | Member, own records only |
 | Update | `POST /journal/<id>/edit/` | Member, owner only |
 | Delete | `POST /journal/<id>/delete/` | Member, owner only |
+| Create from a guide | `GET /journal/create/?guide=<slug>` | Member |
+| AJAX | `POST /journal/<id>/status/` | Member, owner only |
 | JSON | `GET /api/journal/summary/` | Member |
 
-Auth filter: the entire module is login-only, and every queryset is filtered by `user=request.user`. A Visitor sees the aggregate site-wide impact counter and nothing else.
+Auth filter: the entire module is login-only, and every queryset is filtered by `user=request.user`, so another user's record returns 404. A Visitor who opens `GET /journal/` sees only the aggregate site-wide impact counter, every other route redirects to login.
+
+Linking from a guide: any page may link to `GET /journal/create/?guide=<slug>`. The form opens with that guide, its device, the title `Perbaikan: <guide title>` and the status `in_progress` already filled in, and shows a banner `Dari panduan: <guide title>`. A slug that does not exist, or a draft guide the user may not see, is ignored. `guides` is the natural place for a "Catat perbaikan ini" button.
 
 ---
 

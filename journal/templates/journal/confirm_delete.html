@@ -1,0 +1,14 @@
+{% extends 'journal/base.html' %}{% load static %}
+{% block title %}Hapus catatan · Sparein{% endblock %}
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'journal/form.css' %}">{% endblock %}
+{% block journal_content %}
+<div class="form-page form-page--narrow card">
+  <h1>Hapus catatan ini?</h1>
+  <p class="confirm-text">Catatan <strong>{{ log.title }}</strong> akan dihapus. Dampaknya juga ikut dikurangi dari total kamu.</p>
+  <form method="post" class="form-actions">
+    {% csrf_token %}
+    <a class="btn btn--ghost" href="{% url 'journal:detail' log.pk %}">Batal</a>
+    <button type="submit" class="btn btn--danger">Ya, hapus</button>
+  </form>
+</div>
+{% endblock %}

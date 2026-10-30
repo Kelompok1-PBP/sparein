@@ -1,0 +1,27 @@
+{% load static journal_format %}<article class="log-card" data-log="{{ log.pk }}" data-status="{{ log.status }}">
+  <div class="log-card__top">
+    <h3 class="log-card__title"><a class="log-card__link" href="{% url 'journal:detail' log.pk %}">{{ log.title }}</a></h3>
+    <div class="log-card__aside">
+      {% include 'journal/_status_badge.html' with status=log.status label=log.get_status_display %}
+      <details class="log-menu" data-menu>
+        <summary class="log-menu__button" aria-label="Menu untuk {{ log.title }}"><img src="{% static 'journal/icons/ellipsis-vertical-muted.svg' %}" alt="" width="20" height="20"></summary>
+        <div class="log-menu__panel">
+          <details class="log-menu__sub">
+            <summary class="log-menu__item">Ubah status</summary>
+            <div class="log-menu__options" role="group" aria-label="Ubah status">
+              {% for value, label in statuses %}<button type="button" class="log-menu__option" data-set-status="{{ value }}" data-url="{% url 'journal:status' log.pk %}"{% if value == log.status %} aria-current="true"{% endif %}>{{ label }}</button>{% endfor %}
+            </div>
+          </details>
+          <a class="log-menu__item" href="{% url 'journal:edit' log.pk %}">Edit</a>
+          <a class="log-menu__item log-menu__item--danger" href="{% url 'journal:delete' log.pk %}">Hapus</a>
+        </div>
+      </details>
+    </div>
+  </div>
+  <p class="log-card__related">{% if log.device %}{{ log.device }}{% elif log.guide %}{{ log.guide.device }}{% else %}Perangkat tidak diisi{% endif %} · {% if log.guide %}{{ log.guide.title }}{% else %}Tanpa panduan{% endif %}</p>
+  <p class="log-card__meta">
+    {% if log.repaired_at %}<span class="log-card__fact"><img src="{% static 'journal/icons/calendar-muted.svg' %}" alt="" width="16" height="16">{{ log.repaired_at|short_date }}</span>{% endif %}
+    <span class="log-card__fact"><img src="{% static 'journal/icons/wallet-muted.svg' %}" alt="" width="16" height="16">{{ log.cost_spent|rupiah }}</span>
+    <span class="log-card__fact log-card__impact" data-card-impact{% if not log.impact %} hidden{% endif %}><img src="{% static 'journal/icons/leaf-success.svg' %}" alt="" width="16" height="16"><span data-card-impact-text>{% if log.impact %}{{ log.impact.waste_avoided_kg|kg }} limbah terhindar{% endif %}</span></span>
+  </p>
+</article>
