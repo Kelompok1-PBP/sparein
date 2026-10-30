@@ -150,19 +150,6 @@
 
 .save-result { margin-bottom: 16px; }
 
-/* ---------- konfirmasi hapus ---------- */
-.confirm { max-width: 480px; margin: 32px auto 0; padding: 32px; }
-.confirm:hover { border-color: var(--blue-200); }
-.confirm__icon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 16px; border-radius: 50%; background: rgba(220, 38, 38, 0.1); }
-.confirm h1 { margin: 0; font-size: 24px; line-height: 32px; }
-.confirm__text { margin: 12px 0 24px; color: var(--muted); }
-.confirm__actions { display: flex; flex-wrap: wrap; gap: 8px; }
-
-@media (max-width: 639px) {
-  .confirm { padding: 24px; }
-  .confirm__actions { flex-direction: column-reverse; }
-}
-
 /* ---------- form dan konfirmasi ---------- */
 .form-page { max-width: 720px; margin-inline: auto; }
 .form-page h1 { margin: 0 0 16px; font-size: 32px; line-height: 40px; }
