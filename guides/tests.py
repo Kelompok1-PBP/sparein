@@ -297,3 +297,61 @@ class ListPageTests(TestCase):
 
     def test_empty_result_shows_empty_state(self):
         self.assertContains(Client().get("/guides/?difficulty=Difficult"), "Belum ada panduan yang cocok")
+
+
+class DetailPageTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = get_user_model().objects.create_user("penulis", password="x")
+        cls.author.profile.role = UserProfile.Role.CONTRIBUTOR
+        cls.author.profile.save()
+        cls.device = Device.objects.create(
+            name="iPhone 11", brand="Apple", category=DeviceCategory.objects.create(name="Phone")
+        )
+        cls.guide = RepairGuide.objects.create(
+            title="Ganti baterai", slug="ganti-baterai", summary="Ringkas", difficulty="Moderate",
+            time_required_minutes=45, device=cls.device, author=cls.author, published=True,
+            tools="Obeng P2\nSpudger",
+        )
+        GuideStep.objects.create(guide=cls.guide, order=1, title="Buka sekrup", detail="Lepas dua sekrup")
+        SafetyWarning.objects.create(guide=cls.guide, level="danger", message="Jangan tusuk baterai")
+        SafetyWarning.objects.create(guide=cls.guide, level="caution", message="Cabut charger")
+
+    def test_header_shows_meta_and_author(self):
+        resp = Client().get("/guides/ganti-baterai/")
+        self.assertContains(resp, "difficulty--moderate")
+        self.assertContains(resp, "45 menit")
+        self.assertContains(resp, "1 langkah")
+        self.assertContains(resp, "oleh penulis")
+
+    def test_warnings_use_level_classes_and_labels(self):
+        resp = Client().get("/guides/ganti-baterai/")
+        self.assertContains(resp, "safety--danger")
+        self.assertContains(resp, "safety--caution")
+        self.assertContains(resp, "Bahaya")
+
+    def test_sidebar_lists_tools_device_and_parts_link(self):
+        resp = Client().get("/guides/ganti-baterai/")
+        self.assertContains(resp, "<li>Obeng P2</li>", html=True)
+        self.assertContains(resp, f"/parts/?device={self.device.slug}")
+        self.assertContains(resp, "Apple")
+
+    def test_visitor_sees_step_titles_but_not_journal_button(self):
+        resp = Client().get("/guides/ganti-baterai/")
+        self.assertContains(resp, "Buka sekrup")
+        self.assertNotContains(resp, "Lepas dua sekrup")
+        self.assertNotContains(resp, "Catat perbaikan ini")
+
+    def test_member_gets_journal_shortcut_with_guide_prefilled(self):
+        client = Client()
+        client.force_login(get_user_model().objects.create_user("anggota", password="x"))
+        resp = client.get("/guides/ganti-baterai/")
+        self.assertContains(resp, "Lepas dua sekrup")
+        self.assertContains(resp, "/journal/create/?guide=ganti-baterai")
+
+    def test_owner_sees_edit_and_delete(self):
+        client = Client()
+        client.force_login(self.author)
+        resp = client.get("/guides/ganti-baterai/")
+        self.assertContains(resp, "/guides/ganti-baterai/edit/")
+        self.assertContains(resp, "/guides/ganti-baterai/delete/")
