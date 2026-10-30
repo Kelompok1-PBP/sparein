@@ -23,8 +23,9 @@
   display: flex;
   gap: 12px;
   padding: 16px;
+  border-left: 4px solid var(--blue-500);
   border-radius: 14px;
-  background: var(--blue-50);
+  background: var(--blue-100);
 }
 
 .info-card img { flex: none; }
