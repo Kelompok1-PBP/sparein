@@ -7,7 +7,7 @@
   <section class="hero" aria-labelledby="hero-title">
     <div class="container hero__grid">
       <div class="hero__copy">
-        <h1 class="hero__title" id="hero-title">Barangmu rusak? Coba perbaiki dulu.</h1>
+        <h1 class="hero__title" id="hero-title">Barangmu rusak? <span class="hero__nowrap">Coba perbaiki dulu.</span></h1>
         <p class="hero__lead">Cari perangkatmu, cek gejalanya, lalu ikuti panduan langkah demi langkah.</p>
       </div>
       <picture class="hero__art">
@@ -68,5 +68,27 @@
       </ol>
     </div>
   </section>
+
+  {% if categories %}
+  <section class="band band--white" aria-labelledby="categories-title">
+    <div class="container">
+      <div class="band__head">
+        <h2 class="band__title" id="categories-title">Jelajahi kategori</h2>
+        <a class="band__more" href="{% url 'devices:list' %}">Lihat semua perangkat</a>
+      </div>
+      <ul class="categories">
+        {% for category in categories %}
+          <li>
+            <a class="category" href="{% url 'devices:list' %}?category={{ category.slug }}">
+              <span class="category__icon" aria-hidden="true"><img src="{% static 'core/icons/' %}{{ category.icon }}-blue.svg" alt="" width="20" height="20"></span>
+              <span class="category__name">{{ category.name }}</span>
+              <span class="category__count">{{ category.total }} perangkat</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
 </div>
 {% endblock %}

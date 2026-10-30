@@ -359,7 +359,8 @@ class HomeSelectorTests(HomeData):
 class HomePageTests(HomeData):
     def test_hero_has_title_and_search_to_device_catalog(self):
         resp = self.client.get(reverse("core:home"))
-        self.assertContains(resp, "Barangmu rusak? Coba perbaiki dulu.")
+        self.assertContains(resp, "Barangmu rusak?")
+        self.assertContains(resp, "Coba perbaiki dulu.")
         self.assertContains(resp, f'action="{reverse("devices:list")}"')
 
     def test_popular_chips_link_to_device_detail(self):
@@ -374,3 +375,14 @@ class HomePageTests(HomeData):
         resp = self.client.get(reverse("core:home"))
         self.assertContains(resp, "Lima langkah sebelum buang barang")
         self.assertContains(resp, 'class="step"', count=5)
+
+    def test_categories_link_to_filtered_catalog(self):
+        resp = self.client.get(reverse("core:home"))
+        self.assertContains(resp, f'{reverse("devices:list")}?category={self.phone.slug}')
+        self.assertContains(resp, "2 perangkat")
+        self.assertContains(resp, "smartphone-blue.svg")
+        self.assertContains(resp, "laptop-blue.svg")
+
+    def test_categories_section_hidden_without_devices(self):
+        Device.objects.all().delete()
+        self.assertNotContains(self.client.get(reverse("core:home")), "Jelajahi kategori")
