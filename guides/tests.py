@@ -256,3 +256,44 @@ class ApiDisplayFieldsTests(TestCase):
         self.assertEqual(item["duration_label"], "1 jam 15 menit")
         self.assertEqual(item["step_total"], 1)
         self.assertEqual(item["device_image_url"], "https://example.com/a.jpg")
+
+
+class ListPageTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user = get_user_model().objects.create_user("penulis", password="x")
+        cls.phone = Device.objects.create(
+            name="iPhone 11", category=DeviceCategory.objects.create(name="Phone")
+        )
+        cls.guide = RepairGuide.objects.create(
+            title="Ganti baterai", slug="ganti-baterai", summary="x", difficulty="Easy",
+            time_required_minutes=45, device=cls.phone, author=user, published=True,
+        )
+        GuideStep.objects.create(guide=cls.guide, order=1, title="Buka", detail="x")
+
+    def test_card_shows_label_duration_and_step_count(self):
+        resp = Client().get("/guides/")
+        self.assertContains(resp, "difficulty--easy")
+        self.assertContains(resp, ">Mudah<")
+        self.assertContains(resp, "45 menit")
+        self.assertContains(resp, "1 langkah")
+
+    def test_filters_offer_every_difficulty_and_time_preset(self):
+        resp = Client().get("/guides/")
+        for text in ("Sangat mudah", "Sangat sulit", "30 menit", "1 jam", "2 jam", "Reset filter"):
+            self.assertContains(resp, text)
+
+    def test_active_filters_become_removable_chips(self):
+        resp = Client().get(f"/guides/?difficulty=Easy&max_time=60&device={self.phone.pk}")
+        self.assertContains(resp, "Kesulitan: Mudah")
+        self.assertContains(resp, "Waktu: ≤ 1 jam")
+        self.assertContains(resp, "Perangkat: iPhone 11")
+        self.assertContains(resp, f'href="?max_time=60&amp;device={self.phone.pk}"')
+
+    def test_garbage_filter_values_do_not_break_chips(self):
+        resp = Client().get("/guides/?max_time=abc&device=xyz")
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotContains(resp, 'class="filter-chip"')
+
+    def test_empty_result_shows_empty_state(self):
+        self.assertContains(Client().get("/guides/?difficulty=Difficult"), "Belum ada panduan yang cocok")

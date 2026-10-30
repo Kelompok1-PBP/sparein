@@ -28,6 +28,27 @@ def denied(request):
     )
 
 
+TIME_CHOICES = [("", "Semua"), ("30", "30 menit"), ("60", "1 jam"), ("120", "2 jam")]
+
+
+def filter_chips(request, devices):
+    """Filter yang lagi aktif, tiap chip bawa link buat mencabutnya."""
+    labels = {
+        "difficulty": lambda v: f"Kesulitan: {difficulty_label(v)}",
+        "max_time": lambda v: f"Waktu: ≤ {duration_label(v)}" if v.isdigit() else None,
+        "device": lambda v: f"Perangkat: {devices.filter(pk=v).first() or v}" if v.isdigit() else None,
+    }
+    chips = []
+    for name, label in labels.items():
+        value = request.GET.get(name, "")
+        text = label(value) if value else None
+        if text:
+            rest = request.GET.copy()
+            rest.pop(name)
+            chips.append({"label": text, "url": f"?{rest.urlencode()}" if rest else request.path})
+    return chips
+
+
 def filtered(request):
     form = FilterForm(request.GET)
     qs = visible_guides(request.user)
@@ -46,6 +67,7 @@ def filtered(request):
 @require_http_methods(["GET"])
 def guide_list(request):
     qs, filters = filtered(request)
+    devices = GuideForm().fields["device"].queryset
     return render(
         request,
         "guides/list.html",
@@ -53,7 +75,9 @@ def guide_list(request):
             "guides": qs.annotate(step_total=Count("steps"))[:100],
             "filters": filters,
             "can_create": can_create(request.user),
-            "devices": GuideForm().fields["device"].queryset,
+            "devices": devices,
+            "time_choices": TIME_CHOICES,
+            "chips": filter_chips(request, devices),
         },
     )
 
@@ -73,6 +97,7 @@ def guide_api(request):
             "device": guide.device_id,
             "device_name": str(guide.device),
             "device_image_url": guide.device.image_url,
+            "published": guide.published,
             "difficulty": guide.difficulty,
             "difficulty_label": difficulty_label(guide.difficulty),
             "difficulty_tone": difficulty_tone(guide.difficulty),
