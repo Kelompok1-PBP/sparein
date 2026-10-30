@@ -399,3 +399,29 @@ class FormPageTests(TestCase):
         resp = self.client.get("/guides/ganti/edit/")
         self.assertContains(resp, "Ubah panduan")
         self.assertContains(resp, "Buka")
+
+
+class DeleteAndImportPageTests(TestCase):
+    def test_delete_page_uses_confirm_dialog(self):
+        admin = get_user_model().objects.create_user("adm", password="x")
+        admin.profile.role = UserProfile.Role.ADMIN
+        admin.profile.save()
+        device = Device.objects.create(name="iPhone", category=DeviceCategory.objects.create(name="Phone"))
+        RepairGuide.objects.create(
+            title="Ganti", slug="ganti", summary="x", difficulty="Easy", time_required_minutes=5,
+            device=device, author=admin, published=True,
+        )
+        self.client.force_login(admin)
+        resp = self.client.get("/guides/ganti/delete/")
+        self.assertContains(resp, "confirm__icon")
+        self.assertContains(resp, "Hapus &quot;Ganti&quot;?")
+
+    def test_import_page_labels_and_breadcrumb(self):
+        user = get_user_model().objects.create_user("penulis", password="x")
+        user.profile.role = UserProfile.Role.CONTRIBUTOR
+        user.profile.save()
+        self.client.force_login(user)
+        resp = self.client.get("/guides/import/")
+        self.assertContains(resp, "ID panduan iFixit")
+        self.assertContains(resp, "Impor sebagai draf")
+        self.assertContains(resp, 'aria-current="page"')

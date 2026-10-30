@@ -291,3 +291,4 @@
 
 .guide-form__footer { margin-bottom: 0; }
 .guide-form__actions { display: flex; justify-content: flex-end; gap: 8px; }
+.guide-form__lead { margin: 0 0 16px; color: var(--muted); }
