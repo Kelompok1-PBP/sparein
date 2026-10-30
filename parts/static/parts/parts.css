@@ -68,6 +68,10 @@
 
 .parts-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--blue-500); }
 
+/* tombol cepat harga maksimal (member) */
+.parts-quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.parts-quick[hidden] { display: none; }
+
 .parts-filter__actions {
   display: flex;
   flex-direction: column;

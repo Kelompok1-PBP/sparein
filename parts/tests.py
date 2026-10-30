@@ -1,10 +1,11 @@
 from datetime import timedelta
 
 from django.contrib.auth.models import AnonymousUser, User
-from django.db import IntegrityError
+from django.db import IntegrityError, connection
 from django.db.models import ProtectedError
 from django.http import Http404
 from django.test import TestCase
+from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from django.utils import timezone
 
@@ -15,6 +16,7 @@ from parts.selectors import (
     get_part_or_404,
     get_part_qs,
     get_sources_for,
+    get_sources_for_parts,
     visible_part_qs,
 )
 from parts.templatetags.parts_tags import days_ago, rupiah
@@ -131,6 +133,15 @@ class SelectorTests(TestCase):
         prices = [row["price"] for row in get_sources_for(part, make_user("m"))]
         self.assertEqual(prices, [185000, 320000])
 
+    def test_sources_for_many_parts_grouped_with_auth_filter(self):
+        parts = SparePart.objects.all()
+        battery = parts.get(slug="baterai-iphone-11")
+        visitor = get_sources_for_parts(parts, AnonymousUser())
+        self.assertEqual(len(visitor[battery.pk]), 2)
+        self.assertNotIn("price", visitor[battery.pk][0])
+        member = get_sources_for_parts(parts, make_user("m"))
+        self.assertEqual([row["price"] for row in member[battery.pk]], [185000, 320000])
+
 
 class DeviceDeleteTests(TestCase):
     def test_admin_sees_message_when_device_still_has_parts(self):
@@ -213,6 +224,14 @@ class ListPageTests(TestCase):
     def test_device_dropdown_only_lists_devices_with_parts(self):
         devices = self.client.get(self.url).context["devices"]
         self.assertEqual([d.slug for d in devices], ["iphone-11"])
+
+    def test_live_filter_hooks_and_quick_price_for_member_only(self):
+        resp = self.client.get(self.url)
+        self.assertContains(resp, f'data-api="{reverse("parts:api")}"')
+        self.assertContains(resp, "parts/list.js")
+        self.assertNotContains(resp, "data-quick-price")
+        self.client.force_login(make_user("m"))
+        self.assertContains(self.client.get(self.url), 'data-price="250000"')
 
 
 class DetailPageTests(TestCase):
@@ -491,3 +510,68 @@ class ListCreateButtonTests(TestCase):
         self.assertNotContains(self.client.get(url), "Tambah suku cadang")
         self.client.force_login(make_user("c", UserProfile.Role.CONTRIBUTOR))
         self.assertContains(self.client.get(url), "Tambah suku cadang")
+
+
+class ApiTests(TestCase):
+    def setUp(self):
+        cat = DeviceCategory.objects.create(name="Phone")
+        self.iphone = Device.objects.create(name="iPhone 11", category=cat, brand="Apple")
+        make_part("Baterai iPhone 11", self.iphone, prices=[320000, 185000])
+        make_part("Layar iPhone 11", self.iphone, category="screen", prices=[900000])
+        make_part("Kabel USB-C", category="cable", part_number="USB-C-1M")
+        self.url = reverse("parts:api")
+
+    def get(self, **params):
+        resp = self.client.get(self.url, params)
+        self.assertEqual(resp.status_code, 200)
+        return resp.json()["results"]
+
+    def names(self, **params):
+        return [r["name"] for r in self.get(**params)]
+
+    def test_visitor_gets_no_price_or_contact(self):
+        resp = self.client.get(self.url)
+        battery = next(r for r in resp.json()["results"] if r["slug"] == "baterai-iphone-11")
+        self.assertNotIn("lowest_price", battery)
+        self.assertNotIn("highest_price", battery)
+        self.assertEqual(battery["source_count"], 2)
+        self.assertEqual(set(battery["sources"][0]), {"vendor_name", "city", "url", "last_checked"})
+        self.assertNotContains(resp, "185000")
+        self.assertNotContains(resp, "0812-0000-")
+
+    def test_member_gets_price_and_contact_sorted_by_price(self):
+        self.client.force_login(make_user("m"))
+        battery = next(r for r in self.get() if r["slug"] == "baterai-iphone-11")
+        self.assertEqual((battery["lowest_price"], battery["highest_price"]), (185000, 320000))
+        self.assertEqual([s["price"] for s in battery["sources"]], [185000, 320000])
+        self.assertEqual(battery["sources"][0]["contact"], "0812-0000-0001")
+        self.assertEqual(battery["category_label"], "Baterai")
+        self.assertEqual(battery["url"], reverse("parts:detail", args=["baterai-iphone-11"]))
+
+    def test_filters_match_list_page(self):
+        self.assertEqual(self.names(device="iphone-11", category="screen"), ["Layar iPhone 11"])
+        self.assertEqual(self.names(q="usb-c-1"), ["Kabel USB-C"])
+        self.assertEqual(self.names(category=["battery", "cable"], device="nope"), [])
+        self.assertEqual(len(self.get(category=["battery", "cable"])), 2)
+
+    def test_max_price_only_for_member(self):
+        self.assertEqual(len(self.get(max_price="200000")), 3)
+        self.client.force_login(make_user("m"))
+        self.assertEqual(self.names(max_price="200000"), ["Baterai iPhone 11"])
+
+    def test_part_without_source_and_empty_result(self):
+        cable = self.get(q="kabel")[0]
+        self.assertEqual((cable["source_count"], cable["sources"]), (0, []))
+        self.assertEqual(self.get(q="galaxy"), [])
+
+    def test_query_count_does_not_grow_with_parts(self):
+        self.client.force_login(make_user("m"))
+        with CaptureQueriesContext(connection) as before:
+            self.get()
+        make_part("Baterai iPhone 12", self.iphone, prices=[200000, 250000])
+        with CaptureQueriesContext(connection) as after:
+            self.get()
+        self.assertEqual(len(before), len(after))
+
+    def test_only_get_allowed(self):
+        self.assertEqual(self.client.post(self.url).status_code, 405)

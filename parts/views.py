@@ -13,9 +13,16 @@ from core.permissions import is_admin, is_contributor, is_member
 from devices.selectors import get_device_qs
 from parts.forms import MAX_PRICE, CompatibilityFormSet, SourceFormSet, SparePartForm
 from parts.models import PartCompatibility, SparePart
-from parts.selectors import get_part_or_404, get_sources_for, visible_part_qs
+from parts.selectors import (
+    get_part_or_404,
+    get_sources_for,
+    get_sources_for_parts,
+    visible_part_qs,
+)
 
 STALE_DAYS = 30
+LIMIT = 60  # tanpa pagination dulu
+QUICK_PRICES = (50_000, 100_000, 250_000, 500_000)
 
 
 def wants_json(request):
@@ -67,7 +74,7 @@ def _empty_message(filters, device):
 def part_list(request):
     show_price = is_member(request.user)
     filters = _filters(request, with_price=show_price)
-    parts = list(visible_part_qs(request.user, **filters)[:60])  # tanpa pagination dulu
+    parts = list(visible_part_qs(request.user, **filters)[:LIMIT])
     # dropdown cuma perangkat yang udah punya suku cadang, plus yang lagi dipilih
     devices = list(
         get_device_qs()
@@ -82,10 +89,41 @@ def part_list(request):
         "categories": SparePart.Category.choices,
         "filters": filters,
         "show_price": show_price,
+        "quick_prices": QUICK_PRICES,
         "empty_message": None if parts else _empty_message(filters, device),
         "show_reset": any(filters.values()),
         "can_create": is_contributor(request.user),
     })
+
+
+@require_http_methods(["GET"])
+def part_api(request):
+    """Data direktori buat filter AJAX di list.js.
+
+    Visitor ga dapet kunci harga sama sekali, toko-tokonya juga tanpa price dan contact
+    """
+    show_price = is_member(request.user)
+    parts = list(visible_part_qs(request.user, **_filters(request, with_price=show_price))[:LIMIT])
+    sources = get_sources_for_parts(parts, request.user)
+    results = []
+    for part in parts:
+        item = {
+            "id": part.pk,
+            "name": part.name,
+            "slug": part.slug,
+            "part_number": part.part_number,
+            "category": part.category,
+            "category_label": part.get_category_display(),
+            "image_url": part.image_url,
+            "url": reverse("parts:detail", args=[part.slug]),
+            "source_count": part.source_count,
+        }
+        if show_price:
+            item["lowest_price"] = part.lowest_price
+            item["highest_price"] = part.highest_price
+        item["sources"] = sources.get(part.pk, [])
+        results.append(item)
+    return JsonResponse({"results": results, "limit": LIMIT})
 
 
 def part_detail(request, slug):
