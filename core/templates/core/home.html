@@ -127,20 +127,23 @@
     <div class="container">
       <h2 class="impact__title" id="impact-title">Dampak nyata dari setiap perbaikan</h2>
       <p class="impact__lead">Setiap perangkat yang diperbaiki membawa perubahan bagi lingkungan dan dompetmu.</p>
-      <dl class="impact__stats">
-        <div class="stat">
-          <dt class="stat__label"><img src="{% static 'core/icons/wrench-light.svg' %}" alt="" width="20" height="20">Perangkat terselamatkan</dt>
-          <dd class="stat__value">{{ impact.repairs }}</dd>
-        </div>
-        <div class="stat">
-          <dt class="stat__label"><img src="{% static 'core/icons/leaf-light.svg' %}" alt="" width="20" height="20">Limbah elektronik dihindari</dt>
-          <dd class="stat__value">{{ impact.waste_avoided_kg|kg }}</dd>
-        </div>
-        <div class="stat">
-          <dt class="stat__label"><img src="{% static 'core/icons/wallet-light.svg' %}" alt="" width="20" height="20">Potensi biaya penggantian dihemat</dt>
-          <dd class="stat__value">{{ impact.cost_avoided|rupiah_short }}</dd>
-        </div>
-      </dl>
+      <ul class="impact__stats">
+        <li class="stat">
+          <img src="{% static 'core/icons/wrench-light.svg' %}" alt="" width="20" height="20">
+          <strong class="stat__value">{{ impact.repairs }}</strong>
+          <span class="stat__label">Perangkat terselamatkan</span>
+        </li>
+        <li class="stat">
+          <img src="{% static 'core/icons/leaf-light.svg' %}" alt="" width="20" height="20">
+          <strong class="stat__value">{{ impact.waste_avoided_kg|kg }}</strong>
+          <span class="stat__label">Limbah elektronik dihindari</span>
+        </li>
+        <li class="stat">
+          <img src="{% static 'core/icons/wallet-light.svg' %}" alt="" width="20" height="20">
+          <strong class="stat__value">{{ impact.cost_avoided|rupiah_short }}</strong>
+          <span class="stat__label">Potensi biaya penggantian dihemat</span>
+        </li>
+      </ul>
       <p class="impact__note">Dihitung dari catatan perbaikan yang berhasil. Berat limbah dan penghematan merupakan estimasi berdasarkan rata-rata per kategori.</p>
     </div>
   </section>
