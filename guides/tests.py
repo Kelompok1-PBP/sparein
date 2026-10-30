@@ -355,3 +355,47 @@ class DetailPageTests(TestCase):
         resp = client.get("/guides/ganti-baterai/")
         self.assertContains(resp, "/guides/ganti-baterai/edit/")
         self.assertContains(resp, "/guides/ganti-baterai/delete/")
+
+
+class FormPageTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = get_user_model().objects.create_user("penulis", password="x")
+        cls.author.profile.role = UserProfile.Role.CONTRIBUTOR
+        cls.author.profile.save()
+
+    def setUp(self):
+        self.client.force_login(self.author)
+
+    def test_create_page_has_three_sections_with_indonesian_labels(self):
+        resp = self.client.get("/guides/create/")
+        for text in ("1. Info dasar", "2. Peringatan keselamatan", "3. Langkah-langkah",
+                     "Judul panduan", "Perkiraan waktu", "Judul langkah", "Terbitkan sekarang"):
+            self.assertContains(resp, text)
+
+    def test_new_step_row_gets_its_position_as_order(self):
+        resp = self.client.get("/guides/create/")
+        self.assertContains(resp, 'name="steps-0-order" value="1"')
+
+    def test_inputs_carry_shared_input_class(self):
+        self.assertContains(self.client.get("/guides/create/"), 'class="input"')
+
+    def test_invalid_post_shows_error_summary_and_marks_field(self):
+        resp = self.client.post("/guides/create/", {
+            "steps-TOTAL_FORMS": 1, "steps-INITIAL_FORMS": 0,
+            "warnings-TOTAL_FORMS": 0, "warnings-INITIAL_FORMS": 0,
+        })
+        self.assertEqual(resp.status_code, 400)
+        self.assertContains(resp, "Ada isian yang belum benar", status_code=400)
+        self.assertContains(resp, 'aria-invalid="true"', status_code=400)
+
+    def test_edit_page_title_and_breadcrumb(self):
+        device = Device.objects.create(name="iPhone", category=DeviceCategory.objects.create(name="Phone"))
+        guide = RepairGuide.objects.create(
+            title="Ganti", slug="ganti", summary="x", difficulty="Easy", time_required_minutes=5,
+            device=device, author=self.author, published=True,
+        )
+        GuideStep.objects.create(guide=guide, order=1, title="Buka", detail="x")
+        resp = self.client.get("/guides/ganti/edit/")
+        self.assertContains(resp, "Ubah panduan")
+        self.assertContains(resp, "Buka")

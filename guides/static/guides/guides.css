@@ -240,3 +240,54 @@
 @media (min-width: 1024px) {
   .guide-detail { grid-template-columns: minmax(0, 1fr) 280px; gap: 32px; }
 }
+
+/* ---------- form ---------- */
+.guide-form { max-width: 720px; margin-inline: auto; }
+.guide-form h1 { margin-bottom: 24px; }
+.guide-form .alert { margin-bottom: 16px; }
+
+.form-section { margin-bottom: 24px; }
+.form-section__title { margin: 0 0 8px; font-size: 14px; line-height: 20px; }
+
+.form-card { display: grid; gap: 16px; padding: 16px; }
+.form-card:hover { border-color: var(--blue-200); }
+.form-card .safety { margin-bottom: 0; }
+.form-card .add-row { justify-self: start; }
+
+.form-row {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--blue-200);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+[data-rows] { display: grid; gap: 16px; }
+.form-row.is-deleted { opacity: .4; }
+.form-row__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.form-row__title { margin: 0; font-size: 14px; line-height: 20px; }
+.form-row__tools { display: flex; align-items: center; gap: 4px; }
+
+.icon-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.icon-button[hidden] { display: none; }
+.icon-button:hover { background: var(--blue-100); }
+.icon-button--danger:hover { background: rgba(220, 38, 38, 0.1); }
+.icon-button:has(:focus-visible) { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.icon-button .flip { transform: rotate(180deg); }
+.icon-button input[type="checkbox"] { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+
+.guide-form__footer { margin-bottom: 0; }
+.guide-form__actions { display: flex; justify-content: flex-end; gap: 8px; }
