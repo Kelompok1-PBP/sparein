@@ -574,6 +574,27 @@ textarea.input { height: auto; min-height: 96px; padding: 10px 12px; resize: ver
   .status-page__actions { flex-direction: row; justify-content: center; width: auto; }
 }
 
+/* ---------- tombol ikon (hapus, geser baris form) ---------- */
+.icon-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.icon-button[hidden] { display: none; }
+.icon-button:hover { background: var(--blue-100); }
+.icon-button--danger:hover { background: rgba(220, 38, 38, 0.1); }
+.icon-button:has(:focus-visible) { outline: 2px solid var(--blue-400); outline-offset: 2px; }
+.icon-button .flip { transform: rotate(180deg); }
+.icon-button input[type="checkbox"] { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+
 /* ---------- breadcrumb ---------- */
 .breadcrumb {
   display: flex;

@@ -269,26 +269,6 @@
 .form-row__title { margin: 0; font-size: 14px; line-height: 20px; }
 .form-row__tools { display: flex; align-items: center; gap: 4px; }
 
-.icon-button {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  cursor: pointer;
-}
-
-.icon-button[hidden] { display: none; }
-.icon-button:hover { background: var(--blue-100); }
-.icon-button--danger:hover { background: rgba(220, 38, 38, 0.1); }
-.icon-button:has(:focus-visible) { outline: 2px solid var(--blue-400); outline-offset: 2px; }
-.icon-button .flip { transform: rotate(180deg); }
-.icon-button input[type="checkbox"] { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
-
 .guide-form__footer { margin-bottom: 0; }
 .guide-form__actions { display: flex; justify-content: flex-end; gap: 8px; }
 .guide-form__lead { margin: 0 0 16px; color: var(--muted); }
