@@ -287,3 +287,29 @@ class ProtectedDeleteTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "masih dipakai")
         self.assertTrue(Device.objects.filter(pk=self.device.pk).exists())
+
+
+class ApiV1Tests(TestCase):
+    def setUp(self):
+        phone = DeviceCategory.objects.create(name="Phone")
+        Device.objects.create(name="iPhone 12", category=phone, brand="Apple")
+        Device.objects.create(name="Galaxy S21", category=phone, brand="Samsung")
+
+    def test_list_returns_paginated_json(self):
+        data = self.client.get("/api/v1/devices/").json()
+        self.assertEqual(data["count"], 2)
+        self.assertEqual(data["results"][0]["category"], "phone")
+
+    def test_list_filters_by_brand(self):
+        data = self.client.get("/api/v1/devices/?brand=apple").json()
+        self.assertEqual([d["name"] for d in data["results"]], ["iPhone 12"])
+
+    def test_detail_by_slug(self):
+        slug = Device.objects.get(name="iPhone 12").slug
+        self.assertEqual(self.client.get(f"/api/v1/devices/{slug}/").json()["brand"], "Apple")
+
+    def test_unknown_slug_is_404(self):
+        self.assertEqual(self.client.get("/api/v1/devices/tidak-ada/").status_code, 404)
+
+    def test_write_not_allowed(self):
+        self.assertEqual(self.client.post("/api/v1/devices/", {}).status_code, 405)
