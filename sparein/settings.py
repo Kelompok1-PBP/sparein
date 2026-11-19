@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'diagnostics',
     'parts',
     'journal',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
