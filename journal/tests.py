@@ -890,3 +890,84 @@ class SummaryApiTests(ViewBase):
     def test_summary_does_not_leak_other_users_logs(self):
         data = self.client.get("/api/journal/summary/").json()
         self.assertEqual(sum(data["by_status"].values()), 0)
+
+
+class ApiV1Tests(JournalBase):
+    def setUp(self):
+        super().setUp()
+        self.mine = self.make_log(title="Ganti baterai", status=Status.SUCCEEDED, cost_spent=500_000)
+        self.planned = self.make_log(title="Ganti layar", status=Status.PLANNED)
+        self.foreign = self.make_log(user=self.other, title="Rahasia orang lain")
+
+    def login(self):
+        self.client.force_login(self.user)
+
+    def test_visitor_cannot_list_or_open_a_log(self):
+        self.assertEqual(self.client.get("/api/v1/journal/").status_code, 403)
+        self.assertEqual(self.client.get(f"/api/v1/journal/{self.mine.pk}/").status_code, 403)
+
+    def test_member_list_returns_only_own_logs(self):
+        self.login()
+        data = self.client.get("/api/v1/journal/").json()
+        self.assertEqual(data["count"], 2)
+        self.assertNotIn("Rahasia orang lain", [log["title"] for log in data["results"]])
+
+    def test_list_carries_status_device_and_impact(self):
+        self.login()
+        logs = {log["id"]: log for log in self.client.get("/api/v1/journal/").json()["results"]}
+        done = logs[self.mine.pk]
+        self.assertEqual(done["status"], "succeeded")
+        self.assertEqual(done["status_label"], "Berhasil")
+        self.assertEqual(done["device"], self.device.slug)
+        self.assertEqual(done["device_name"], "iPhone 12")
+        self.assertEqual(done["impact"], {"waste_avoided_kg": 0.2, "cost_avoided": 2_500_000})
+        self.assertIsNone(logs[self.planned.pk]["impact"])
+
+    def test_device_falls_back_to_the_guide_device(self):
+        guide = RepairGuide.objects.create(
+            device=self.device, author=self.user, title="Ganti baterai", slug="ganti-baterai",
+            summary="s", difficulty="Easy", time_required_minutes=5, published=True,
+        )
+        log = self.make_log(device=None, guide=guide, title="Dari panduan")
+        self.login()
+        data = self.client.get(f"/api/v1/journal/{log.pk}/").json()
+        self.assertEqual(data["device"], self.device.slug)
+        self.assertEqual(data["guide"], "ganti-baterai")
+        self.assertEqual(data["guide_title"], "Ganti baterai")
+
+    def test_list_filters_by_status(self):
+        self.login()
+        data = self.client.get("/api/v1/journal/?status=planned").json()
+        self.assertEqual([log["title"] for log in data["results"]], ["Ganti layar"])
+
+    def test_unknown_status_is_ignored(self):
+        self.login()
+        self.assertEqual(self.client.get("/api/v1/journal/?status=ngawur").json()["count"], 2)
+
+    def test_detail_of_own_log(self):
+        self.login()
+        self.assertEqual(self.client.get(f"/api/v1/journal/{self.mine.pk}/").json()["title"], "Ganti baterai")
+
+    def test_detail_of_someone_elses_log_is_404(self):
+        self.login()
+        self.assertEqual(self.client.get(f"/api/v1/journal/{self.foreign.pk}/").status_code, 404)
+
+    def test_write_not_allowed(self):
+        self.login()
+        self.assertEqual(self.client.post("/api/v1/journal/", {}).status_code, 405)
+        self.assertEqual(self.client.delete(f"/api/v1/journal/{self.mine.pk}/").status_code, 405)
+
+    def test_visitor_summary_exposes_site_counter_only(self):
+        data = self.client.get("/api/v1/journal/summary/").json()
+        self.assertIsNone(data["summary"])
+        self.assertIsNone(data["by_status"])
+        self.assertEqual(data["site"], {"repairs": 1, "waste_avoided_kg": 0.2, "cost_avoided": 2_500_000})
+
+    def test_member_summary_has_personal_impact_and_status_counts(self):
+        self.login()
+        data = self.client.get("/api/v1/journal/summary/").json()
+        self.assertEqual(data["summary"], {"repairs": 1, "waste_avoided_kg": 0.2, "cost_avoided": 2_500_000})
+        self.assertEqual(
+            data["by_status"],
+            {"planned": 1, "in_progress": 0, "succeeded": 1, "failed": 0},
+        )

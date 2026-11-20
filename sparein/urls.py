@@ -4,10 +4,12 @@ from rest_framework.routers import DefaultRouter
 
 from devices.api import DeviceViewSet
 from guides.views import guide_api
+from journal.api import JournalViewSet
 from journal.views import journal_summary_api
 
 router = DefaultRouter()
 router.register("devices", DeviceViewSet, basename="device")
+router.register("journal", JournalViewSet, basename="journal")
 
 urlpatterns = [
     path("api/v1/", include(router.urls)),
