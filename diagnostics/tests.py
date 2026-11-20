@@ -441,3 +441,68 @@ class HistoryTests(DiagnoseSetup):
         self.assertNotContains(self.client.get(page), "Riwayat diagnosa")
         self.client.force_login(make_user("me"))
         self.assertContains(self.client.get(page), "Riwayat diagnosa")
+
+
+class ApiV1Tests(DiagnoseSetup):
+    def test_symptom_list_returns_paginated_json(self):
+        data = self.client.get("/api/v1/symptoms/").json()
+        self.assertEqual(data["count"], 2)
+        first = data["results"][0]
+        self.assertEqual(first["title"], "Baterai boros")
+        self.assertEqual(first["device"], self.device.slug)
+        self.assertEqual(first["severity_label"], "Sedang")
+
+    def test_symptom_list_filters_by_device_and_severity(self):
+        other = Symptom.objects.create(device=make_device("iPhone 12"), title="Speaker pecah")
+        by_device = self.client.get(f"/api/v1/symptoms/?device={other.device.slug}").json()
+        self.assertEqual([s["title"] for s in by_device["results"]], ["Speaker pecah"])
+        by_severity = self.client.get("/api/v1/symptoms/?severity=low").json()
+        self.assertEqual([s["title"] for s in by_severity["results"]], ["HP panas"])
+
+    def test_symptom_detail_by_slug(self):
+        data = self.client.get(f"/api/v1/symptoms/{self.panas.slug}/").json()
+        self.assertEqual(data["id"], self.panas.pk)
+        self.assertEqual(data["device_name"], "iPhone 11")
+
+    def test_unknown_symptom_slug_is_404(self):
+        self.assertEqual(self.client.get("/api/v1/symptoms/tidak-ada/").status_code, 404)
+
+    def test_symptom_write_not_allowed(self):
+        self.assertEqual(self.client.post("/api/v1/symptoms/", {}).status_code, 405)
+
+    def test_diagnose_ranks_causes_from_ticked_symptoms(self):
+        url = f"/api/v1/diagnose/?device={self.device.slug}&symptom={self.boros.pk}"
+        data = self.client.get(url).json()
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(
+            data["results"][0],
+            {
+                "title": "Baterai sudah aus",
+                "likelihood": "high",
+                "likelihood_label": "Tinggi",
+                "note": "Umum",
+            },
+        )
+
+    def test_diagnose_without_symptom_is_empty(self):
+        data = self.client.get(f"/api/v1/diagnose/?device={self.device.slug}").json()
+        self.assertEqual(data, {"count": 0, "results": []})
+
+    def test_diagnose_drops_non_numeric_symptom_ids(self):
+        url = f"/api/v1/diagnose/?device={self.device.slug}&symptom=abc&symptom={self.boros.pk}"
+        self.assertEqual(self.client.get(url).json()["count"], 1)
+
+    def test_diagnose_requires_device(self):
+        resp = self.client.get("/api/v1/diagnose/")
+        self.assertEqual(resp.status_code, 400)
+        self.assertIn("device", resp.json())
+
+    def test_diagnose_unknown_device_is_404(self):
+        self.assertEqual(self.client.get("/api/v1/diagnose/?device=tidak-ada").status_code, 404)
+
+    def test_diagnose_never_writes_a_session(self):
+        self.client.get(f"/api/v1/diagnose/?device={self.device.slug}&symptom={self.boros.pk}")
+        self.assertEqual(DiagnosisSession.objects.count(), 0)
+
+    def test_diagnose_write_not_allowed(self):
+        self.assertEqual(self.client.post("/api/v1/diagnose/", {}).status_code, 405)
